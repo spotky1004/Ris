@@ -1,0 +1,21 @@
+{
+  "name": "ris",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/app"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "canvas": "^2.10.1",
+    "discord.js": "^14.6.0",
+    "dotenv": "^16.0.3",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7",
+    "typescript": "^4.8.4"
+  }
+}
