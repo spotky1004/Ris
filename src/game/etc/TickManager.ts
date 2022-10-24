@@ -1,4 +1,4 @@
-type TickTypes = "player" | "all";
+type TickTypes = "move" | "player" | "all";
 
 export interface TickManagerOptions {
   type: TickTypes;
@@ -32,6 +32,11 @@ export default class TickManager {
 
   playerTick() {
     if (this.type !== "player") return false;
+    return this.tick();
+  }
+
+  moveTick() {
+    if (this.type !== "move") return false;
     return this.tick();
   }
 }

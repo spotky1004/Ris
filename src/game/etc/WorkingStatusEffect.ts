@@ -41,4 +41,12 @@ export default class WorkingStatusEffect {
     if (removeResult) return true;
     return false;
   }
+
+  moveTick() {
+    const intervalResult = this.intervalTick.moveTick();
+    const removeResult = this.removeTick.moveTick();
+    if (intervalResult) this.effect();
+    if (removeResult) return true;
+    return false;
+  }
 }

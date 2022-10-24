@@ -23,4 +23,9 @@ export default class TickManager {
             return false;
         return this.tick();
     }
+    moveTick() {
+        if (this.type !== "move")
+            return false;
+        return this.tick();
+    }
 }
