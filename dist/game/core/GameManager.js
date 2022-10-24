@@ -4,27 +4,27 @@ export default class GuildManager {
         this.client = client;
         this.games = new Map();
     }
-    createGame(guild) {
-        const guildId = guild.id;
-        if (this.games.has(guildId)) {
+    createGame(channel) {
+        const channelId = channel.id;
+        if (this.games.has(channelId)) {
             return false;
         }
-        this.games.set(guildId, new Game(guild, {
+        this.games.set(channelId, new Game(channel, {
             board: {
                 size: [7, 7]
             }
         }));
         return true;
     }
-    getGame(guild) {
-        return this.games.get(guild.id);
+    getGame(channel) {
+        return this.games.get(channel.id);
     }
-    destroyGame(guild) {
-        const guildId = guild.id;
-        if (this.games.has(guildId)) {
+    destroyGame(channel) {
+        const channelId = channel.id;
+        if (this.games.has(channelId)) {
             return false;
         }
-        this.games.delete(guildId);
+        this.games.delete(channelId);
         return true;
     }
 }

@@ -13,7 +13,7 @@ export default class Board {
   width: number;
   height: number;
   canvas: BoardCanvas;
-  grid: PlaceableBase[][][];
+  private grid: PlaceableBase[][][];
 
   constructor(game: Game, options: BoardOptions) {
     this.game = game;
@@ -22,10 +22,34 @@ export default class Board {
     this.grid = Array.from({ length: this.height }, _ => Array.from({ length: this.width }, _ => []));
   }
 
+  getTile(x: number, y: number) {
+    return (this.grid[y] ?? [])[x] ?? [];
+  }
+
+  getAllPlaceables(type?: RegExp | string) {
+    const all = this.grid.flat(2);
+    if (typeof type !== "undefined") {
+      if (typeof type === "string") {
+        return all.filter(v => v.type === type);
+      } else {
+        return all.filter(v => type.test(v.type));
+      }
+    }
+    return all;
+  }
+
   spawnPlaceable(x: number, y: number, item: PlaceableBase) {
-    const tile = this.grid[y][x];
+    const tile = this.getTile(x, y);
     if (tile.includes(item)) return false;
-    this.grid[y][x].push(item);
+    tile.push(item);
+    return true;
+  }
+
+  removePlaceable(x: number, y: number, item: PlaceableBase) {
+    const tile = this.getTile(x, y);
+    if (!tile.includes(item)) return false;
+    const idx = tile.findIndex(v => v === item);
+    tile.splice(idx, 1);
     return true;
   }
 }

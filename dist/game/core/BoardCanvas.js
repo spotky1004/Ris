@@ -22,22 +22,23 @@ export default class BoardCanvas {
     getFieldLayer(layer) {
         return this.fieldLayers[layer];
     }
-    render() {
-        const grid = this.game.board.grid;
-        const { width, height } = this.game.board;
+    clearCanvas() {
         for (const z of [0, 1, 2]) {
             this.fieldLayers[z].clear();
         }
+    }
+    render() {
+        const board = this.game.board;
+        const { width, height } = board;
         this.fieldLayers[0].fillStyle = "#fff";
         this.fieldLayers[0].fillRect(0, 0, width, height);
         this.fieldLayers[0].fillStyle = "#f2f2f2";
         for (let y = 0; y < height; y++) {
-            const row = grid[y];
             for (let x = 0; x < width; x++) {
                 if ((x + y) % 2 === 0) {
                     this.fieldLayers[0].fillRect(x, y, 1, 1);
                 }
-                const tile = [...row[x]].sort((a, b) => a.zIndex - b.zIndex);
+                const tile = [...board.getTile(x, y)].sort((a, b) => a.zIndex - b.zIndex);
                 for (const placeable of tile) {
                     void placeable.render();
                 }

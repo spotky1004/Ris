@@ -10,12 +10,12 @@ export default class GuildManager {
     this.games = new Map();
   }
 
-  createGame(guild: Discord.Guild) {
-    const guildId = guild.id;
-    if (this.games.has(guildId)) {
+  createGame(channel: Discord.TextBasedChannel) {
+    const channelId = channel.id;
+    if (this.games.has(channelId)) {
       return false;
     }
-    this.games.set(guildId, new Game(guild, {
+    this.games.set(channelId, new Game(channel, {
       board: {
         size: [7, 7]
       }
@@ -23,16 +23,16 @@ export default class GuildManager {
     return true;
   }
 
-  getGame(guild: Discord.Guild) {
-    return this.games.get(guild.id);
+  getGame(channel: Discord.TextBasedChannel) {
+    return this.games.get(channel.id);
   }
 
-  destroyGame(guild: Discord.Guild) {
-    const guildId = guild.id;
-    if (this.games.has(guildId)) {
+  destroyGame(channel: Discord.TextBasedChannel) {
+    const channelId = channel.id;
+    if (this.games.has(channelId)) {
       return false;
     }
-    this.games.delete(guildId);
+    this.games.delete(channelId);
     return true;
   }
 }

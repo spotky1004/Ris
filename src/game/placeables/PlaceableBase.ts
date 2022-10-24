@@ -1,9 +1,14 @@
+import StatusManager, { StatusManagerOptions } from "../etc/StatusManager.js";
 import type Game from "../core/Game.js";
 
 export interface PlaceableBaseOptions {
   game: Game;
+  name?: string;
   x: number;
   y: number;
+  status?: StatusManagerOptions;
+  owner?: PlaceableBase;
+  looking?: [x: -1 | 0 | 1, y: -1 | 0 | 1];
 }
 
 interface RenderStringOptions {
@@ -17,26 +22,69 @@ export interface RenderOptions {
 }
 
 export default class PlaceableBase {
+  type: string;
   private game: Game;
-  x: number;
-  y: number;
+  name: string;
+  private _x: number;
+  private _y: number;
+  status: StatusManager;
   zIndex: number;
+  owner: PlaceableBase | undefined;
+  looking: [x: -1 | 0 | 1, y: -1 | 0 | 1];
 
   constructor(options: PlaceableBaseOptions) {
+    this.type = "Unknown";
     this.game = options.game;
-    this.x = options.x;
-    this.y = options.y;
+    this.name = options.name ?? "Unknown";
+    this._x = options.x;
+    this._y = options.y;
+    this.status = new StatusManager(this.game, this, options.status);
     this.zIndex = -1;
+    this.owner = options.owner ?? undefined;
+    this.looking = options.looking ? [options.looking[0], options.looking[1]] : [0, 1];
     
-    this.game.board.spawnPlaceable(this.x, this.y, this);
+    this.game.board.spawnPlaceable(this._x, this._y, this);
+  }
+
+  spawn() {
+    return this.game.board.spawnPlaceable(this._x, this._y, this);
+  }
+
+  remove() {
+    return this.game.board.removePlaceable(this._x, this._y, this);
+  }
+
+  private respawn(x: number, y: number) {
+    this.remove();
+    this._x = x;
+    this._y = y;
+    this.spawn();
+  }
+
+  set x(value: number) {
+    this.respawn(value, this._y);
+    this._x = value;
+  }
+  
+  set y(value: number) {
+    this.respawn(this._x, value);
+    this._y = value;
+  }
+
+  get x() {
+    return this._x;
+  }
+
+  get y() {
+    return this._y;
   }
 
   _render(options: RenderOptions, layer?: 0 | 1 | 2) {
     const field = this.game.board.canvas.getFieldLayer(layer ?? 1);
     const w = 1;
     const h = 1;
-    const x = this.x * w;
-    const y = this.y * h;
+    const x = this._x * w;
+    const y = this._y * h;
     
     field.fillStyle = options.bgColor;
     field.fillRect(x, y, w, h);
@@ -73,7 +121,7 @@ export default class PlaceableBase {
 
   }
 
-  isPlayer(): boolean {
-    return false;
+  get displayName() {
+    return this.name;
   }
 }

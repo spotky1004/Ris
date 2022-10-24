@@ -3,13 +3,13 @@ import slashUtil from "../functions/slashUtil.js";
 import { AttachmentBuilder } from "discord.js";
 import Player from "../../game/placeables/Player.js";
 const command = createCommand("startgame");
-command.handler = async ({ gameManager, guild, interaction }) => {
-    const result = gameManager.createGame(guild);
+command.handler = async ({ gameManager, guild, channel, interaction }) => {
+    const result = gameManager.createGame(channel);
     if (!result) {
-        await slashUtil.reply(interaction, "The game is aleady started!");
+        await slashUtil.reply(interaction, "The game is aleady running!");
         return;
     }
-    const game = gameManager.getGame(guild);
+    const game = gameManager.getGame(channel);
     if (!game) {
         await slashUtil.reply(interaction, "Unexpedted error occured...");
         return;
@@ -19,7 +19,11 @@ command.handler = async ({ gameManager, guild, interaction }) => {
         new Player({
             game,
             x: 3, y: 3,
-            maxHp: 10,
+            status: {
+                maxHp: 10,
+                baseAtk: 2.5,
+                baseDef: 0
+            },
             memberId: interaction.user.id,
             memberName: member.displayName
         });

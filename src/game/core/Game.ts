@@ -1,4 +1,5 @@
 import Board, { BoardOptions } from "./Board.js";
+import MessageSender from "./MessageSender.js";
 import type Discord from "discord.js";
 
 interface GameOptions {
@@ -6,11 +7,13 @@ interface GameOptions {
 }
 
 export default class Game {
-  guild: Discord.Guild;
+  channel: Discord.TextBasedChannel;
+  sender: MessageSender;
   board: Board;
 
-  constructor(guild: Discord.Guild, options: GameOptions) {
-    this.guild = guild;
+  constructor(channel: Discord.TextBasedChannel, options: GameOptions) {
+    this.channel = channel;
+    this.sender = new MessageSender(this);
     this.board = new Board(this, options.board);
   }
 }

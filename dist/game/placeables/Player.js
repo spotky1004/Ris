@@ -1,12 +1,10 @@
 import PlaceableBase from "./PlaceableBase.js";
 export default class Player extends PlaceableBase {
     constructor(options) {
-        var _a;
         super(options);
+        this.type = "player";
         this.memberId = options.memberId;
         this.memberName = options.memberName;
-        this.maxHp = options.maxHp;
-        this.hp = (_a = options.hp) !== null && _a !== void 0 ? _a : options.maxHp;
         this.zIndex = 5;
     }
     render() {
@@ -18,13 +16,13 @@ export default class Player extends PlaceableBase {
             },
             numbers: [
                 {
-                    text: this.hp.toString(),
+                    text: this.status.hp.toString(),
                     color: "#f00"
                 }
             ]
         });
     }
-    isPlayer() {
-        return true;
+    get displayName() {
+        return `<@${this.memberId}>`;
     }
 }

@@ -39,11 +39,14 @@ client.on("interactionCreate", (interaction) => {
         if (command &&
             interaction.inGuild() &&
             interaction.guild &&
+            (interaction.channel &&
+                interaction.channel.isTextBased()) &&
             interaction.member) {
             command.handler({
                 gameManager: gameManager,
                 interaction: interaction,
                 guild: interaction.guild,
+                channel: interaction.channel,
                 // @ts-ignore
                 member: interaction.member
             });
