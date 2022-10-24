@@ -45,7 +45,7 @@ export default class Player extends PlaceableBase {
     const field = this.game.board.canvas.getFieldLayer(0);
     const [dx, dy] = this.looking;
     field.fillText({
-      text: arrows[dy + 1][dx + 1],
+      text: (arrows[dy + 1] ?? [])[dx + 1] ?? "",
       x: this.x + dx, y: this.y + dy,
       font: {
         fontFamilys: ["arial"],

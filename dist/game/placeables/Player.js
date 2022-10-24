@@ -13,6 +13,7 @@ export default class Player extends PlaceableBase {
         this.zIndex = 5;
     }
     render() {
+        var _a, _b;
         this._render({
             bgColor: "#e6eabc",
             name: {
@@ -30,7 +31,7 @@ export default class Player extends PlaceableBase {
         const field = this.game.board.canvas.getFieldLayer(0);
         const [dx, dy] = this.looking;
         field.fillText({
-            text: arrows[dy + 1][dx + 1],
+            text: (_b = ((_a = arrows[dy + 1]) !== null && _a !== void 0 ? _a : [])[dx + 1]) !== null && _b !== void 0 ? _b : "",
             x: this.x + dx, y: this.y + dy,
             font: {
                 fontFamilys: ["arial"],
