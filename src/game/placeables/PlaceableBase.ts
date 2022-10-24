@@ -11,7 +11,7 @@ export interface PlaceableBaseOptions {
   looking?: [x: -1 | 0 | 1, y: -1 | 0 | 1];
 }
 
-interface RenderStringOptions {
+export interface RenderStringOptions {
   text: string;
   color: string;
 }
