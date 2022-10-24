@@ -5,6 +5,12 @@ export interface PlayerOptions extends PlaceableBaseOptions {
   memberName: string;
 }
 
+const arrows = [
+  ["↖", "↑", "↗"],
+  ["←", " ", "→"],
+  ["↙", "↓", "↘"]
+];
+
 export default class Player extends PlaceableBase {
   type: "player";
   readonly memberId: string;
@@ -33,6 +39,20 @@ export default class Player extends PlaceableBase {
           color: "#f00"
         }
       ]
+    });
+
+    // Draw arrow
+    const field = this.game.board.canvas.getFieldLayer(0);
+    const [dx, dy] = this.looking;
+    field.fillText({
+      text: arrows[dy + 1][dx + 1],
+      x: this.x + dx, y: this.y + dy,
+      font: {
+        fontFamilys: ["arial"],
+      },
+      color: "#000",
+      maxSize: 0.5,
+      baseline: "middle", textAlign: "center"
     });
   }
 

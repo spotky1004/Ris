@@ -23,7 +23,7 @@ export interface RenderOptions {
 
 export default class PlaceableBase {
   type: string;
-  private game: Game;
+  game: Game;
   name: string;
   private _x: number;
   private _y: number;
