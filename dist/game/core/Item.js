@@ -15,3 +15,16 @@ export default class Item {
         this.tier = tier;
     }
 }
+const item = new Item({
+    name: "Attack Debugger",
+    on: "attacked",
+    onEmit: ({ game, owner, data }) => {
+        game.sender.send(`${data.from.memberName} attacked ${owner.memberName} for ${data.damage} damage!`);
+        const players = game.board.getAllPlaceables("Player");
+        console.log(players.includes(owner) ? "The owner is on the board" : "The owner isn't on the board?");
+        const walls = game.board.getAllPlaceables(/^wall/g);
+        console.log(walls);
+    },
+    madeFrom: null
+});
+console.log(item);
