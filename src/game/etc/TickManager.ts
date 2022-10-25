@@ -1,4 +1,4 @@
-type TickTypes = "move" | "player" | "all";
+export type TickTypes = "move" | "player" | "all";
 
 export interface TickManagerOptions {
   type: TickTypes;
@@ -16,7 +16,7 @@ export default class TickManager {
     this.timeLeft = length;
   }
 
-  private tick() {
+  tick() {
     this.timeLeft--;
     if (this.timeLeft <= 0) {
       this.timeLeft = this.length;
