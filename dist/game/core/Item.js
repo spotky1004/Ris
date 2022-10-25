@@ -25,6 +25,13 @@ const item = new Item({
         const walls = game.board.getAllPlaceables(/^wall/g);
         console.log(walls);
     },
-    madeFrom: null
+    unlockedDefault: false,
+    chargeOptions: {
+        type: "move",
+        length: 3
+    },
+    destroyOnEmit: false,
+    tier: 5,
+    madeFrom: 32
 });
 console.log(item);
