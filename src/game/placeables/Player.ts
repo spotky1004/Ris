@@ -12,14 +12,14 @@ const arrows = [
 ];
 
 export default class Player extends PlaceableBase {
-  type: "player";
+  type: "Player";
   readonly memberId: string;
   readonly memberName: string;
 
   constructor(options: PlayerOptions) {
     super(options);
 
-    this.type = "player";
+    this.type = "Player";
     this.memberId = options.memberId;
     this.memberName = options.memberName;
 

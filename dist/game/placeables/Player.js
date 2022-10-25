@@ -7,7 +7,7 @@ const arrows = [
 export default class Player extends PlaceableBase {
     constructor(options) {
         super(options);
-        this.type = "player";
+        this.type = "Player";
         this.memberId = options.memberId;
         this.memberName = options.memberName;
         this.zIndex = 5;
