@@ -9,7 +9,7 @@ import type {
   ItemActivateEventReturn
 } from "./Item.js";
 
-export default class WorkingItem<T extends ItemActivateEventNames> {
+export default class WorkingItem<T extends ItemActivateEventNames = any> {
   private game: Game;
   readonly owner: PlaceableBase;
   readonly on: T;
