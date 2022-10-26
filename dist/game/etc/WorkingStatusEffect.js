@@ -14,27 +14,9 @@ export default class WorkingStatusEffect {
             target: this.target
         });
     }
-    allTick() {
-        const intervalResult = this.intervalTick.allTick();
-        const removeResult = this.removeTick.allTick();
-        if (intervalResult)
-            this.effect();
-        if (removeResult)
-            return true;
-        return false;
-    }
-    playerTick() {
-        const intervalResult = this.intervalTick.playerTick();
-        const removeResult = this.removeTick.playerTick();
-        if (intervalResult)
-            this.effect();
-        if (removeResult)
-            return true;
-        return false;
-    }
-    moveTick() {
-        const intervalResult = this.intervalTick.moveTick();
-        const removeResult = this.removeTick.moveTick();
+    tick(type) {
+        const intervalResult = this.intervalTick.tick(type);
+        const removeResult = this.removeTick.tick(type);
         if (intervalResult)
             this.effect();
         if (removeResult)

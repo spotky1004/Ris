@@ -16,27 +16,17 @@ export default class TickManager {
     this.timeLeft = length;
   }
 
-  tick() {
+  tick(type: TickTypes) {
+    if (type !== this.type) return false;
+    
     this.timeLeft--;
     if (this.timeLeft <= 0) {
-      this.timeLeft = this.length;
       return true;
     }
     return false;
   }
 
-  allTick() {
-    if (this.type !== "all") return false;
-    return this.tick();
-  }
-
-  playerTick() {
-    if (this.type !== "player") return false;
-    return this.tick();
-  }
-
-  moveTick() {
-    if (this.type !== "move") return false;
-    return this.tick();
+  restart() {
+    this.timeLeft = this.length;
   }
 }
