@@ -1,8 +1,8 @@
 import type Game from "./Game.js";
 import type { TickManagerOptions } from "../etc/TickManager.js";
-import type Player from "../placeables/Player.js";
+import type PlaceableBase from "../placeables/PlaceableBase.js";
 
-type ItemActivateEventNames =
+export type ItemActivateEventNames =
   "used" | "always" | "none" |
   "move" | "otherPlayerMove" | "kill" | "myTurnStart" | "myTurnEnd" |
   "playerTurnStart" | "playerTurnEnd" | "allTurnStart" | "allTurnEnd" |
@@ -11,7 +11,7 @@ type ItemActivateEventTypes<T> = {
   [K in ItemActivateEventNames]: T;
 };
 
-interface ItemActivateEventData extends ItemActivateEventTypes<{}> {
+export interface ItemActivateEventData extends ItemActivateEventTypes<{}> {
   "always": ItemActivateEventData[Exclude<ItemActivateEventNames, "always">];
   "none": {};
   "move": {
@@ -19,43 +19,43 @@ interface ItemActivateEventData extends ItemActivateEventTypes<{}> {
     curPos: [x: number, y: number];
   };
   "otherPlayerMove": {
-    player: Player;
+    player: PlaceableBase;
     prevPos: [x: number, y: number];
     curPos: [x: number, y: number];
   };
   "kill": {
     damage: number;
-    killed: Player;
+    killed: PlaceableBase;
   };
   "myTurnStart": {};
   "myTurnEnd": {};
   "playerTurnStart": {
-    target: Player;
+    target: PlaceableBase;
   };
   "playerTurnEnd": {
-    target: Player;
+    target: PlaceableBase;
   };
   "allTurnStart": {
-    target: Player;
+    target: PlaceableBase;
   };
   "allTurnEnd": {
-    target: Player;
+    target: PlaceableBase;
   };
   "gameEnd": {};
   "death": {
     damage: number;
-    killedBy: Player;
+    killedBy: PlaceableBase;
   };
   "attack": {
     damage: number;
-    target: Player;
+    target: PlaceableBase;
   };
   "attacked": {
     damage: number;
-    from: Player;
+    from: PlaceableBase;
   }
 }
-interface ItemActivateEventReturn extends ItemActivateEventTypes<any>  {
+export interface ItemActivateEventReturn extends ItemActivateEventTypes<any>  {
   /** true -> ignore destroyOnEmit */
   "used": boolean;
   /** * */
@@ -64,22 +64,26 @@ interface ItemActivateEventReturn extends ItemActivateEventTypes<any>  {
   "otherPlayerMove": boolean;
 }
 
-interface ItemActivateCallbackArg<T extends ItemActivateEventNames> {
+interface ItemActivateCallbackArgBuider<T extends ItemActivateEventNames> {
   game: Game;
-  owner: Player;
+  owner: PlaceableBase;
   event: T;
   data: ItemActivateEventData[T];
 }
-type ItemActivateCallback<T extends ItemActivateEventNames> = T extends "always" ?
-  ((arg: ItemActivateCallbackArg<any>) => any) :
+export type ItemActivateCallbackArg<T extends ItemActivateEventNames> = T extends "always" ?
+  { [K in ItemActivateEventNames] : ItemActivateCallbackArgBuider<K> }[ItemActivateEventNames] :
+  ItemActivateCallbackArgBuider<T>;
+type ItemActivateCallback<T extends ItemActivateEventNames> =
   ((arg: ItemActivateCallbackArg<T>) => ItemActivateEventReturn[T] | void);
 
 interface ItemOptions<T extends ItemActivateEventNames> {
   name: string;
   /** default: true */
   unlockedDefault?: boolean;
+  /** default: false */
+  shopable?: boolean;
   cost?: number;
-  madeFrom: Item[];
+  recipe?: Item[];
   tier?: number;
   on: T;
   timing: "before" | "after";
@@ -89,10 +93,11 @@ interface ItemOptions<T extends ItemActivateEventNames> {
   onEmit: ItemActivateCallback<T>;
 }
 
-export default class Item<T extends ItemActivateEventNames = "none"> {
+export default class Item<T extends ItemActivateEventNames = any> {
   readonly name: string;
   readonly unlockedDefault: boolean;
-  readonly madeFrom: null | number | Item[];
+  readonly recipe: Item[] | null;
+  readonly shopable: boolean;
   cost: number;
   readonly tier: number;
   readonly on: T;
@@ -104,7 +109,8 @@ export default class Item<T extends ItemActivateEventNames = "none"> {
   constructor(options: ItemOptions<T>) {
     this.name = options.name;
     this.unlockedDefault = options.unlockedDefault ?? true;
-    this.madeFrom = options.madeFrom;
+    this.recipe = options.recipe ?? [];
+    this.shopable = options.shopable ?? false;
     this.on = options.on;
     this.timing = options.timing;
     this.chargeOptions = options.chargeOptions ?? null;
@@ -113,28 +119,36 @@ export default class Item<T extends ItemActivateEventNames = "none"> {
 
     let tier = options.tier ?? 1;
     let cost: number = options.cost ?? 0;
-    if (this.madeFrom.length > 0) {
-      tier = Math.max(...this.madeFrom.map(item => item.tier)) + 1;
-      cost = this.madeFrom.reduce((a, b) => a + b.cost, 0);
+    if (this.recipe.length > 0) {
+      tier = Math.max(...this.recipe.map(item => item.tier)) + 1;
+      cost = this.recipe.reduce((a, b) => a + b.cost, 0);
     }
     this.tier = tier;
     this.cost = cost;
   }
 }
 
+import Player from "../placeables/Player.js";
 const item = new Item({
   name: "Attack Debugger",
-  on: "attacked",
+  on: "always",
   timing: "after",
 
-  onEmit: ({ game, owner, data }) => {
-    game.sender.send(`${data.from.memberName} attacked ${owner.memberName} for ${data.damage} damage!`);
+  onEmit: async ({ data, event, game, owner }) => {
+    if (event === "attacked") {
+      if (
+        data.from instanceof Player &&
+        owner instanceof Player
+      ) {
+        await game.sender.send(`${data.from.memberName} attacked ${owner.memberName} for ${data.damage} damage!`);
+      }
+    }
 
     const players = game.board.getAllPlaceables("Player");
-    console.log(players.includes(owner) ? "The owner is on the board" : "The owner isn't on the board..?");
+    await game.sender.send(players.includes(owner) ? "The owner is on the board" : "The owner isn't on the board..?");
 
     const walls = game.board.getAllPlaceables(/^wall/g);
-    console.log(walls);
+    await game.sender.send("Walls on the board: " + walls.map(w => w.displayName).join(" "));
   },
   unlockedDefault: false,
   chargeOptions: {
@@ -143,7 +157,7 @@ const item = new Item({
   },
   destroyOnEmit: false,
   tier: 5,
-  madeFrom: [],
+  recipe: [],
   cost: 32
 });
 console.log(item);
