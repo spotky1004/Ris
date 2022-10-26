@@ -10,8 +10,8 @@ export interface BoardOptions {
 export default class Board {
   // @ts-ignore
   private game: Game;
-  width: number;
-  height: number;
+  readonly width: number;
+  readonly height: number;
   canvas: BoardCanvas;
   private grid: PlaceableBase[][][];
 
