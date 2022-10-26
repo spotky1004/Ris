@@ -1,4 +1,5 @@
 import PlaceableBase from "./PlaceableBase.js";
+import WorkingItem from "../core/WorkingItem.js";
 const arrows = [
     ["↖", "↑", "↗"],
     ["←", " ", "→"],
@@ -10,6 +11,7 @@ export default class Player extends PlaceableBase {
         this.type = "Player";
         this.memberId = options.memberId;
         this.memberName = options.memberName;
+        this.items = [];
         this.zIndex = 5;
     }
     render() {
@@ -40,6 +42,9 @@ export default class Player extends PlaceableBase {
             maxSize: 0.5,
             baseline: "middle", textAlign: "center"
         });
+    }
+    addItem(item) {
+        this.items.push(new WorkingItem(this.game, this, item));
     }
     get displayName() {
         return `<@${this.memberId}>`;

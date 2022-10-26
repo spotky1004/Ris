@@ -1,4 +1,6 @@
 import PlaceableBase, { PlaceableBaseOptions } from "./PlaceableBase.js";
+import type Item from "../core/Item.js";
+import WorkingItem from "../core/WorkingItem.js";
 
 export interface PlayerOptions extends PlaceableBaseOptions {
   memberId: string;
@@ -15,6 +17,7 @@ export default class Player extends PlaceableBase {
   type: "Player";
   readonly memberId: string;
   readonly memberName: string;
+  items: WorkingItem[];
 
   constructor(options: PlayerOptions) {
     super(options);
@@ -22,6 +25,7 @@ export default class Player extends PlaceableBase {
     this.type = "Player";
     this.memberId = options.memberId;
     this.memberName = options.memberName;
+    this.items = [];
 
     this.zIndex = 5;
   }
@@ -54,6 +58,10 @@ export default class Player extends PlaceableBase {
       maxSize: 0.5,
       baseline: "middle", textAlign: "center"
     });
+  }
+
+  addItem(item: Item) {
+    this.items.push(new WorkingItem(this.game, this, item));
   }
 
   get displayName(): string {
