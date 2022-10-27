@@ -1,4 +1,4 @@
-import ChargeManager from "../etc/ChargeManager.js";
+import ChargeManager from "../util/ChargeManager.js";
 export default class WorkingItem {
     constructor(game, owner, item) {
         var _a;

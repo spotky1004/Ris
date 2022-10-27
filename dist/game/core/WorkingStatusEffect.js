@@ -1,4 +1,4 @@
-import TickManager from "../etc/TickManager.js";
+import TickManager from "../util/TickManager.js";
 export default class WorkingStatusEffect {
     constructor(game, target, statusEffect) {
         this.game = game;

@@ -1,5 +1,5 @@
 import type Game from "./Game.js";
-import type { TickManagerOptions } from "../etc/TickManager.js";
+import type { TickManagerOptions } from "../util/TickManager.js";
 import type PlaceableBase from "./PlaceableBase.js";
 
 export type ItemActivateEventNames =

@@ -1,4 +1,4 @@
-import PlaceableBase, { PlaceableBaseOptions, RenderStringOptions } from "../../game/core/PlaceableBase.js";
+import { PlaceableBase, PlaceableBaseOptions, RenderStringOptions } from "../essentials.js";
 
 interface DisplayStatusOptions {
   type: "hp" | "def" | "maxHp";

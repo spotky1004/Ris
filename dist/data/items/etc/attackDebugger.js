@@ -1,5 +1,5 @@
-import Player from "../../placeables/Player.js";
-import Item from "../../../game/core/Item.js";
+import { Item } from "../essentials.js";
+import Player from "../../placeables/main/Player.js";
 const item = new Item({
     name: "Attack Debugger",
     on: "always",

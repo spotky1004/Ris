@@ -1,5 +1,5 @@
-import PlaceableBase from "../../game/core/PlaceableBase.js";
-import WorkingItem from "../../game/core/WorkingItem.js";
+import { PlaceableBase } from "../essentials.js";
+import WorkingItem from "../../../game/core/WorkingItem.js";
 const arrows = [
     ["↖", "↑", "↗"],
     ["←", " ", "→"],

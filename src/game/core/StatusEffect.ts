@@ -1,4 +1,4 @@
-import { TickManagerOptions } from "../etc/TickManager.js";
+import { TickManagerOptions } from "../util/TickManager.js";
 import type Game from "./Game.js";
 import type PlaceableBase from "./PlaceableBase.js";
 

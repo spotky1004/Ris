@@ -1,7 +1,7 @@
-import ChargeManager from "../etc/ChargeManager.js";
+import ChargeManager from "../util/ChargeManager.js";
 import type Game from "./Game.js";
 import type PlaceableBase from "./PlaceableBase.js";
-import type { TickTypes } from "../etc/TickManager.js";
+import type { TickTypes } from "../util/TickManager.js";
 import type {
   default as Item,
   ItemActivateEventNames,
