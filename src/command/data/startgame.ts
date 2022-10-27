@@ -5,7 +5,12 @@ import Player from "../../game/placeables/Player.js";
 
 const command = createCommand("startgame");
 command.handler = async ({ gameManager, guild, channel, interaction }) => {
-  const result = gameManager.createGame(channel);
+  if (!interaction.member) {
+    await slashUtil.reply(interaction, "Didn't found member...");
+    return;
+  }
+
+  const result = gameManager.createGame(channel, [interaction.member]);
   if (!result) {
     await slashUtil.reply(interaction, "The game is aleady running!");
     return;

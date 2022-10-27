@@ -10,12 +10,12 @@ export default class GuildManager {
     this.games = new Map();
   }
 
-  createGame(channel: Discord.TextBasedChannel) {
+  createGame(channel: Discord.TextBasedChannel, playerList: (Discord.GuildMember | Discord.APIInteractionGuildMember)[]) {
     const channelId = channel.id;
     if (this.games.has(channelId)) {
       return false;
     }
-    this.games.set(channelId, new Game(channel, {
+    this.games.set(channelId, new Game(channel, playerList, {
       board: {
         size: [7, 7]
       }
