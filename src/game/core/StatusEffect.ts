@@ -1,5 +1,5 @@
-import { TickManagerOptions } from "./TickManager.js";
-import type Game from "../core/Game.js";
+import { TickManagerOptions } from "../etc/TickManager.js";
+import type Game from "./Game.js";
 import type PlaceableBase from "../placeables/PlaceableBase.js";
 
 interface StatusEffectArgs {

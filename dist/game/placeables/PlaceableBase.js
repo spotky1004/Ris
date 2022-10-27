@@ -1,4 +1,4 @@
-import StatusManager from "../etc/StatusManager.js";
+import StatusManager from "../core/StatusManager.js";
 export default class PlaceableBase {
     constructor(options) {
         var _a, _b;

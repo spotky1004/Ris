@@ -1,4 +1,4 @@
-import StatusManager, { StatusManagerOptions, AttackType } from "../etc/StatusManager.js";
+import StatusManager, { StatusManagerOptions, AttackType } from "../core/StatusManager.js";
 import type Game from "../core/Game.js";
 
 export interface PlaceableBaseOptions {
