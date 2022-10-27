@@ -4,7 +4,6 @@ import type Game from "./Game.js";
 
 export interface BoardOptions {
   size: [x: number, y: number];
-  
 }
 
 export default class Board {
