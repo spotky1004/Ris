@@ -12,7 +12,7 @@ export default class Board {
   private game: Game;
   readonly width: number;
   readonly height: number;
-  canvas: BoardCanvas;
+  readonly canvas: BoardCanvas;
   private grid: PlaceableBase[][][];
 
   constructor(game: Game, options: BoardOptions) {
