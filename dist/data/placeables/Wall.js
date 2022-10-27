@@ -1,4 +1,4 @@
-import PlaceableBase from "./PlaceableBase.js";
+import PlaceableBase from "../../game/core/PlaceableBase.js";
 export default class Wall extends PlaceableBase {
     constructor(options) {
         var _a;

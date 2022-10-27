@@ -1,7 +1,7 @@
 import createCommand from "../functions/createCommand.js";
 import slashUtil from "../functions/slashUtil.js";
 import { AttachmentBuilder } from "discord.js";
-import Player from "../../game/placeables/Player.js";
+import Player from "../../data/placeables/Player.js";
 const command = createCommand("startgame");
 command.handler = async ({ gameManager, guild, channel, interaction }) => {
     if (!interaction.member) {

@@ -1,5 +1,5 @@
 import BoardCanvas from "./BoardCanvas.js";
-import type PlaceableBase from "../placeables/PlaceableBase.js";
+import type PlaceableBase from "./PlaceableBase.js";
 import type Game from "./Game.js";
 
 export interface BoardOptions {

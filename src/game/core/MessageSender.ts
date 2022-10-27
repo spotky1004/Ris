@@ -1,6 +1,6 @@
 import replacePatterns from "../../data/replacePatterns.js";
 import type Game from "./Game.js";
-import type PlaceableBase from "../placeables/PlaceableBase.js";
+import type PlaceableBase from "./PlaceableBase.js";
 
 export default class MessageSender {
   private game: Game;

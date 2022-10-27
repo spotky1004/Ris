@@ -1,5 +1,5 @@
-import StatusManager, { StatusManagerOptions, AttackType } from "../core/StatusManager.js";
-import type Game from "../core/Game.js";
+import StatusManager, { StatusManagerOptions, AttackType } from "./StatusManager.js";
+import type Game from "./Game.js";
 
 export interface PlaceableBaseOptions {
   game: Game;

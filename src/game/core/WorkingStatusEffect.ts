@@ -1,7 +1,7 @@
 import TickManager, { TickTypes } from "../etc/TickManager.js";
 import type Game from "../core/Game.js";
 import type StatusEffect from "./StatusEffect.js";
-import type PlaceableBase from "../placeables/PlaceableBase.js";
+import type PlaceableBase from "./PlaceableBase.js";
 
 export default class WorkingStatusEffect {
   private game: Game;
