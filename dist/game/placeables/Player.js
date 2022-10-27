@@ -43,6 +43,23 @@ export default class Player extends PlaceableBase {
             baseline: "middle", textAlign: "center"
         });
     }
+    move(x, y) {
+        const { width, height } = this.game.board;
+        let [tx, ty] = [this.x + x, this.y + y];
+        if (0 > tx || tx >= width ||
+            0 > ty || ty >= height)
+            return false;
+        this.look(x, y);
+        return true;
+    }
+    look(x, y) {
+        this.looking = [Math.sign(x), Math.sign(y)];
+        const tile = this.game.board.getTile(this.x + this.looking[0], this.y + this.looking[1]);
+        const playerToHit = tile.find(v => v.type === "player");
+        if (typeof playerToHit === "undefined")
+            return;
+        playerToHit.attackedBy(this);
+    }
     addItem(item) {
         this.items.push(new WorkingItem(this.game, this, item));
     }

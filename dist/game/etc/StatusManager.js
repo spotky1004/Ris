@@ -22,6 +22,9 @@ export default class StatusManager {
         let trueDef = this.baseTureDef;
         return trueDef;
     }
+    getAtk() {
+        return this.baseAtk;
+    }
     /** Attack and returns dealt damage */
     attack(atk, type) {
         if (type === "normal") {

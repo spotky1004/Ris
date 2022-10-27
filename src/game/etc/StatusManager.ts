@@ -3,6 +3,7 @@ import type Game from "../core/Game.js";
 import type PlaceableBase from "../placeables/PlaceableBase.js";
 import type StatusEffect from "./StatusEffect.js";
 
+export type AttackType = "normal" | "true" | "rule";
 export interface StatusManagerOptions {
   maxHp?: number;
   hp?: number;
@@ -50,8 +51,12 @@ export default class StatusManager {
     return trueDef;
   }
 
+  getAtk() {
+    return this.baseAtk;
+  }
+
   /** Attack and returns dealt damage */
-  attack(atk: number, type: "normal" | "true" | "rule") {
+  attack(atk: number, type: AttackType) {
     if (type === "normal") {
       atk *= (1 - this.getDef()/10);
     }

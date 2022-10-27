@@ -1,4 +1,4 @@
-import StatusManager, { StatusManagerOptions } from "../etc/StatusManager.js";
+import StatusManager, { StatusManagerOptions, AttackType } from "../etc/StatusManager.js";
 import type Game from "../core/Game.js";
 
 export interface PlaceableBaseOptions {
@@ -119,6 +119,12 @@ export default class PlaceableBase {
 
   render() {
 
+  }
+
+  attackedBy(by: PlaceableBase, atk?: number, type?: AttackType) {
+    atk = atk ?? by.status.getAtk();
+    const dmgGot = this.status.attack(atk, type ?? "normal");
+    this.game.sender.attack(by, this, dmgGot);
   }
 
   get displayName() {

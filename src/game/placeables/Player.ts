@@ -60,6 +60,25 @@ export default class Player extends PlaceableBase {
     });
   }
 
+  move(x: number, y: number) {
+    const { width, height } = this.game.board;
+    let [tx, ty] = [this.x + x, this.y + y];
+    if (
+      0 > tx || tx >= width ||
+      0 > ty || ty >= height
+    ) return false;
+    this.look(x, y);
+    return true;
+  }
+
+  look(x: number, y: number) {
+    this.looking = [Math.sign(x) as -1 | 0 | 1, Math.sign(y) as -1 | 0 | 1];
+    const tile = this.game.board.getTile(this.x + this.looking[0], this.y + this.looking[1]);
+    const playerToHit = tile.find(v => v.type === "player");
+    if (typeof playerToHit === "undefined") return;
+    playerToHit.attackedBy(this);
+  }
+
   addItem(item: Item) {
     this.items.push(new WorkingItem(this.game, this, item));
   }
