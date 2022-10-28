@@ -1,6 +1,6 @@
 import { PlaceableBase, PlaceableBaseOptions } from "../essentials.js";
-import type Item from "../../../game/core/Item.js";
 import WorkingItem from "../../../game/core/WorkingItem.js";
+import type Item from "../../../game/core/Item.js";
 
 export interface PlayerOptions extends PlaceableBaseOptions {
   memberId: string;
