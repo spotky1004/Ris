@@ -53,7 +53,10 @@ export default class BoardCanvas {
         if ((x+y)%2 === 0) {
           this.fieldLayers[0].fillRect(x, y, 1, 1);
         }
-
+      }
+    }
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
         const tile = [...board.getTile(x, y)].sort((a, b) => a.zIndex - b.zIndex);
         for (const placeable of tile) {
           void placeable.render();
