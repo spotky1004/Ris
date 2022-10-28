@@ -11,7 +11,7 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
   }
   const member = await guild.members.fetch(interaction.user.id);
 
-  const result = gameManager.createGame(channel, [member]);
+  const result = gameManager.createGame([member], channel);
   if (!result) {
     await slashUtil.reply(interaction, "The game is aleady running!");
     return;
