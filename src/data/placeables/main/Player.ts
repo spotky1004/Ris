@@ -76,7 +76,8 @@ export default class Player extends PlaceableBase {
   look(x: number, y: number) {
     this.looking = [Math.sign(x) as -1 | 0 | 1, Math.sign(y) as -1 | 0 | 1];
     const tile = this.game.board.getTile(this.x + this.looking[0], this.y + this.looking[1]);
-    const playerToHit = tile.find(v => v.type === "player");
+    console.log(this.name, this.x + this.looking[0], this.y + this.looking[1], tile)
+    const playerToHit = tile.find(v => v.type === "Player");
     if (typeof playerToHit === "undefined") return;
     playerToHit.attackedBy(this);
   }
