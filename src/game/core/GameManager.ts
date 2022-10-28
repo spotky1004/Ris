@@ -1,5 +1,6 @@
-import type Discord from "discord.js";
 import Game from "./Game.js";
+import PlayerData from "./PlayerData.js";
+import type Discord from "discord.js";
 
 export default class GuildManager {
   client: Discord.Client<boolean>;
@@ -10,7 +11,7 @@ export default class GuildManager {
     this.games = new Map();
   }
 
-  createGame(channel: Discord.TextBasedChannel, playerList: (Discord.GuildMember | Discord.APIInteractionGuildMember)[]) {
+  createGame(channel: Discord.TextBasedChannel, playerList: PlayerData[]) {
     const channelId = channel.id;
     if (this.games.has(channelId)) {
       return false;

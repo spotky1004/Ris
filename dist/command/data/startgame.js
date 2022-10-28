@@ -8,7 +8,8 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
         await slashUtil.reply(interaction, "Didn't found member...");
         return;
     }
-    const result = gameManager.createGame(channel, [interaction.member]);
+    const member = await guild.members.fetch(interaction.user.id);
+    const result = gameManager.createGame(channel, [member]);
     if (!result) {
         await slashUtil.reply(interaction, "The game is aleady running!");
         return;
@@ -19,7 +20,6 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
         return;
     }
     try {
-        const member = await guild.members.fetch(interaction.user.id);
         new Player({
             game,
             x: 3, y: 3,
