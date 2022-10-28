@@ -5,7 +5,7 @@ export default class WorkingItem {
         this.game = game;
         this.owner = owner;
         this.on = item.on;
-        this.item = item;
+        this.data = item;
         this.chargeTick = new ChargeManager((_a = item.chargeOptions) !== null && _a !== void 0 ? _a : {
             type: "all",
             length: 0
@@ -15,7 +15,7 @@ export default class WorkingItem {
         this.tick(type);
     }
     emit(event, data) {
-        const { game, owner, on, item } = this;
+        const { game, owner, on, data: item } = this;
         if (
         // @ts-ignore 'E' and 'T' have no overlap...
         event === on &&

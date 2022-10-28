@@ -1,6 +1,7 @@
 import type Game from "./Game.js";
 import type { TickManagerOptions } from "../util/TickManager.js";
 import type PlaceableBase from "./PlaceableBase.js";
+import type { StatusNames } from "./StatusManager.js";
 
 export type ItemActivateEventNames =
   "used" | "always" | "none" |
@@ -75,6 +76,7 @@ export type ItemActivateCallbackArg<T extends ItemActivateEventNames> = T extend
   ItemActivateCallbackArgBuider<T>;
 type ItemActivateCallback<T extends ItemActivateEventNames> =
   ((arg: ItemActivateCallbackArg<T>) => ItemActivateEventReturn[T] | void);
+type ItemStatusChangeCallback = (cur: number, game: Game) => number;
 
 interface ItemOptions<T extends ItemActivateEventNames> {
   name: string;
@@ -91,6 +93,9 @@ interface ItemOptions<T extends ItemActivateEventNames> {
   /** default: false */
   destroyOnEmit?: boolean;
   onEmit: ItemActivateCallback<T>;
+  statusChanges?: {
+    [K in StatusNames]?: ItemStatusChangeCallback;
+  };
 }
 
 export default class Item<T extends ItemActivateEventNames = any> {
@@ -105,6 +110,7 @@ export default class Item<T extends ItemActivateEventNames = any> {
   readonly chargeOptions: null | TickManagerOptions;
   readonly destroyOnEmit: boolean;
   readonly onEmit: ItemActivateCallback<T>;
+  readonly statusChanges: Map<StatusNames, ItemStatusChangeCallback>;
 
   constructor(options: ItemOptions<T>) {
     this.name = options.name;
@@ -116,6 +122,7 @@ export default class Item<T extends ItemActivateEventNames = any> {
     this.chargeOptions = options.chargeOptions ?? null;
     this.destroyOnEmit = options.destroyOnEmit ?? false;
     this.onEmit = options.onEmit;
+    this.statusChanges = new Map(Object.entries(options.statusChanges ?? {})) as Map<StatusNames, ItemStatusChangeCallback>;
 
     let tier = options.tier ?? 1;
     let cost: number = options.cost ?? 0;

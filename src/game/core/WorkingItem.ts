@@ -13,14 +13,14 @@ export default class WorkingItem<T extends ItemActivateEventNames = any> {
   private game: Game;
   readonly owner: PlaceableBase;
   readonly on: T;
-  readonly item: Item<T>;
+  readonly data: Item<T>;
   readonly chargeTick: ChargeManager;
   
   constructor(game: Game, owner: PlaceableBase, item: Item<T>) {
     this.game = game;
     this.owner = owner;
     this.on = item.on;
-    this.item = item;
+    this.data = item;
     this.chargeTick = new ChargeManager(item.chargeOptions ?? {
       type: "all",
       length: 0
@@ -32,7 +32,7 @@ export default class WorkingItem<T extends ItemActivateEventNames = any> {
   }
 
   emit<E extends ItemActivateEventNames>(event: E, data: ItemActivateEventData[E]): ItemActivateEventReturn[T] | void {
-    const { game, owner, on, item } = this;
+    const { game, owner, on, data: item } = this;
     if (
       // @ts-ignore 'E' and 'T' have no overlap...
       event === on &&

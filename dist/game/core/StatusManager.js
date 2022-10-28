@@ -14,16 +14,26 @@ export default class StatusManager {
     addStatusEffect(statusEffect) {
         this.effects.push(new WorkingStatusEffect(this.game, this.parent, statusEffect));
     }
+    getStat(base, name) {
+        for (const item of this.parent.items) {
+            const statChangeFn = item.data.statusChanges.get(name);
+            if (!statChangeFn)
+                continue;
+            base = statChangeFn(base, this.game);
+        }
+        return base;
+    }
+    getMaxHp() {
+        return this.getStat(this.baseAtk, "maxHp");
+    }
     getDef() {
-        let def = this.baseDef;
-        return def;
+        return this.getStat(this.baseAtk, "def");
     }
     getTureDef() {
-        let trueDef = this.baseTureDef;
-        return trueDef;
+        return this.getStat(this.baseAtk, "tureDef");
     }
     getAtk() {
-        return this.baseAtk;
+        return this.getStat(this.baseAtk, "atk");
     }
     /** Attack and returns dealt damage */
     attack(atk, type) {

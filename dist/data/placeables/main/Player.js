@@ -1,5 +1,4 @@
 import { PlaceableBase } from "../essentials.js";
-import WorkingItem from "../../../game/core/WorkingItem.js";
 const arrows = [
     ["↖", "↑", "↗"],
     ["←", " ", "→"],
@@ -66,9 +65,6 @@ export default class Player extends PlaceableBase {
         if (typeof playerToHit === "undefined")
             return;
         playerToHit.attackedBy(this);
-    }
-    addItem(item) {
-        this.items.push(new WorkingItem(this.game, this, item));
     }
     get displayName() {
         return `<@${this.memberId}>`;

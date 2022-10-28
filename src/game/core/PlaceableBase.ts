@@ -1,4 +1,6 @@
 import StatusManager, { StatusManagerOptions, AttackType } from "./StatusManager.js";
+import WorkingItem from "./WorkingItem.js";
+import type Item from "./Item.js";
 import type Game from "./Game.js";
 
 export interface PlaceableBaseOptions {
@@ -32,6 +34,7 @@ export default class PlaceableBase {
   owner: PlaceableBase | undefined;
   looking: [x: -1 | 0 | 1, y: -1 | 0 | 1];
   tags: string[];
+  items: WorkingItem[];
 
   constructor(options: PlaceableBaseOptions) {
     this.type = "Unknown";
@@ -44,6 +47,7 @@ export default class PlaceableBase {
     this.owner = options.owner ?? undefined;
     this.looking = options.looking ? [options.looking[0], options.looking[1]] : [0, 1];
     this.tags = [];
+    this.items = [];
 
     this.game.board.spawnPlaceable(this._x, this._y, this);
   }
@@ -121,6 +125,10 @@ export default class PlaceableBase {
 
   render() {
 
+  }
+
+  addItem(item: Item) {
+    this.items.push(new WorkingItem(this.game, this, item));
   }
 
   attackedBy(by: PlaceableBase, atk?: number, type?: AttackType) {

@@ -1,4 +1,5 @@
 import StatusManager from "./StatusManager.js";
+import WorkingItem from "./WorkingItem.js";
 export default class PlaceableBase {
     constructor(options) {
         var _a, _b;
@@ -12,6 +13,7 @@ export default class PlaceableBase {
         this.owner = (_b = options.owner) !== null && _b !== void 0 ? _b : undefined;
         this.looking = options.looking ? [options.looking[0], options.looking[1]] : [0, 1];
         this.tags = [];
+        this.items = [];
         this.game.board.spawnPlaceable(this._x, this._y, this);
     }
     spawn() {
@@ -76,6 +78,9 @@ export default class PlaceableBase {
         }
     }
     render() {
+    }
+    addItem(item) {
+        this.items.push(new WorkingItem(this.game, this, item));
     }
     attackedBy(by, atk, type) {
         atk = atk !== null && atk !== void 0 ? atk : by.status.getAtk();

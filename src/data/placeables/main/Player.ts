@@ -1,6 +1,4 @@
 import { PlaceableBase, PlaceableBaseOptions } from "../essentials.js";
-import WorkingItem from "../../../game/core/WorkingItem.js";
-import type Item from "../../../game/core/Item.js";
 
 export interface PlayerOptions extends PlaceableBaseOptions {
   memberId: string;
@@ -17,7 +15,6 @@ export default class Player extends PlaceableBase {
   type: "Player";
   readonly memberId: string;
   readonly memberName: string;
-  items: WorkingItem[];
 
   constructor(options: PlayerOptions) {
     super(options);
@@ -84,10 +81,6 @@ export default class Player extends PlaceableBase {
     const playerToHit = tile.find(v => v.type === "Player");
     if (typeof playerToHit === "undefined") return;
     playerToHit.attackedBy(this);
-  }
-
-  addItem(item: Item) {
-    this.items.push(new WorkingItem(this.game, this, item));
   }
 
   get displayName(): string {
