@@ -34,7 +34,7 @@ export default class StatusManager {
             atk *= (1 - this.getTureDef() / 10);
         }
         atk = Math.round(atk * 100) / 100;
-        this.hp -= atk;
+        this.hp = Math.round((this.hp - atk) * 100) / 100;
         return atk;
     }
 }

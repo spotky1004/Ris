@@ -65,7 +65,7 @@ export default class StatusManager {
     }
     
     atk = Math.round(atk * 100)/100;
-    this.hp -= atk;
+    this.hp = Math.round((this.hp - atk) * 100) / 100;
 
     return atk;
   }
