@@ -1,7 +1,7 @@
 import Game from "./Game.js";
 export default class GuildManager {
-    constructor(client) {
-        this.client = client;
+    constructor(discordClient) {
+        this.discordClient = discordClient;
         this.games = new Map();
     }
     createGame(players, discordChannel) {

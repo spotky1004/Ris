@@ -3,11 +3,11 @@ import PlayerData from "./PlayerData.js";
 import type Discord from "discord.js";
 
 export default class GuildManager {
-  client: Discord.Client<boolean>;
+  discordClient: Discord.Client<boolean> | undefined;
   private readonly games: Map<string, Game>;
 
-  constructor(client: Discord.Client<boolean>) {
-    this.client = client;
+  constructor(discordClient?: Discord.Client<boolean>) {
+    this.discordClient = discordClient;
     this.games = new Map();
   }
 
