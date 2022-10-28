@@ -39,6 +39,8 @@ export default class BoardCanvas {
   }
 
   render() {
+    this.clearCanvas();
+
     const board = this.game.board;
     const { width, height } = board;
 
