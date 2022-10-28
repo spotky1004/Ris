@@ -4,14 +4,15 @@ export default class GuildManager {
         this.client = client;
         this.games = new Map();
     }
-    createGame(channel, playerList) {
+    createGame(channel, players) {
         const channelId = channel.id;
         if (this.games.has(channelId)) {
             return false;
         }
-        this.games.set(channelId, new Game(channel, playerList, {
+        this.games.set(channelId, new Game(channel, {
+            players,
             board: {
-                size: [7, 7]
+                size: [7, 7],
             }
         }));
         return true;

@@ -5,6 +5,7 @@ import type Discord from "discord.js";
 
 interface GameOptions {
   board: BoardOptions;
+  players: PlayerData[];
 }
 
 export default class Game {
@@ -13,11 +14,11 @@ export default class Game {
   board: Board;
   players: PlayerData[];
 
-  constructor(channel: Discord.TextBasedChannel, playerList: PlayerData[], options: GameOptions) {
+  constructor(channel: Discord.TextBasedChannel, options: GameOptions) {
     this.channel = channel;
     this.messageSender = new MessageSender(this);
     this.board = new Board(this, options.board);
 
-    this.players = playerList;
+    this.players = options.players;
   }
 }
