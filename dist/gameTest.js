@@ -45,7 +45,8 @@ function run() {
             name: playerDatas[0].displayName,
             x: 1, y: 1,
             status: {
-                hp: 3000
+                hp: 3000,
+                baseAtk: 2.5
             },
         }),
         new placeable.main.Player({
@@ -53,18 +54,20 @@ function run() {
             memberId: playerDatas[1].id,
             memberName: playerDatas[1].displayName,
             name: playerDatas[1].displayName,
-            x: 1, y: 5,
+            x: 5, y: 1,
             status: {
-                hp: 3000
+                hp: 3000,
             },
         })
     ];
     game.messageSender.send("Hello, World!");
     game.messageSender.send("t: " + new Date().getTime());
-    fs.writeFileSync(getFilePath("message-log.txt"), game.messageSender.messageLog.join("\n"));
     setInterval(() => {
-        players[0].move(0, 1);
+        players[0].move(1, 0);
         logImage(game, "game");
+        players[1].status.baseDef += 0.1;
+        game.messageSender.send("Increased Player 2's baseDef by 0.1");
+        fs.writeFileSync(getFilePath("message-log.txt"), game.messageSender.messageLog.join("\n"));
     }, 1000);
     return;
 }
