@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dist/app"
+    "start": "node dist/app",
+    "game-test": "node dist/gameTest"
   },
   "author": "",
   "license": "ISC",
