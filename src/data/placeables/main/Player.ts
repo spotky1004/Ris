@@ -68,6 +68,8 @@ export default class Player extends PlaceableBase {
       0 > ty || ty >= height
     ) return false;
     this.look(x, y);
+    this.x += x;
+    this.y += y;
     return true;
   }
 
