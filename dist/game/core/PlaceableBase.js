@@ -11,6 +11,7 @@ export default class PlaceableBase {
         this.zIndex = -1;
         this.owner = (_b = options.owner) !== null && _b !== void 0 ? _b : undefined;
         this.looking = options.looking ? [options.looking[0], options.looking[1]] : [0, 1];
+        this.tags = [];
         this.game.board.spawnPlaceable(this._x, this._y, this);
     }
     spawn() {

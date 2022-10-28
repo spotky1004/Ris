@@ -31,6 +31,7 @@ export default class PlaceableBase {
   zIndex: number;
   owner: PlaceableBase | undefined;
   looking: [x: -1 | 0 | 1, y: -1 | 0 | 1];
+  tags: string[];
 
   constructor(options: PlaceableBaseOptions) {
     this.type = "Unknown";
@@ -42,7 +43,8 @@ export default class PlaceableBase {
     this.zIndex = -1;
     this.owner = options.owner ?? undefined;
     this.looking = options.looking ? [options.looking[0], options.looking[1]] : [0, 1];
-    
+    this.tags = [];
+
     this.game.board.spawnPlaceable(this._x, this._y, this);
   }
 
