@@ -1,4 +1,4 @@
-import replacePatterns from "../../data/replacePatterns.js";
+import { messages, replacePatterns } from "../../data/message.js";
 export default class MessageSender {
     constructor(game, channel) {
         this.game = game;
@@ -20,6 +20,6 @@ export default class MessageSender {
         return false;
     }
     async attack(from, to, dmg) {
-        return await this.send(`**${from.displayName}** attacked **${to.displayName}** with **${dmg}** $DMG`);
+        return await this.send(messages.attack(from, to, dmg));
     }
 }

@@ -1,4 +1,4 @@
-import replacePatterns from "../../data/replacePatterns.js";
+import { messages, replacePatterns } from "../../data/message.js";
 import type Game from "./Game.js";
 import type PlaceableBase from "./PlaceableBase.js";
 import type Discord from "discord.js";
@@ -30,6 +30,6 @@ export default class MessageSender {
   }
 
   async attack(from: PlaceableBase, to: PlaceableBase, dmg: number) {
-    return await this.send(`**${from.displayName}** attacked **${to.displayName}** with **${dmg}** $DMG`);
+    return await this.send(messages.attack(from, to, dmg));
   }
 }
