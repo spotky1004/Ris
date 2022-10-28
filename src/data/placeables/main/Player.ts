@@ -50,12 +50,12 @@ export default class Player extends PlaceableBase {
     const [dx, dy] = this.looking;
     field.fillText({
       text: (arrows[dy + 1] ?? [])[dx + 1] ?? "",
-      x: this.x + dx, y: this.y + dy,
+      x: this.x + dx + 0.5, y: this.y + dy + 0.5,
       font: {
         fontFamilys: ["arial"],
       },
       color: "#000",
-      maxSize: 0.5,
+      maxWidth: 1/8,
       baseline: "middle", textAlign: "center"
     });
   }
