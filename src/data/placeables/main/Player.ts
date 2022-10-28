@@ -68,7 +68,11 @@ export default class Player extends PlaceableBase {
       0 > tx || tx >= width ||
       0 > ty || ty >= height
     ) return false;
+    const tile = this.game.board.getTile(tx, ty);
     this.look(x, y);
+    if (tile.find(v => v.tags.includes("solid"))) {
+      return true;
+    }
     this.x += x;
     this.y += y;
     return true;
