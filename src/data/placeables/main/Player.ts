@@ -26,6 +26,7 @@ export default class Player extends PlaceableBase {
     this.memberId = options.memberId;
     this.memberName = options.memberName;
     this.items = [];
+    this.tags.push("solid");
 
     this.zIndex = 5;
   }
@@ -76,7 +77,6 @@ export default class Player extends PlaceableBase {
   look(x: number, y: number) {
     this.looking = [Math.sign(x) as -1 | 0 | 1, Math.sign(y) as -1 | 0 | 1];
     const tile = this.game.board.getTile(this.x + this.looking[0], this.y + this.looking[1]);
-    console.log(this.name, this.x + this.looking[0], this.y + this.looking[1], tile)
     const playerToHit = tile.find(v => v.type === "Player");
     if (typeof playerToHit === "undefined") return;
     playerToHit.attackedBy(this);

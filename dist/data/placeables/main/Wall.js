@@ -9,6 +9,7 @@ export default class Wall extends PlaceableBase {
         this.bgColor = options.bgColor;
         this.nameColor = options.nameColor;
         this.displayStatus = options.displayStatus;
+        this.tags.push("solid");
     }
     render() {
         const numbers = [];
