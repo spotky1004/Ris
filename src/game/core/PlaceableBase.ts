@@ -124,7 +124,7 @@ export default class PlaceableBase {
   attackedBy(by: PlaceableBase, atk?: number, type?: AttackType) {
     atk = atk ?? by.status.getAtk();
     const dmgGot = this.status.attack(atk, type ?? "normal");
-    this.game.sender.attack(by, this, dmgGot);
+    this.game.messageSender.attack(by, this, dmgGot);
   }
 
   get displayName() {

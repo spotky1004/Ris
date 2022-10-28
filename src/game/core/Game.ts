@@ -9,13 +9,13 @@ interface GameOptions {
 
 export default class Game {
   channel: Discord.TextBasedChannel;
-  sender: MessageSender;
+  messageSender: MessageSender;
   board: Board;
   players: PlayerData[];
 
   constructor(channel: Discord.TextBasedChannel, playerList: PlayerData[], options: GameOptions) {
     this.channel = channel;
-    this.sender = new MessageSender(this);
+    this.messageSender = new MessageSender(this);
     this.board = new Board(this, options.board);
 
     this.players = playerList;

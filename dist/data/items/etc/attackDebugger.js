@@ -8,13 +8,13 @@ const item = new Item({
         if (event === "attacked") {
             if (data.from instanceof Player &&
                 owner instanceof Player) {
-                await game.sender.send(`${data.from.memberName} attacked ${owner.memberName} for ${data.damage} damage!`);
+                await game.messageSender.send(`${data.from.memberName} attacked ${owner.memberName} for ${data.damage} damage!`);
             }
         }
         const players = game.board.getAllPlaceables("Player");
-        await game.sender.send(players.includes(owner) ? "The owner is on the board" : "The owner isn't on the board..?");
+        await game.messageSender.send(players.includes(owner) ? "The owner is on the board" : "The owner isn't on the board..?");
         const walls = game.board.getAllPlaceables(/^wall/g);
-        await game.sender.send("Walls on the board: " + walls.map(w => w.displayName).join(" "));
+        await game.messageSender.send("Walls on the board: " + walls.map(w => w.displayName).join(" "));
     },
     unlockedDefault: false,
     chargeOptions: {
