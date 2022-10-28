@@ -18,15 +18,14 @@ export default class GuildManager {
         }));
         return true;
     }
-    getGame(channel) {
-        return this.games.get(channel.id);
+    getGame(id) {
+        return this.games.get(id);
     }
-    destroyGame(channel) {
-        const channelId = channel.id;
-        if (this.games.has(channelId)) {
+    destroyGame(id) {
+        if (this.games.has(id)) {
             return false;
         }
-        this.games.delete(channelId);
+        this.games.delete(id);
         return true;
     }
 }

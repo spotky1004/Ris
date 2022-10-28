@@ -27,16 +27,15 @@ export default class GuildManager {
     return true;
   }
 
-  getGame(channel: Discord.TextBasedChannel) {
-    return this.games.get(channel.id);
+  getGame(id: string) {
+    return this.games.get(id);
   }
 
-  destroyGame(channel: Discord.TextBasedChannel) {
-    const channelId = channel.id;
-    if (this.games.has(channelId)) {
+  destroyGame(id: string) {
+    if (this.games.has(id)) {
       return false;
     }
-    this.games.delete(channelId);
+    this.games.delete(id);
     return true;
   }
 }
