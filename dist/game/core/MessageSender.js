@@ -1,15 +1,19 @@
 import replacePatterns from "../../data/replacePatterns.js";
 export default class MessageSender {
-    constructor(game) {
+    constructor(game, channel) {
         this.game = game;
+        this.channel = channel;
+        this.messageLog = [];
     }
     async send(msg) {
-        const channel = this.game.channel;
         for (const [pattern, replacer] of replacePatterns) {
             msg.replace(pattern, replacer);
         }
+        this.messageLog.push(msg);
+        if (!this.channel)
+            return;
         try {
-            await channel.send(msg);
+            await this.channel.send(msg);
             return true;
         }
         catch (_a) { }

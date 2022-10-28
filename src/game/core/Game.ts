@@ -6,17 +6,16 @@ import type Discord from "discord.js";
 interface GameOptions {
   board: BoardOptions;
   players: PlayerData[];
+  discordChannel?: Discord.TextBasedChannel;
 }
 
 export default class Game {
-  channel: Discord.TextBasedChannel;
   messageSender: MessageSender;
   board: Board;
   players: PlayerData[];
 
-  constructor(channel: Discord.TextBasedChannel, options: GameOptions) {
-    this.channel = channel;
-    this.messageSender = new MessageSender(this);
+  constructor(options: GameOptions) {
+    this.messageSender = new MessageSender(this, options.discordChannel);
     this.board = new Board(this, options.board);
 
     this.players = options.players;

@@ -1,9 +1,8 @@
 import Board from "./Board.js";
 import MessageSender from "./MessageSender.js";
 export default class Game {
-    constructor(channel, options) {
-        this.channel = channel;
-        this.messageSender = new MessageSender(this);
+    constructor(options) {
+        this.messageSender = new MessageSender(this, options.discordChannel);
         this.board = new Board(this, options.board);
         this.players = options.players;
     }
