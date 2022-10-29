@@ -1,7 +1,7 @@
 import path from "path";
 import readModules from "../util/readModules.js";
 import getPath from "../util/getPath.js";
-import type { CommandData } from "../command/functions/createCommand.js";
+import type { CommandData } from "../data/commands/essentials.js";
 
 const { __dirname } = getPath(import.meta.url);
 

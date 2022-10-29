@@ -1,5 +1,5 @@
 import Discord from "discord.js";
-import deployCommand from "./command/functions/deployCommand.js";
+import deployCommand from "./util/deployCommand.js";
 import commands from "./bundles/commands.js";
 import GuildManager from "./game/core/GameManager.js";
 import { token } from "./env.js";

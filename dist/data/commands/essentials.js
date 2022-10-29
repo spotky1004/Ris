@@ -1,5 +1,5 @@
 import Discord from "discord.js";
-export default function createCommand(name) {
+export function createCommand(name) {
     return {
         commandName: name,
         handler: async () => { },
@@ -9,3 +9,11 @@ export default function createCommand(name) {
         ephemeral: false
     };
 }
+export const slashUtil = {
+    reply: async function (interaction, options) {
+        try {
+            await interaction.reply(options);
+        }
+        catch (_a) { }
+    }
+};

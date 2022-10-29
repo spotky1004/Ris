@@ -1,7 +1,6 @@
-import createCommand from "../functions/createCommand.js";
-import slashUtil from "../functions/slashUtil.js";
+import { createCommand, slashUtil } from "../essentials.js";
 import { AttachmentBuilder } from "discord.js";
-import Player from "../../data/placeables/main/Player.js";
+import placeable from "../../../bundles/placeable.js";
 
 const command = createCommand("startgame");
 command.handler = async ({ gameManager, guild, channel, interaction }) => {
@@ -23,7 +22,7 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
   }
 
   try {
-    new Player({
+    new placeable.main.Player({
       game,
       x: 3, y: 3,
       status: {

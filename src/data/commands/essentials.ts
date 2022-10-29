@@ -18,7 +18,7 @@ export interface CommandData {
   ephemeral: boolean;
 }
 
-export default function createCommand(name: string): CommandData {
+export function createCommand(name: string): CommandData {
   return {
     commandName: name,
     handler: async () => {},
@@ -28,3 +28,16 @@ export default function createCommand(name: string): CommandData {
     ephemeral: false
   }
 }
+
+
+
+type Interaction = Discord.CommandInteraction;
+
+export const slashUtil = {
+  reply: async function(interaction: Interaction, options: string | Discord.InteractionReplyOptions | Discord.MessagePayload) {
+    try {
+      await interaction.reply(options);
+    } catch {}
+  }
+}
+

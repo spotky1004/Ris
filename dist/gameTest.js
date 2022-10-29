@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import GameManager from "./game/core/GameManager.js";
 import PlayerData from "./game/core/PlayerData.js";
-import * as placeable from "./bundles/placeable.js";
+import placeable from "./bundles/placeable.js";
 const outDir = path.join("out");
 if (!fs.existsSync(outDir)) {
     fs.mkdirSync(outDir);
