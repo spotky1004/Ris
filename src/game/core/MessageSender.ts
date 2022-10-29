@@ -1,4 +1,4 @@
-import { messages, replacePatterns } from "../../data/message.js";
+import { messages, replacePatterns } from "../../data/messageDatas.js";
 import type Game from "./Game.js";
 import type PlaceableBase from "./PlaceableBase.js";
 import type Discord from "discord.js";

@@ -1,4 +1,4 @@
-import PlaceableBase from "../game/core/PlaceableBase.js";
+import type PlaceableBase from "../game/core/PlaceableBase.js";
 
 type ReplacePattern = [pattern: RegExp | string, replaceValue: string];
 export const replacePatterns: ReplacePattern[] = [

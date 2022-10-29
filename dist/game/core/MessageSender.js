@@ -1,4 +1,4 @@
-import { messages, replacePatterns } from "../../data/message.js";
+import { messages, replacePatterns } from "../../data/messageDatas.js";
 export default class MessageSender {
     constructor(game, channel) {
         this.game = game;
