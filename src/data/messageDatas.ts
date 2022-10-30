@@ -6,7 +6,15 @@ export const replacePatterns: ReplacePattern[] = [
 ];
 
 export const messages = {
-  "attack": (from: PlaceableBase, to: PlaceableBase, dmg: number) => {
-    return `**${from.displayName}** attacked **${to.displayName}** with **${dmg}** $DMG`;
+  game: {
+    "attack": (from: PlaceableBase, to: PlaceableBase, dmg: number) => {
+      return `**${from.displayName}** attacked **${to.displayName}** with **${dmg}** $DMG`;
+    },
+  },
+  err: {
+    "err_unexpected": () => "Unexpected error occured...",
+    "err_game_not_started": () => "The game isn't started.",
+    "err_game_running": () => "The game is aleady running!",
+    "err_member_not_found": () => "Didn't found member...",
   }
 };

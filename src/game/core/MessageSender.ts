@@ -30,6 +30,6 @@ export default class MessageSender {
   }
 
   async attack(from: PlaceableBase, to: PlaceableBase, dmg: number) {
-    return await this.send(messages.attack(from, to, dmg));
+    return await this.send(messages.game["attack"](from, to, dmg));
   }
 }

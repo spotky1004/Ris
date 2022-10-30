@@ -2,6 +2,7 @@ import { createCommand, slashUtil } from "../essentials.js";
 import Discord from "discord.js";
 import PlayerData from "../../../game/core/PlayerData.js";
 import placeable from "../../../bundles/placeable.js";
+import { messages } from "../../messageDatas.js";
 
 const command = createCommand("startgame");
 command.slashCommand
@@ -29,7 +30,7 @@ command.slashCommand
   );
 command.handler = async ({ gameManager, guild, channel, interaction }) => {
   if (!interaction.member) {
-    await slashUtil.reply(interaction, "Didn't found member...");
+    await slashUtil.reply(interaction, messages.err["err_member_not_found"]());
     return;
   }
 
@@ -60,12 +61,12 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
 
   const result = gameManager.createGame(playerDatas, channel);
   if (!result) {
-    await slashUtil.reply(interaction, "The game is aleady running!");
+    await slashUtil.reply(interaction, messages.err["err_game_running"]());
     return;
   }
   const game = gameManager.getGame(channel.id);
   if (!game) {
-    await slashUtil.reply(interaction, "Unexpedted error occured...");
+    await slashUtil.reply(interaction, messages.err["err_unexpected"]());
     return;
   }
 
@@ -89,7 +90,7 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
       playerData.addMarker(player);
     }
   } catch {
-    await slashUtil.reply(interaction, "Unexpedted error occured...");
+    await slashUtil.reply(interaction, messages.err["err_unexpected"]());
     return;
   }
 
