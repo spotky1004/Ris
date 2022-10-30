@@ -13,11 +13,13 @@ export interface PlayerDataOptions {
 export default class PlayerData {
   readonly id: string;
   readonly displayName: string;
+  defeated: boolean;
   marker: PlayableMarker | undefined;
 
   constructor(options: PlayerDataOptions) {
     this.id = options.id;
     this.displayName = options.displayName;
+    this.defeated = false;
   }
 
   addMarker(marker: PlayableMarker) {
