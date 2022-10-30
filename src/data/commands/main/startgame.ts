@@ -1,5 +1,6 @@
 import { createCommand, slashUtil } from "../essentials.js";
 import Discord from "discord.js";
+import PlayerData from "../../../game/core/PlayerData.js";
 import placeable from "../../../bundles/placeable.js";
 
 const command = createCommand("startgame");
@@ -38,21 +39,26 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
     interaction.options.getMember("player3"),
     interaction.options.getMember("player4")
   ];
-  const guildMemberPlaces: (Discord.GuildMember | null)[] = [];
+  const playerDataPlaces: (PlayerData | null)[] = [];
   for (let i = 0; i < playerPlaces.length; i++) {
     const player = playerPlaces[i];
     if (player === null) {
-      guildMemberPlaces.push(null);
+      playerDataPlaces.push(null);
     } else if ("user" in player) {
-      guildMemberPlaces.push(await guild.members.fetch(player.id));
+      const guildMember = await guild.members.fetch(player.id);
+      const playerData = new PlayerData({
+        id: guildMember.id,
+        displayName: guildMember.displayName
+      });
+      playerDataPlaces.push(playerData);
     } else {
       // TODO: fix this
-      guildMemberPlaces.push(null);
+      playerDataPlaces.push(null);
     }
   }
-  const guildMembers = guildMemberPlaces.filter(v => v) as Discord.GuildMember[];
+  const playerDatas = playerDataPlaces.filter(v => v) as PlayerData[];
 
-  const result = gameManager.createGame(guildMembers, channel);
+  const result = gameManager.createGame(playerDatas, channel);
   if (!result) {
     await slashUtil.reply(interaction, "The game is aleady running!");
     return;
@@ -65,11 +71,11 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
 
   try {
     for (let i = 0; i < 4; i++) {
-      const guildMember = guildMemberPlaces[i];
-      if (!guildMember) continue;
+      const playerData = playerDataPlaces[i];
+      if (!playerData) continue;
       const x = i % 2 ? 5 : 1;
       const y = i < 2 ? 1 : 5;
-      new placeable.main.Player({
+      const player = new placeable.main.Player({
         game,
         x, y,
         status: {
@@ -77,9 +83,10 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
           baseAtk: 2.5,
           baseDef: 0
         },
-        memberId: guildMember.id,
-        memberName: guildMember.displayName
+        memberId: playerData.id,
+        memberName: playerData.displayName
       });
+      playerData.addMarker(player);
     }
   } catch {
     await slashUtil.reply(interaction, "Unexpedted error occured...");
