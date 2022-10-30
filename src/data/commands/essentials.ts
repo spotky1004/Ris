@@ -9,7 +9,7 @@ interface CommandHandlerArgs {
   member: Discord.GuildMember;
 }
 
-type CommandHandler = (args: CommandHandlerArgs) => Promise<void>;
+type CommandHandler = (args: CommandHandlerArgs) => void | Promise<void>;
 
 export interface CommandData {
   commandName: string;
