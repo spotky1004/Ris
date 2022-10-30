@@ -94,15 +94,14 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
     return;
   }
 
-  const canvas = game.board.canvas;
-  void canvas.render();
-  const attachment = new Discord.AttachmentBuilder(canvas.toBuffer(), {
-    name: "board.png"
-  });
-  await slashUtil.reply(interaction, {
-    content: "** **",
-    files: [attachment]
-  });
+  const nextPlayerMarker = game.getTurnPlayer()?.marker;
+  if (nextPlayerMarker) {
+    game.messageSender.send(messages.game["turn_alert"](nextPlayerMarker));
+  } else {
+    game.messageSender.send(messages.err["err_unexpected"]());
+  }
+
+  await game.messageSender.gameScreen();
 }
 
 export default command;

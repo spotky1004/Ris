@@ -1,7 +1,7 @@
 import { messages, replacePatterns } from "../../data/messageDatas.js";
+import Discord from "discord.js";
 import type Game from "./Game.js";
 import type PlaceableBase from "./PlaceableBase.js";
-import type Discord from "discord.js";
 
 export default class MessageSender {
   // @ts-ignore
@@ -31,5 +31,18 @@ export default class MessageSender {
 
   async attack(from: PlaceableBase, to: PlaceableBase, dmg: number) {
     return await this.send(messages.game["attack"](from, to, dmg));
+  }
+
+  async gameScreen() {
+    if (!this.channel) return;
+    const canvas = this.game.board.canvas;
+    void canvas.render();
+    const attachment = new Discord.AttachmentBuilder(canvas.toBuffer(), {
+      name: "board.png"
+    });
+    await this.channel.send({
+      content: "** **",
+      files: [attachment]
+    });
   }
 }
