@@ -34,9 +34,19 @@ export function createCommand(name: string): CommandData {
 type Interaction = Discord.CommandInteraction;
 
 export const slashUtil = {
-  reply: async function(interaction: Interaction, options: string | Discord.InteractionReplyOptions | Discord.MessagePayload) {
+  reply: async function(interaction: Interaction, options: string | Discord.InteractionReplyOptions, ephemeral: boolean = false) {
     try {
-      await interaction.reply(options);
+      if (typeof options === "string") {
+        await interaction.reply({
+          content: options,
+          ephemeral
+        });
+      } else {
+        await interaction.reply({
+          ephemeral,
+          ...options
+        });
+      }
     } catch {}
   }
 }
