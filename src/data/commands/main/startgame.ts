@@ -101,6 +101,7 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
     game.messageSender.send(messages.err["err_unexpected"]());
   }
 
+  await slashUtil.reply(interaction, messages.etc["done"]());
   await game.messageSender.gameScreen();
 }
 

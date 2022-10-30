@@ -10,6 +10,15 @@ export const messages = {
     "attack": (from: PlaceableBase, to: PlaceableBase, dmg: number) => {
       return `**${from.displayName}** attacked **${to.displayName}** with **${dmg}** $DMG`;
     },
+    "not_your_turn": () => "Not your turn!",
+    "action_count_exceeded": (cur: number, max: number) => `Action count exceeded! (${cur}/${max})`,
+    "invaild_move": () => "invaild move",
+    "turn_alert": (curPlayer: PlaceableBase) => {
+      return `It's ${curPlayer.displayName} turn!`;
+    }
+  },
+  etc: {
+    "done": () => "Done!"
   },
   err: {
     "err_unexpected": () => "Unexpected error occured...",
