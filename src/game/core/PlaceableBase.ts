@@ -1,6 +1,6 @@
 import StatusManager, { StatusManagerOptions, AttackType } from "./StatusManager.js";
 import WorkingItem from "./WorkingItem.js";
-import type Item from "./Item.js";
+import type { default as Item, ItemActivateEventNames } from "./Item.js";
 import type Game from "./Game.js";
 
 export interface PlaceableBaseOptions {
@@ -129,6 +129,17 @@ export default class PlaceableBase {
 
   addItem(item: Item) {
     this.items.push(new WorkingItem(this.game, this, item));
+  }
+
+  getItems<T extends undefined | ItemActivateEventNames>(type?: T) {
+    type Type = T extends undefined ? ItemActivateEventNames : T;
+    const items: WorkingItem<Type>[] = [];
+    for (const item of this.items) {
+      if (typeof type === "undefined" || item.on === type) {
+        items.push(item);
+      }
+    }
+    return items;
   }
 
   attackedBy(by: PlaceableBase, atk?: number, type?: AttackType) {
