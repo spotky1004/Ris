@@ -1,5 +1,4 @@
 import { createCommand, slashUtil } from "../essentials.js";
-import Discord from "discord.js";
 import PlayerData from "../../../game/core/PlayerData.js";
 import placeable from "../../../bundles/placeable.js";
 import { messages } from "../../messageDatas.js";
@@ -9,24 +8,24 @@ command.slashCommand
   .addUserOption(option =>
     option
       .setName("player1")
-      .setDescription("wa")
+      .setDescription("Player 1 (required)")
       .setRequired(true)
   )
   .addUserOption(option =>
     option
       .setName("player2")
-      .setDescription("!")
+      .setDescription("Player 2 (required)")
       .setRequired(true)
   )
   .addUserOption(option =>
     option
       .setName("player3")
-      .setDescription("sans")
+      .setDescription("Player 3")
   )
   .addUserOption(option =>
     option
       .setName("player4")
-      .setDescription("!")
+      .setDescription("Player 4")
   );
 command.handler = async ({ gameManager, guild, channel, interaction }) => {
   if (!interaction.member) {
