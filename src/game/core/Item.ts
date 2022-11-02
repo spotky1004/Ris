@@ -75,7 +75,7 @@ export type ItemActivateCallbackArg<T extends ItemActivateEventNames> = T extend
   { [K in ItemActivateEventNames] : ItemActivateCallbackArgBuider<K> }[ItemActivateEventNames] :
   ItemActivateCallbackArgBuider<T>;
 type ItemActivateCallback<T extends ItemActivateEventNames> =
-  ((arg: ItemActivateCallbackArg<T>) => ItemActivateEventReturn[T] | void);
+  ((arg: ItemActivateCallbackArg<T>) => Promise<ItemActivateEventReturn[T] | void>);
 type ItemStatusChangeCallback = (cur: number, game: Game) => number;
 
 interface ItemOptions<T extends ItemActivateEventNames> {
