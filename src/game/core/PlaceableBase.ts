@@ -33,6 +33,7 @@ export default class PlaceableBase {
   zIndex: number;
   owner: PlaceableBase | undefined;
   looking: [x: -1 | 0 | 1, y: -1 | 0 | 1];
+  shape: [x: number, y: number][];
   tags: string[];
   items: WorkingItem[];
 
@@ -46,6 +47,7 @@ export default class PlaceableBase {
     this.zIndex = -1;
     this.owner = options.owner ?? undefined;
     this.looking = options.looking ? [options.looking[0], options.looking[1]] : [0, 1];
+    this.shape = [];
     this.tags = [];
     this.items = [];
 
@@ -94,6 +96,9 @@ export default class PlaceableBase {
     
     field.fillStyle = options.bgColor;
     field.fillRect(x, y, w, h);
+    for (const [sx, sy] of this.shape) {
+      field.fillRect(x + sx, y + sy, w, h);
+    }
     
     field.fillText({
       text: options.name.text,

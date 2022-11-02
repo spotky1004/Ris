@@ -29,7 +29,19 @@ export default class Board {
   }
 
   getTile(x: number, y: number) {
-    return (this.grid[y] ?? [])[x] ?? [];
+    const tile = [...((this.grid[y] ?? [])[x] ?? [])];
+    const allPlaceables = this.getAllPlaceables();
+    for (const placeable of allPlaceables) {
+      const { x, y } = placeable;
+      for (const [sx, sy] of placeable.shape) {
+        const tx = x + sx;
+        const ty = y + sy;
+        if (x === tx && y === ty) {
+          tile.push(placeable);
+        }
+      }
+    }
+    return [...new Set(tile)];
   }
 
   getAllPlaceables(query?: PlaceableSearchQuery) {
