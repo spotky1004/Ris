@@ -68,13 +68,12 @@ function run() {
 
   game.messageSender.send("Hello, World!");
   game.messageSender.send("t: " + new Date().getTime());
-
   
   setInterval(() => {
     players[0].move(1, 0);
     logImage(game, "game");
-    players[1].status.baseDef += 0.1;
-    game.messageSender.send("Increased Player 2's baseDef by 0.1");
+    players[1].status.baseDef += 0.5;
+    game.messageSender.send(`Increased Player 2's baseDef by 0.5 (-> ${players[1].status.baseDef.toFixed(1)})`);
     fs.writeFileSync(getFilePath("message-log.txt"), game.messageSender.messageLog.join("\n"));
   }, 1000);
 
