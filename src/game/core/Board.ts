@@ -100,4 +100,16 @@ export default class Board {
     tile.splice(idx, 1);
     return true;
   }
+
+  isOutOfBound(x: number, y: number) {
+    return (
+      0 > x || x >= this.width ||
+      0 > y || y >= this.height
+    );
+  }
+
+  isTagInTile(x: number, y: number, tag: string) {
+    const tile = this.getTile(x, y);
+    return tile.some(p => p.tags.includes(tag));
+  }
 }
