@@ -54,15 +54,18 @@ export interface ItemActivateEventData extends ItemActivateEventTypes<{}> {
   "attacked": {
     damage: number;
     from: PlaceableBase;
-  }
+  };
 }
-export interface ItemActivateEventReturn extends ItemActivateEventTypes<any>  {
-  /** true -> ignore destroyOnEmit */
-  "used": boolean;
-  /** * */
-  "always": any;
-  /** true -> cancel move */
-  "otherPlayerMove": boolean;
+
+interface ItemActivateEventReturnBase {
+  ignoreDestroyOnEmit?: boolean;
+}
+export interface ItemActivateEventReturn extends ItemActivateEventTypes<ItemActivateEventReturnBase>  {
+  "always": ItemActivateEventReturn[Exclude<ItemActivateEventNames, "always">];
+  "otherPlayerMove": {
+    ignoreDestroyOnEmit?: boolean;
+    cancelMove: boolean;
+  };
 }
 
 interface ItemActivateCallbackArgBuider<T extends ItemActivateEventNames> {

@@ -21,7 +21,11 @@ const item = new Item({
         board.isTagInTile(x, y, "solid") ||
         board.isOutOfBound(x, y)
       );
-    })) return true;
+    })) {
+      return {
+        ignoreDestroyOnEmit: true
+      };
+    }
 
     const wallName = messages.item["wall"];
     const wallOrder = messages.item["wall_order"];
@@ -44,7 +48,7 @@ const item = new Item({
         baseDef: 2
       }
     });
-    return false;
+    return;
   },
   destroyOnEmit: true,
   tier: 1,
