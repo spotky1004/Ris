@@ -72,7 +72,7 @@ export default class StatusManager {
     if (type === "normal") {
       atk *= (1 - this.getDef()/10);
     }
-    if (type === "normal" || type === "true") {
+    if (type === "true") {
       atk *= (1 - this.getTureDef()/10);
     }
     
