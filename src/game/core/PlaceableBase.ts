@@ -11,6 +11,7 @@ export interface PlaceableBaseOptions {
   status?: StatusManagerOptions;
   owner?: PlaceableBase;
   looking?: [x: -1 | 0 | 1, y: -1 | 0 | 1];
+  shape?: [x: number, y: number][];
 }
 
 export interface RenderStringOptions {
@@ -47,7 +48,7 @@ export default class PlaceableBase {
     this.zIndex = -1;
     this.owner = options.owner ?? undefined;
     this.looking = options.looking ? [options.looking[0], options.looking[1]] : [0, 1];
-    this.shape = [];
+    this.shape = options.shape ?? [];
     this.tags = [];
     this.items = [];
 
