@@ -4,7 +4,6 @@ import type PlaceableBase from "./PlaceableBase.js";
 import type { TickTypes } from "../util/TickManager.js";
 import type {
   default as Item,
-  ItemActivateCallbackArg,
   ItemActivateEventNames,
   ItemActivateEventData,
   ItemActivateEventReturn
@@ -32,7 +31,7 @@ export default class WorkingItem<T extends ItemActivateEventNames = any> {
     this.tick(type);
   }
 
-  async emit<E extends ItemActivateEventNames>(event: E, data: ItemActivateEventData[E]): Promise<ItemActivateEventReturn[T] | void> {
+  async emit<E extends ItemActivateEventNames>(event: E, data: ItemActivateEventData[E]): Promise<ItemActivateEventReturn[E] | void> {
     const { game, owner, on, data: item } = this;
     if (
       // @ts-ignore 'E' and 'T' have no overlap...
@@ -41,7 +40,8 @@ export default class WorkingItem<T extends ItemActivateEventNames = any> {
     ) {
       // @ts-ignore why??
       const result = item.onEmit({ game, owner, event, data });
-      return result;
+      // @ts-ignore
+      return result ?? {};
     }
     return;
   }
