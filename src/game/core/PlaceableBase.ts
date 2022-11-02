@@ -1,6 +1,11 @@
 import StatusManager, { StatusManagerOptions, AttackType } from "./StatusManager.js";
 import WorkingItem from "./WorkingItem.js";
-import type { default as Item, ItemActivateEventNames } from "./Item.js";
+import type {
+  default as Item,
+  ItemActivateEventNames,
+  ItemActivateEventData,
+  ItemActivateEventReturn
+} from "./Item.js";
 import type Game from "./Game.js";
 
 export interface PlaceableBaseOptions {
@@ -137,15 +142,48 @@ export default class PlaceableBase {
     this.items.push(new WorkingItem(this.game, this, item));
   }
 
+  removeItem(item: WorkingItem) {
+    const idx = this.items.findIndex(i => i === item);
+    if (idx === -1) return null;
+    return this.items.splice(idx, 1)[0];
+  }
+
   getItems<T extends undefined | ItemActivateEventNames>(type?: T) {
     type Type = T extends undefined ? ItemActivateEventNames : T;
     const items: WorkingItem<Type>[] = [];
     for (const item of this.items) {
-      if (typeof type === "undefined" || item.on === type) {
+      if (typeof type === "undefined" || item.on === type || item.on === "always") {
         items.push(item);
       }
     }
     return items;
+  }
+
+  async emitItems<T extends ItemActivateEventNames>(type: T, data: ItemActivateEventData[T]): Promise<ItemActivateEventReturn[T][]> {
+    const itemsToEmit = this.getItems(type);
+    const returnVals: ItemActivateEventReturn[T][] = [];
+    for (const item of itemsToEmit) {
+      const returnVal = await item.emit(type, data);
+      if (returnVal) returnVals.push(returnVal);
+      if (
+        item.data.destroyOnEmit &&
+        (!returnVal || returnVal.ignoreDestroyOnEmit)
+      ) {
+        this.removeItem(item);
+      }
+    }
+    return returnVals;
+  }
+
+  async useItem(idx: number) {
+    const useableItems = this.getItems("used");
+    const item = useableItems[idx];
+    if (!item) return null;
+    const result = await item.emit("used", {});
+    if (!result) {
+      this.removeItem(item);
+    }
+    return item;
   }
 
   attackedBy(by: PlaceableBase, atk?: number, type?: AttackType) {
