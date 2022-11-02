@@ -4,6 +4,7 @@ import type PlaceableBase from "./PlaceableBase.js";
 import type { TickTypes } from "../util/TickManager.js";
 import type {
   default as Item,
+  ItemActivateCallbackArg,
   ItemActivateEventNames,
   ItemActivateEventData,
   ItemActivateEventReturn
@@ -31,7 +32,7 @@ export default class WorkingItem<T extends ItemActivateEventNames = any> {
     this.tick(type);
   }
 
-  emit<E extends ItemActivateEventNames>(event: E, data: ItemActivateEventData[E]): ItemActivateEventReturn[T] | void {
+  async emit<E extends ItemActivateEventNames>(event: E, data: ItemActivateEventData[E]): Promise<ItemActivateEventReturn[T] | void> {
     const { game, owner, on, data: item } = this;
     if (
       // @ts-ignore 'E' and 'T' have no overlap...
