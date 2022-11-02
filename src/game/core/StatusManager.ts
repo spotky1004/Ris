@@ -42,7 +42,7 @@ export default class StatusManager {
     ));
   }
 
-  private getStat(base: number, name: StatusNames) {
+  getItemStat(base: number, name: StatusNames) {
     for (const item of this.parent.items) {
       const statChangeFn = item.data.statusChanges.get(name);
       if (!statChangeFn) continue;
@@ -52,19 +52,19 @@ export default class StatusManager {
   }
 
   getMaxHp() {
-    return this.getStat(this.baseAtk, "maxHp");
+    return this.getItemStat(this.maxHp, "maxHp");
   }
 
   getDef() {
-    return this.getStat(this.baseAtk, "def");
+    return this.getItemStat(this.baseDef, "def");
   }
 
   getTureDef() {
-    return this.getStat(this.baseAtk, "tureDef");
+    return this.getItemStat(this.baseTureDef, "tureDef");
   }
 
   getAtk() {
-    return this.getStat(this.baseAtk, "atk");
+    return this.getItemStat(this.baseAtk, "atk");
   }
 
   /** Attack and returns dealt damage */
