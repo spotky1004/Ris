@@ -6,6 +6,13 @@ export interface BoardOptions {
   size: [x: number, y: number];
 }
 
+export interface PlaceableSearchQuery {
+  toSearch: "tag" | "type";
+  /** default: "type" -> "exact", "tag" -> "includes" */
+  advanced?: "includes" | "exact";
+  value: RegExp | string | string[];
+}
+
 export default class Board {
   // @ts-ignore
   private game: Game;
@@ -25,13 +32,55 @@ export default class Board {
     return (this.grid[y] ?? [])[x] ?? [];
   }
 
-  getAllPlaceables(type?: RegExp | string) {
+  getAllPlaceables(query?: PlaceableSearchQuery) {
     const all = this.grid.flat(2);
-    if (typeof type !== "undefined") {
-      if (typeof type === "string") {
-        return all.filter(v => v.type === type);
-      } else {
-        return all.filter(v => type.test(v.type));
+    if (typeof query !== "undefined") {
+      const { toSearch, value } = query;
+      let advanced = query.advanced;
+      advanced ??= toSearch === "type" ? "exact" : "includes";
+
+      // :thinking:
+      if (advanced === "exact") {
+        if (toSearch === "type") {
+          if (typeof value === "string") {
+            return all.filter(v => v.type === value);
+          } else if (value instanceof RegExp) {
+            return all.filter(v => value.test(v.type));
+          } else {
+            return all.filter(v => value.includes(v.type));
+          }
+        } else if (toSearch === "tag") {
+          if (typeof value === "string") {
+            return all.filter(v => v.tags.includes(value));
+          } else if (value instanceof RegExp) {
+            return all.filter(v => v.tags.every(t => value.test(t)));
+          } else {
+            return all.filter(v => {
+              const lenMatch = v.tags.length === value.length;
+              if (!lenMatch) return lenMatch;
+              const tagMatch = v.tags.every(t => value.includes(t));
+              return tagMatch;
+            });
+          }
+        }
+      } else if (advanced === "includes") {
+        if (toSearch === "type") {
+          if (typeof value === "string") {
+            return all.filter(v => v.type.includes(value));
+          } else if (value instanceof RegExp) {
+            return all.filter(v => value.test(v.type));
+          } else {
+            return all.filter(v => value.includes(v.type));
+          }
+        } else if (toSearch === "tag") {
+          if (typeof value === "string") {
+            return all.filter(v => v.tags.includes(value));
+          } else if (value instanceof RegExp) {
+            return all.filter(v => v.tags.some(t => value.test(t)));
+          } else {
+            return all.filter(v => v.tags.some(t => value.includes(t)));
+          }
+        }
       }
     }
     return all;

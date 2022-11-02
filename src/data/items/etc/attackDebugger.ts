@@ -16,10 +16,16 @@ const item = new Item({
       }
     }
 
-    const players = game.board.getAllPlaceables("Player");
+    const players = game.board.getAllPlaceables({
+      toSearch: "type",
+      value: "Player"
+    });
     await game.messageSender.send(players.includes(owner) ? "The owner is on the board" : "The owner isn't on the board..?");
 
-    const walls = game.board.getAllPlaceables(/^wall/g);
+    const walls = game.board.getAllPlaceables({
+      toSearch: "type",
+      value: /^wall/g
+    });
     await game.messageSender.send("Walls on the board: " + walls.map(w => w.displayName).join(" "));
   },
   unlockedDefault: false,
