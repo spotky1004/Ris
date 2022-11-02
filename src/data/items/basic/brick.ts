@@ -1,5 +1,6 @@
 import { Item } from "../essentials.js";
 import placeable from "../../../bundles/placeable.js";
+import { messages } from "../../messageDatas.js";
 
 const item = new Item({
   name: "Brick",
@@ -22,12 +23,14 @@ const item = new Item({
       );
     })) return true;
 
+    const wallName = messages.item["wall"];
+    const wallOrder = messages.item["wall_order"];
     new placeable.main.Wall({
       game,
       x: tx, y: ty,
       owner,
       bgColor: "#f57e42",
-      wallName: "Wall", name: "Wall A",
+      wallName, name: wallName + " " + wallOrder[0],
       nameColor: "#fff",
       displayStatus: [
         {

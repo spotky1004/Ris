@@ -17,6 +17,10 @@ export const messages = {
       return `It's ${curPlayer.displayName} turn!`;
     }
   },
+  item: {
+    "wall" : "Wall",
+    "wall_order": ["A", "B", "C", "D", "E", "F", "G", "H"]
+  },
   etc: {
     "done": () => "Done!"
   },
