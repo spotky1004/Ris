@@ -41,6 +41,14 @@ export default class Game {
   }
 
   addPlayerTurn() {
+    const canvas = this.board.canvas;
+    
+    // init canvas
+    canvas.clearRenderItems();
+    canvas.clearCanvas();
+    canvas.renderPlaceables();
+
+    // increment turn
     this.playerTurunCount++;
     if (this.playerTurunCount === this.getAlivePlayerCount()) {
       this.playerTurunCount = 0;

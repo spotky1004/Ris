@@ -35,6 +35,8 @@ export default class Wall extends PlaceableBase {
   }
 
   render() {
+    const canvas = this.game.board.canvas;
+
     const numbers: RenderStringOptions[] = [];
     for (const { type, color } of this.displayStatus) {
       let value: number | string = "Error";
@@ -52,8 +54,10 @@ export default class Wall extends PlaceableBase {
       });
     }
 
-    this._render({
+    canvas.addRenderItem("basicPlaceable", 5, {
       bgColor: this.bgColor,
+      x: this.x, y: this.y,
+      shape: this.shape,
       name: {
         text: this.wallName,
         color: this.nameColor

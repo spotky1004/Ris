@@ -29,8 +29,13 @@ export default class Player extends PlaceableBase {
   }
 
   render() {
-    this._render({
+    const canvas = this.game.board.canvas;
+
+    // Draww block
+    canvas.addRenderItem("basicPlaceable", 5, {
       bgColor: "#e6eabc",
+      x: this.x, y: this.y,
+      shape: this.shape,
       name: {
         text: this.memberName,
         color: "#000"
@@ -44,17 +49,12 @@ export default class Player extends PlaceableBase {
     });
 
     // Draw arrow
-    const field = this.game.board.canvas.getFieldLayer(0);
     const [dx, dy] = this.looking;
-    field.fillText({
+    canvas.addRenderItem("text", -1, {
+      layer: 0,
       text: (arrows[dy + 1] ?? [])[dx + 1] ?? "",
       x: this.x + dx + 0.5, y: this.y + dy + 0.5,
-      font: {
-        fontFamilys: ["arial"],
-      },
-      color: "#000",
       maxWidth: 1/8,
-      baseline: "middle", textAlign: "center"
     });
   }
 
