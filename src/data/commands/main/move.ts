@@ -17,7 +17,6 @@ const directions: { [K in "L" | "R" | "U" | "D"]: [x: number, y: number] } = {
 function isDirectionCharacter(char: string): char is "L" | "R" | "U" | "D" {
   return ["L", "R", "U", "D"].includes(char);
 }
-const MAX_MOVE_COUNT = 4;
 command.handler = async ({ gameManager, interaction, member, channel }) => {
   const game = gameManager.getGame(channel.id);
   if (!game) {
@@ -39,6 +38,8 @@ command.handler = async ({ gameManager, interaction, member, channel }) => {
     await slashUtil.reply(interaction, messages.err["err_unexpected"]());
     return;
   }
+  
+  const actionCountLeft = player.marker.actionCountLeft;
   const input = (interaction.options.get("directions", true).value ?? "") as string;
   const moveDirections: [x: number, y: number][] = [];
   for (const char of Array.from(input.toUpperCase())) {
@@ -49,8 +50,8 @@ command.handler = async ({ gameManager, interaction, member, channel }) => {
       return;
     }
   }
-  if (moveDirections.length > MAX_MOVE_COUNT) {
-    await slashUtil.reply(interaction, messages.game["action_count_exceeded"](MAX_MOVE_COUNT, MAX_MOVE_COUNT));
+  if (moveDirections.length > actionCountLeft) {
+    await slashUtil.reply(interaction, messages.game["action_count_exceeded"](actionCountLeft, game.config.actionCount));
     return;
   }
   
