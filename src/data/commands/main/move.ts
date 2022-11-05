@@ -38,7 +38,7 @@ command.handler = async ({ gameManager, interaction, member, channel }) => {
     await slashUtil.reply(interaction, messages.err["err_unexpected"]());
     return;
   }
-  
+
   const actionCountLeft = player.marker.actionCountLeft;
   const input = (interaction.options.get("directions", true).value ?? "") as string;
   const moveDirections: [x: number, y: number][] = [];
@@ -55,6 +55,7 @@ command.handler = async ({ gameManager, interaction, member, channel }) => {
     return;
   }
   
+  player.marker.actionDid[1] = true;
   for (const [dx, dy] of moveDirections) {
     player.marker.move(dx, dy);
   }

@@ -15,6 +15,7 @@ export default class Player extends PlaceableBase {
   type: "Player";
   money: number;
   actionCountLeft: number;
+  actionDid: [combine: boolean, move: boolean];
   readonly memberId: string;
   readonly memberName: string;
 
@@ -24,6 +25,7 @@ export default class Player extends PlaceableBase {
     this.type = "Player";
     this.money = this.game.config.startMoney;
     this.actionCountLeft = this.game.config.actionCount;
+    this.actionDid = [false, false];
     this.memberId = options.memberId;
     this.memberName = options.memberName;
     this.items = [];
