@@ -18,6 +18,10 @@ export default class GuildManager {
     }
     
     this.games.set(channelId, new Game({
+      config: {
+        startMoney: 4,
+        actionCount: 5
+      },
       board: {
         size: [7, 7],
       },

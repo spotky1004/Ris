@@ -13,6 +13,8 @@ const arrows = [
 
 export default class Player extends PlaceableBase {
   type: "Player";
+  money: number;
+  actionCountLeft: number;
   readonly memberId: string;
   readonly memberName: string;
 
@@ -20,6 +22,8 @@ export default class Player extends PlaceableBase {
     super(options);
 
     this.type = "Player";
+    this.money = this.game.config.startMoney;
+    this.actionCountLeft = this.game.config.actionCount;
     this.memberId = options.memberId;
     this.memberName = options.memberName;
     this.items = [];

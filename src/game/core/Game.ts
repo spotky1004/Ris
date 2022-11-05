@@ -3,8 +3,13 @@ import MessageSender from "./MessageSender.js";
 import PlayerData from "./PlayerData.js";
 import type Discord from "discord.js";
 
+interface GameConfig {
+  startMoney: number;
+  actionCount: number;
+}
 interface GameOptions {
   board: BoardOptions;
+  config: GameConfig;
   players: PlayerData[];
   discordChannel?: Discord.TextBasedChannel;
 }
@@ -12,6 +17,7 @@ interface GameOptions {
 export default class Game {
   messageSender: MessageSender;
   board: Board;
+  config: GameConfig;
   players: PlayerData[];
   allTurnCount: number;
   playerTurunCount: number;
@@ -19,6 +25,7 @@ export default class Game {
   constructor(options: GameOptions) {
     this.messageSender = new MessageSender(this, options.discordChannel);
     this.board = new Board(this, options.board);
+    this.config = options.config;
     this.players = options.players;
     this.allTurnCount = 0;
     this.playerTurunCount = 0;

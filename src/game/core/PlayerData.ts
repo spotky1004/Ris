@@ -1,6 +1,8 @@
 import type PlaceableBase from "./PlaceableBase.js";
 
 interface PlayableMarker extends PlaceableBase {
+  money: number;
+  actionCountLeft: number;
   move: (x: number, y: number) => any;
   look: (x: number, y: number) => any; 
 }
