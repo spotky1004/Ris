@@ -61,6 +61,14 @@ export default class Game {
       this.playerTurunCount = 0;
       this.allTurnCount++;
     }
+
+    // reset actionCount
+    const turnPlayer = this.getTurnPlayer();
+    const playerMarker = turnPlayer?.marker;
+    if (playerMarker) {
+      playerMarker.actionCountLeft = this.config.actionCount;
+    }
+
     return this.playerTurunCount;
   }
 }
