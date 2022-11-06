@@ -47,7 +47,7 @@ export default class PlaceableBase {
     this.tags = [];
     this.items = [];
 
-    this.game.board.spawnPlaceable(this._x, this._y, this);
+    this.spawn();
   }
 
   spawn() {

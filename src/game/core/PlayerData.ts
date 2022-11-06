@@ -1,10 +1,14 @@
 import type PlaceableBase from "./PlaceableBase.js";
 
+interface PlayerMoveReturn {
+  moveSuccess: boolean;
+  attack: boolean
+}
 export interface PlayableMarker extends PlaceableBase {
   money: number;
   actionCountLeft: number;
   actionDid: [combine: boolean, move: boolean];
-  move: (x: number, y: number) => any;
+  move: (x: number, y: number) => PlayerMoveReturn;
   look: (x: number, y: number) => any; 
 }
 

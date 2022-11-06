@@ -38,7 +38,7 @@ export default class Player extends PlaceableBase {
     const canvas = this.game.board.canvas;
 
     // Draww block
-    canvas.addRenderItem("basicPlaceable", 5, {
+    canvas.addPlaceableRenderItem("basicPlaceable", 5, {
       bgColor: "#e6eabc",
       x: this.x, y: this.y,
       shape: this.shape,
@@ -56,7 +56,7 @@ export default class Player extends PlaceableBase {
 
     // Draw arrow
     const [dx, dy] = this.looking;
-    canvas.addRenderItem("text", -1, {
+    canvas.addPlaceableRenderItem("text", -1, {
       layer: 0,
       text: (arrows[dy + 1] ?? [])[dx + 1] ?? "",
       x: this.x + dx + 0.5, y: this.y + dy + 0.5,
@@ -65,27 +65,41 @@ export default class Player extends PlaceableBase {
   }
 
   move(x: number, y: number) {
+    const returnValue = {
+      moveSuccess: false,
+      attack: false
+    };
+
     const { width, height } = this.game.board;
     let [tx, ty] = [this.x + x, this.y + y];
     if (
       0 > tx || tx >= width ||
       0 > ty || ty >= height
-    ) return false;
-    this.look(x, y);
-    if (this.game.board.isTagInTile(tx, ty, "soldi")) {
-      return true;
+    ) return returnValue;
+    let attacked = this.look(x, y);
+    if (attacked) {
+      returnValue.attack = true;
+      return returnValue;
+    }
+    if (this.game.board.isTagInTile(tx, ty, "solid")) {
+      return returnValue;
     }
     this.x += x;
     this.y += y;
-    return true;
+    attacked = this.look(x, y);
+    returnValue.moveSuccess = true;
+    returnValue.attack = attacked;
+    return returnValue;
   }
 
   look(x: number, y: number) {
     this.looking = [Math.sign(x) as -1 | 0 | 1, Math.sign(y) as -1 | 0 | 1];
     const tile = this.game.board.getTile(this.x + this.looking[0], this.y + this.looking[1]);
+    if (!tile) return false;
     const playerToHit = tile.find(v => v.type === "Player");
-    if (typeof playerToHit === "undefined") return;
+    if (typeof playerToHit === "undefined") return false;
     playerToHit.attackedBy(this);
+    return true;
   }
 
   get displayName(): string {

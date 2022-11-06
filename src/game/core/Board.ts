@@ -29,7 +29,8 @@ export default class Board {
   }
 
   getTile(x: number, y: number) {
-    const tile = [...((this.grid[y] ?? [])[x] ?? [])];
+    let tile = (this.grid[y] ?? [])[x];
+    if (!tile) return null;
     const allPlaceables = this.getAllPlaceables();
     for (const placeable of allPlaceables) {
       const { x, y } = placeable;
@@ -41,7 +42,7 @@ export default class Board {
         }
       }
     }
-    return [...new Set(tile)];
+    return tile;
   }
 
   getAllPlaceables(query?: PlaceableSearchQuery) {
@@ -100,14 +101,14 @@ export default class Board {
 
   spawnPlaceable(x: number, y: number, item: PlaceableBase) {
     const tile = this.getTile(x, y);
-    if (tile.includes(item)) return false;
+    if (!tile || tile.includes(item)) return false;
     tile.push(item);
     return true;
   }
 
   removePlaceable(x: number, y: number, item: PlaceableBase) {
     const tile = this.getTile(x, y);
-    if (!tile.includes(item)) return false;
+    if (!tile || !tile.includes(item)) return false;
     const idx = tile.findIndex(v => v === item);
     tile.splice(idx, 1);
     return true;
@@ -122,6 +123,7 @@ export default class Board {
 
   isTagInTile(x: number, y: number, tag: string) {
     const tile = this.getTile(x, y);
+    if (!tile) return false;
     return tile.some(p => p.tags.includes(tag));
   }
 }

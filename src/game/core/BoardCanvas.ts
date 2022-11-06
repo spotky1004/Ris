@@ -40,6 +40,7 @@ export default class BoardCanvas {
   private game: Game;
   private size: { width: number, height: number };
   private fieldLayers: Field[];
+  private placeableRenderItems: [zIndex: number, renderOptions: RenderItemsWithType[RenderItemsTypes]][];
   private renderItems: [zIndex: number, renderOptions: RenderItemsWithType[RenderItemsTypes]][];
 
   constructor(game: Game, board: Board) {
@@ -59,6 +60,7 @@ export default class BoardCanvas {
       });
       this.fieldLayers[z] = field;
     }
+    this.placeableRenderItems = [];
     this.renderItems = [];
   }
 
@@ -71,6 +73,7 @@ export default class BoardCanvas {
   }
 
   renderPlaceables() {
+    this.placeableRenderItems = [];
     const placeables = this.game.board.getAllPlaceables();
     for (const placeable of placeables) {
       placeable.render();
@@ -104,11 +107,21 @@ export default class BoardCanvas {
     }]);
   }
 
+  addPlaceableRenderItem<T extends RenderItemsTypes>(type: T, zIndex: number, options: RenderItems[T]) {
+    // @ts-ignore
+    this.placeableRenderItems.push([zIndex, {
+      type,
+      ...options
+    }]);
+  }
+
   render() {
     this.clearCanvas();
-    this.renderItems.sort((a, b) => a[0] - b[0]);
+    this.renderPlaceables();
+    const toRender = [...this.renderItems, ...this.placeableRenderItems];
+    toRender.sort((a, b) => a[0] - b[0]);
     
-    for (const [, options] of this.renderItems) {
+    for (const [, options] of toRender) {
       const type = options.type;
       if (type === "basicPlaceable") {
         const field = this.getFieldLayer(options.layer ?? 1);

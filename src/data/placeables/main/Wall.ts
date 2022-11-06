@@ -54,7 +54,7 @@ export default class Wall extends PlaceableBase {
       });
     }
 
-    canvas.addRenderItem("basicPlaceable", 5, {
+    canvas.addPlaceableRenderItem("basicPlaceable", 5, {
       bgColor: this.bgColor,
       x: this.x, y: this.y,
       shape: this.shape,

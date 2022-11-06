@@ -57,16 +57,15 @@ command.handler = async ({ gameManager, interaction, member, channel }) => {
   
   player.marker.actionDid[1] = true;
   for (const [dx, dy] of moveDirections) {
-    player.marker.move(dx, dy);
+    const result = player.marker.move(dx, dy);
+    if (result.attack) break;
   }
   await slashUtil.reply(interaction, {
     content: messages.etc["done"](),
     ephemeral: true
   });
-  game.addPlayerTurn();
 
   await game.messageSender.gameScreen();
-  
   await game.turnEnd();
 }
 
