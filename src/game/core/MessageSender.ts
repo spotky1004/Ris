@@ -36,10 +36,14 @@ export default class MessageSender {
   async turnAlert() {
     const nextTurnPlayer = this.game.getTurnPlayer();
     if (nextTurnPlayer) {
-      this.send(messages.game["turn_alert"](nextTurnPlayer));
+      await this.send(messages.game["turn_alert"](nextTurnPlayer));
     } else {
-      this.send(messages.err["err_unexpected"]())
+      await this.errUnexpected();
     }
+  }
+
+  async errUnexpected() {
+    await this.send(messages.err["err_unexpected"]());
   }
 
   async gameScreen() {

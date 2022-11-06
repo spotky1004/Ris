@@ -65,8 +65,9 @@ command.handler = async ({ gameManager, interaction, member, channel }) => {
   });
   game.addPlayerTurn();
 
-  await game.messageSender.turnAlert();
   await game.messageSender.gameScreen();
+  
+  await game.turnEnd();
 }
 
 export default command;

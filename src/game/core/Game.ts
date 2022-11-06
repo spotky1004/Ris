@@ -35,6 +35,42 @@ export default class Game {
     return this.players.filter(p => !p.defeated).length;
   }
 
+  async turnEnd() {
+    // current turn player
+    const curTurnPlayer = this.getTurnPlayer();
+    const curTurnPlayerMarker = curTurnPlayer?.marker;
+    if (!curTurnPlayer || !curTurnPlayerMarker) {
+      await this.messageSender.errUnexpected();
+      return;
+    }
+    const actionCountLeft = curTurnPlayerMarker.actionCountLeft;
+    let moneyGot = Math.min(5, Math.max(3, actionCountLeft));
+    if (actionCountLeft === 0) moneyGot--;
+    /** item event placeholder */
+    moneyGot = Math.max(0, moneyGot);
+    curTurnPlayerMarker.money += moneyGot;
+
+    // system
+    this.addPlayerTurn();
+
+    const canvas = this.board.canvas;
+    canvas.clearRenderItems();
+    canvas.clearCanvas();
+    canvas.renderPlaceables();
+
+    // next turn player
+    const nextTurnPlayer = this.getTurnPlayer();
+    const nextPlayerMarker = nextTurnPlayer?.marker;
+    if (!nextTurnPlayer || !nextPlayerMarker) {
+      await this.messageSender.errUnexpected();
+      return;
+    }
+    let actionCountLeftToSet = this.config.actionCount;
+    /** item event placeholder */
+    nextPlayerMarker.actionCountLeft = actionCountLeftToSet;
+    await this.messageSender.turnAlert();
+  }
+
   getTurnPlayer() {
     let playerAcc = 0;
     for (let i = 0; i < this.players.length; i++) {
@@ -48,27 +84,12 @@ export default class Game {
   }
 
   addPlayerTurn() {
-    const canvas = this.board.canvas;
-    
-    // init canvas
-    canvas.clearRenderItems();
-    canvas.clearCanvas();
-    canvas.renderPlaceables();
-
     // increment turn
     this.playerTurunCount++;
     if (this.playerTurunCount === this.getAlivePlayerCount()) {
       this.playerTurunCount = 0;
       this.allTurnCount++;
     }
-
-    // reset actionCount
-    const turnPlayer = this.getTurnPlayer();
-    const playerMarker = turnPlayer?.marker;
-    if (playerMarker) {
-      playerMarker.actionCountLeft = this.config.actionCount;
-    }
-
     return this.playerTurunCount;
   }
 }
