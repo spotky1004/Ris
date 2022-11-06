@@ -16,7 +16,10 @@ export const messages = {
     "invaild_move": () => "invaild move",
     "turn_alert": (curPlayer: PlayerData) => {
       return `It's ${curPlayer.pingString} turn!`;
-    }
+    },
+    "item": "item", // must be lowercase (or other language)
+    "money": "money", // must be lowercase (or other language)
+    "buy_command_param_desc": "name of the item to buy"
   },
   item: {
     "wall" : "Wall",

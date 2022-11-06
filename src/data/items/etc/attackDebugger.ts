@@ -38,6 +38,5 @@ const item = new Item({
   recipe: [],
   cost: 32
 });
-console.log(item);
 
 export default item;
