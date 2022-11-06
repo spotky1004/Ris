@@ -28,4 +28,8 @@ export default class PlayerData {
   addMarker(marker: PlayableMarker) {
     this.marker = marker;
   }
+
+  get pingString() {
+    return `<@${this.id}>`
+  }
 }

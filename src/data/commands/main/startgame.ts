@@ -93,12 +93,7 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
     return;
   }
 
-  const nextPlayerMarker = game.getTurnPlayer()?.marker;
-  if (nextPlayerMarker) {
-    game.messageSender.send(messages.game["turn_alert"](nextPlayerMarker));
-  } else {
-    game.messageSender.send(messages.err["err_unexpected"]());
-  }
+  await game.messageSender.turnAlert();
 
   await slashUtil.reply(interaction, messages.etc["done"]());
   await game.messageSender.gameScreen();

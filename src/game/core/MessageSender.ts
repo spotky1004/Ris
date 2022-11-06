@@ -32,6 +32,15 @@ export default class MessageSender {
   async attack(from: PlaceableBase, to: PlaceableBase, dmg: number) {
     return await this.send(messages.game["attack"](from, to, dmg));
   }
+  
+  async turnAlert() {
+    const nextTurnPlayer = this.game.getTurnPlayer();
+    if (nextTurnPlayer) {
+      this.send(messages.game["turn_alert"](nextTurnPlayer));
+    } else {
+      this.send(messages.err["err_unexpected"]())
+    }
+  }
 
   async gameScreen() {
     if (!this.channel) return;

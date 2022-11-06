@@ -65,12 +65,7 @@ command.handler = async ({ gameManager, interaction, member, channel }) => {
   });
   game.addPlayerTurn();
 
-  const nextPlayerMarker = game.getTurnPlayer()?.marker;
-  if (nextPlayerMarker) {
-    await game.messageSender.send(messages.game["turn_alert"](nextPlayerMarker));
-  } else {
-    await game.messageSender.send(messages.err["err_unexpected"]());
-  }
+  await game.messageSender.turnAlert();
   await game.messageSender.gameScreen();
 }
 
