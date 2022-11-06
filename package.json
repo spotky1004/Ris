@@ -7,6 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/app",
+    "create-bundle": "node dist/generateBundles",
     "game-test": "node dist/gameTest"
   },
   "author": "",
