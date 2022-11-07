@@ -43,7 +43,7 @@ export default class MessageSender {
   }
 
   async errUnexpected() {
-    await this.send(messages.err["err_unexpected"]());
+    await this.send(messages.err["err_unexpected"]);
   }
 
   async gameScreen() {

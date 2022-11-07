@@ -29,7 +29,7 @@ command.slashCommand
   );
 command.handler = async ({ gameManager, guild, channel, interaction }) => {
   if (!interaction.member) {
-    await slashUtil.reply(interaction, messages.err["err_member_not_found"]());
+    await slashUtil.reply(interaction, messages.err["err_member_not_found"]);
     return;
   }
   const playerPlaces = [
@@ -59,12 +59,12 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
 
   const result = gameManager.createGame(playerDatas, channel);
   if (!result) {
-    await slashUtil.reply(interaction, messages.err["err_game_running"]());
+    await slashUtil.reply(interaction, messages.err["err_game_running"]);
     return;
   }
   const game = gameManager.getGame(channel.id);
   if (!game) {
-    await slashUtil.reply(interaction, messages.err["err_unexpected"]());
+    await slashUtil.reply(interaction, messages.err["err_unexpected"]);
     return;
   }
 
@@ -88,13 +88,13 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
       playerData.connectMarker(player);
     }
   } catch {
-    await slashUtil.reply(interaction, messages.err["err_unexpected"]());
+    await slashUtil.reply(interaction, messages.err["err_unexpected"]);
     return;
   }
 
   await game.messageSender.turnAlert();
 
-  await slashUtil.reply(interaction, messages.etc["done"]());
+  await slashUtil.reply(interaction, messages.etc["done"]);
   await game.messageSender.gameScreen();
 }
 

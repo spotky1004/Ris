@@ -9,15 +9,17 @@ export const replacePatterns: ReplacePattern[] = [
 
 export const messages = {
   game: {
+    "atk": "atk",
+    "def": "def",
     "attack": (from: PlaceableBase, to: PlaceableBase, dmg: number) => {
       return `**${from.displayName}** attacked **${to.displayName}** with **${dmg}** $DMG`;
     },
     "death": (placeable: PlaceableBase) => {
       return `**${placeable.displayName}** eliminated!`;
     },
-    "not_your_turn": () => "Not your turn!",
+    "not_your_turn": "Not your turn!",
     "action_count_exceeded": (cur: number, max: number) => `Action count exceeded! (${cur}/${max})`,
-    "invaild_move": () => "invaild move",
+    "invaild_move": "invaild move",
     "turn_alert": (curPlayer: Player) => {
       return `It's ${curPlayer.pingString} turn!`;
     },
@@ -32,13 +34,13 @@ export const messages = {
     }
   },
   etc: {
-    "done": () => "Done!"
+    "done": "Done!"
   },
   err: {
-    "err_unexpected": () => "Unexpected error occured...",
-    "err_game_not_started": () => "The game isn't started.",
-    "err_game_running": () => "The game is aleady running!",
-    "err_member_not_found": () => "Didn't found member...",
+    "err_unexpected": "Unexpected error occured...",
+    "err_game_not_started": "The game isn't started.",
+    "err_game_running": "The game is aleady running!",
+    "err_member_not_found": "Didn't found member...",
   },
   item: {
     "wall" : "Wall",

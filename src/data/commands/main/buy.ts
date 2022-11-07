@@ -18,13 +18,13 @@ command.slashCommand
 command.handler = async ({ gameManager, channel, interaction, member }) => {
   const game = gameManager.getGame(channel.id);
   if (!game) {
-    await slashUtil.reply(interaction, messages.err["err_game_not_started"]());
+    await slashUtil.reply(interaction, messages.err["err_game_not_started"]);
     return;
   }
 
   const curPlayer = game.getTurnPlayer();
   if (curPlayer.id !== member.id) {
-    await slashUtil.reply(interaction, messages.game["not_your_turn"]());
+    await slashUtil.reply(interaction, messages.game["not_your_turn"]);
     return;
   }
 
@@ -32,7 +32,7 @@ command.handler = async ({ gameManager, channel, interaction, member }) => {
   const itemName = slashUtil.getOption(interaction, messages.game["item"], "string", true);
   const itemToBuy = buyableItems.find(item => item.name === itemName);
   if (!itemToBuy) {
-    await slashUtil.reply(interaction, messages.err["err_unexpected"]());
+    await slashUtil.reply(interaction, messages.err["err_unexpected"]);
     return;
   }
   const result = player.marker.buyItem(itemToBuy);

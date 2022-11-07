@@ -20,12 +20,12 @@ function isDirectionCharacter(char: string): char is "L" | "R" | "U" | "D" {
 command.handler = async ({ gameManager, interaction, member, channel }) => {
   const game = gameManager.getGame(channel.id);
   if (!game) {
-    await slashUtil.reply(interaction, messages.err["err_game_not_started"]());
+    await slashUtil.reply(interaction, messages.err["err_game_not_started"]);
     return;
   }
   const curPlayer = game.getTurnPlayer();
   if (curPlayer.id !== member.id) {
-    await slashUtil.reply(interaction, messages.game["not_your_turn"]());
+    await slashUtil.reply(interaction, messages.game["not_your_turn"]);
     return;
   }
 
@@ -37,7 +37,7 @@ command.handler = async ({ gameManager, interaction, member, channel }) => {
     if (isDirectionCharacter(char)) {
       moveDirections.push(directions[char]);
     } else {
-      await slashUtil.reply(interaction, messages.game["invaild_move"]());
+      await slashUtil.reply(interaction, messages.game["invaild_move"]);
       return;
     }
   }
@@ -54,7 +54,7 @@ command.handler = async ({ gameManager, interaction, member, channel }) => {
     if (result.attack) break;
   }
   await slashUtil.reply(interaction, {
-    content: messages.etc["done"](),
+    content: messages.etc["done"],
     ephemeral: true
   });
 
