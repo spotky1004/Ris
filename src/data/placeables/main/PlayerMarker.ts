@@ -13,14 +13,14 @@ const arrows = [
 ];
 
 export default class PlayerMarker extends PlayableMarker {
-  type: "Player";
+  type: "PlayerMarker";
   readonly memberId: string;
   readonly memberName: string;
 
   constructor(options: PlayerOptions) {
     super(options);
 
-    this.type = "Player";
+    this.type = "PlayerMarker";
     this.memberId = options.memberId;
     this.memberName = options.memberName;
     this.items = [];
