@@ -8,22 +8,23 @@ export interface PlayerMoveReturn {
   attack: boolean
 }
 export interface PlayableMarkerOptions extends PlaceableBaseOptions {
-  playerData: Player;
+  player: Player;
 }
 
 export default class PlayableMarker extends PlaceableBase {
-  playerData: Player;
+  player: Player;
 
   constructor(options: PlayableMarkerOptions) {
     super(options);
 
-    this.playerData = options.playerData;
+    this.player = options.player;
   }
 
   move(x: number, y: number): PlayerMoveReturn {
     this.x += x;
     this.y += y;
-    this.playerData.actionDid.move = true;
+    this.player.actionDid.move = true;
+    this.game.emitMoveTick(this.player);
     return {
       moveSuccess: true,
       attack: false
@@ -36,8 +37,8 @@ export default class PlayableMarker extends PlaceableBase {
 
   buyItem(item: Item) {
     const cost = item.cost;
-    if (cost > this.playerData.money) return false;
-    this.playerData.money -= cost;
+    if (cost > this.player.money) return false;
+    this.player.money -= cost;
     this.addItem(item);
     return true;
   }
@@ -71,6 +72,6 @@ export default class PlayableMarker extends PlaceableBase {
   death() {
     this.despawn();
     this.game.messageSender.death(this);
-    this.playerData.defeated = true;
+    this.player.defeated = true;
   }
 }

@@ -46,7 +46,7 @@ function run() {
   const players = [
     new placeable.main.PlayerMarker({
       game,
-      playerData: playerDatas[0],
+      player: playerDatas[0],
       memberId: playerDatas[0].id,
       memberName: playerDatas[0].displayName,
       name: playerDatas[0].displayName,
@@ -58,7 +58,7 @@ function run() {
     }),
     new placeable.main.PlayerMarker({
       game,
-      playerData: playerDatas[1],
+      player: playerDatas[1],
       memberId: playerDatas[1].id,
       memberName: playerDatas[1].displayName,
       name: playerDatas[1].displayName,

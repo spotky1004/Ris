@@ -81,6 +81,7 @@ export default class PlayerMarker extends PlayableMarker {
     this.x += x;
     this.y += y;
     attacked = this.look(x, y);
+    this.game.emitPlayerTurnTick(this.player);
     returnValue.moveSuccess = true;
     returnValue.attack = attacked;
     return returnValue;

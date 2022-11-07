@@ -3,6 +3,7 @@ import MessageSender from "./MessageSender.js";
 import Player from "./Player.js";
 import type Discord from "discord.js";
 import type GameManager from "./GameManager.js";
+import type { TickTypes } from "../util/TickManager.js";
 
 interface GameConfig {
   startMoney: number;
@@ -78,6 +79,7 @@ export default class Game {
       await this.messageSender.errUnexpected();
       return;
     }
+    this.emitPlayerTurnTick();
     let actionCountLeftToSet = this.config.actionCount;
     /** item event placeholder */
     nextTurnPlayer.actionCountLeft = actionCountLeftToSet;
@@ -97,12 +99,46 @@ export default class Game {
   }
 
   addPlayerTurn() {
-    // increment turn
     this.playerTurunCount++;
     if (this.playerTurunCount === this.getAlivePlayerCount()) {
       this.playerTurunCount = 0;
       this.allTurnCount++;
+      this.emitAllTurnTick();
     }
     return this.playerTurunCount;
+  }
+
+  private emitTick(player: Player, type: TickTypes) {
+    player.marker.items.forEach(item => {
+      item.chargeTick.tick(type);
+    });
+  }
+  
+  emitMoveTick(player?: Player) {
+    if (!player) {
+      const turnPlayer = this.getTurnPlayer();
+      if (!turnPlayer) return;
+      player = turnPlayer;
+    }
+    this.emitTick(player, "move");
+  }
+
+  emitPlayerTurnTick(player?: Player) {
+    if (!player) {
+      const turnPlayer = this.getTurnPlayer();
+      if (!turnPlayer) return;
+      player = turnPlayer;
+    }
+    this.emitTick(player, "playerTurn");
+  }
+
+  emitAllTurnTick(player?: Player) {
+    if (!player) {
+      for (const player of this.players) {
+        this.emitTick(player, "allTurn");
+      }
+    } else {
+      this.emitTick(player, "allTurn");
+    }
   }
 }

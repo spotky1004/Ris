@@ -76,7 +76,7 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
       const x = i % 2 ? 5 : 1;
       const y = i < 2 ? 1 : 5;
       const player = new placeable.main.PlayerMarker({
-        game, playerData,
+        game, player: playerData,
         x, y,
         status: {
           maxHp: 10,

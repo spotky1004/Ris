@@ -51,7 +51,7 @@ export default class Player {
     if (this.money === -1) this.money = cfgStartMoney;
     if (this.actionCountLeft === -1) this.actionCountLeft = cfgActionCount;
     this._marker = new PlayableMarker({
-      game, playerData: this,
+      game, player: this,
       x: -1, y: -1
     });
   }
