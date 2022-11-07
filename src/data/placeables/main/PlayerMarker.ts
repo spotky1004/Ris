@@ -92,9 +92,9 @@ export default class PlayerMarker extends PlayableMarker {
     this.looking = [Math.sign(x) as -1 | 0 | 1, Math.sign(y) as -1 | 0 | 1];
     const tile = this.game.board.getTile(this.x + this.looking[0], this.y + this.looking[1]);
     if (!tile) return false;
-    const playerToHit = tile.find(v => v.type === "Player");
-    if (typeof playerToHit === "undefined") return false;
-    playerToHit.attackedBy(this);
+    const toHit = tile.find(v => v.type === "Player") ?? tile[0];
+    if (typeof toHit === "undefined") return false;
+    toHit.attackedBy(this);
     return true;
   }
 
