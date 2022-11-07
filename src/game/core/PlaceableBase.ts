@@ -129,7 +129,7 @@ export default class PlaceableBase {
     const item = this.items[idx];
     if (!item || item.on !== "used") return null;
     const result = await item.emit("used", { param }) ?? {};
-    if (result.ignoreDestroyOnEmit) {
+    if (!result.ignoreDestroyOnEmit) {
       this.removeItem(item);
     }
     return [item, result];
