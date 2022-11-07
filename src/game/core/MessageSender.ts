@@ -50,11 +50,11 @@ export default class MessageSender {
     await this.send(messages.game["rule_attack"](placeable, damage));
   }
 
-  async gameScreen() {
+  async gameScreen(highlight?: [x: number, y: number, width: number, height: number]) {
     if (!this.channel) return;
     const canvas = this.game.board.canvas;
     void canvas.render();
-    const attachment = new Discord.AttachmentBuilder(canvas.toBuffer(), {
+    const attachment = new Discord.AttachmentBuilder(canvas.toBuffer(highlight), {
       name: "board.png"
     });
     await this.channel.send({

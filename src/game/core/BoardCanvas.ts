@@ -183,12 +183,14 @@ export default class BoardCanvas {
     }
   }
 
-  toBuffer() {
+  toBuffer(highlight?: [x: number, y: number, width: number, height: number]) {
+    const { width: bw, height: bh } = this.game.board;
     const { width, height } = this.size;
-    const mainCanvas = Canvas.createCanvas(width, height);
+    const [hx=0, hy=0, hw=bw, hh=bh] = highlight ?? [];
+    const mainCanvas = Canvas.createCanvas(width * (hw/bw), height * (hh/bh));
     const ctx = mainCanvas.getContext("2d");
     for (const z of [0, 1, 2]) {
-      ctx.drawImage(this.fieldLayers[z].canvas, 0, 0);
+      ctx.drawImage(this.fieldLayers[z].canvas, -width * (hx/bw), -height * (hy/bh));
     }
     return mainCanvas.toBuffer();
   }

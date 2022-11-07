@@ -54,7 +54,7 @@ const item = new Item({
   destroyOnEmit: true,
   tier: 1,
   recipe: [],
-  cost: 4
+  cost: 3
 });
 
 export default item;

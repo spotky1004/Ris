@@ -35,11 +35,14 @@ export default class PlayableMarker extends PlaceableBase {
     this.looking = [Math.sign(x) as -1 | 0 | 1, Math.sign(y) as -1 | 0 | 1];
   }
 
-  buyItem(item: Item) {
-    const cost = item.cost;
+  buyItem(item: Item, count: number = 1) {
+    count = Math.floor(count);
+    const cost = item.cost * count;
     if (cost > this.player.money) return false;
     this.player.money -= cost;
-    this.addItem(item);
+    for (let i = 0; i < count; i++) {
+      this.addItem(item);
+    }
     return true;
   }
 

@@ -64,7 +64,7 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
   }
   const game = gameManager.getGame(channel.id);
   if (!game) {
-    await slashUtil.reply(interaction, messages.err["err_unexpected"]);
+    await slashUtil.reply(interaction, messages.err["err_unexpected"], true);
     return;
   }
 

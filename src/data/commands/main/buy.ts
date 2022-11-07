@@ -13,6 +13,11 @@ command.slashCommand
         value: item.name
       })))
       .setRequired(true)
+  )
+  .addIntegerOption(option =>
+    option
+      .setName("count")
+      .setDescription("...")
   );
 
 command.handler = async ({ gameManager, channel, interaction, member }) => {
@@ -24,23 +29,24 @@ command.handler = async ({ gameManager, channel, interaction, member }) => {
 
   const curPlayer = game.getTurnPlayer();
   if (curPlayer.id !== member.id) {
-    await slashUtil.reply(interaction, messages.game["not_your_turn"]);
+    await slashUtil.reply(interaction, messages.game["not_your_turn"], true);
     return;
   }
 
   const player = curPlayer;
   const itemName = slashUtil.getOption(interaction, messages.game["item"], "string", true);
+  const buyCount = slashUtil.getOption(interaction, "count", "number") ?? 1;
   const itemToBuy = buyableItems.find(item => item.name === itemName);
-  if (!itemToBuy) {
-    await slashUtil.reply(interaction, messages.err["err_unexpected"]);
+  if (!itemToBuy || buyCount < 1) {
+    await slashUtil.reply(interaction, messages.err["err_unexpected"], true);
     return;
   }
-  const result = player.marker.buyItem(itemToBuy);
+  const result = player.marker.buyItem(itemToBuy, buyCount);
   if (!result) {
-    await slashUtil.reply(interaction, messages.command["buy_fail"](player, itemToBuy), true);
+    await slashUtil.reply(interaction, messages.command["buy_fail"](player, itemToBuy, buyCount), true);
     return;
   }
-  await slashUtil.reply(interaction, messages.command["buy_success"](player, itemToBuy), true);
+  await slashUtil.reply(interaction, messages.command["buy_success"](player, itemToBuy, buyCount), true);
 };
 
 export default command;

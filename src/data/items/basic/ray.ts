@@ -1,6 +1,7 @@
 import { Item } from "../essentials.js";
+import type PlaceableBase from "../../../game/core/PlaceableBase.js";
 
-const rayParamPattern = /\d+,\d+,(V|H)/;
+const rayParamPattern = /\d+,(V|H)/;
 const item = new Item({
   name: "Ray",
   on: "used",
@@ -8,37 +9,38 @@ const item = new Item({
   destroyOnEmit: true,
   tier: 1,
   recipe: [],
-  cost: 2,
+  cost: 5,
 
   onEmit: async ({ game, data }) => {
     const param = data.param;
     if (!rayParamPattern.test(param)) return {
-      errorMsg: "x,y,V or x,y,H",
+      errorMsg: "x,V or y,H",
       ignoreDestroyOnEmit: true
     };
     const params = param.split(",");
-    const [rx, ry] = [params[0], params[1]].map(Number);
-    const direction = params[2] as "V" | "H";
+    const rPos = Number(params[0]) - 1;
+    const direction = params[1] as "V" | "H";
 
     const board = game.board;
-    if (board.isOutOfBound(rx, ry)) return {
-      errorMsg: `(${rx}, ${ry}) is out of bound!`,
+    const { width, height } = board;
+    if (board.isOutOfBound(direction === "V" ? rPos: 0, direction === "H" ? rPos : 0)) return {
+      errorMsg: `Cannot use ray on that position!`,
       ignoreDestroyOnEmit: true
     };
 
-    const { width, height } = board;
     const attackPoses: [x: number, y: number][] = [];
     if (direction === "H") {
       for (let i = 0; i < width; i++) {
-        attackPoses.push([i, ry]);
+        attackPoses.push([i, rPos]);
       }
     } else if (direction === "V") {
       for (let i = 0; i < height; i++) {
-        attackPoses.push([rx, i]);
+        attackPoses.push([rPos, i]);
       }
     }
 
     const canvas = board.canvas;
+    const attacked: PlaceableBase[] = [];
     for (const [ax, ay] of attackPoses) {
       canvas.addRenderItem("basicPlaceable", 15, {
         bgColor: "#f0d343",
@@ -51,11 +53,17 @@ const item = new Item({
       });
       const tile = board.getTile(ax, ay);
       for (const toAttack of tile) {
+        if (attacked.includes(toAttack)) continue;
+        attacked.push(toAttack);
         toAttack.attackedBy("Ray", 1, "normal");
       }
     }
 
-    await game.messageSender.gameScreen();
+    const isH = direction === "H";
+    await game.messageSender.gameScreen([
+      isH ? 0 : rPos, isH ? rPos : 0,
+      isH ? width : 1, isH ? 1 : height
+    ]);
     return {
       ignoreDestroyOnEmit: false
     };

@@ -25,7 +25,7 @@ command.handler = async ({ gameManager, interaction, member, channel }) => {
   }
   const curPlayer = game.getTurnPlayer();
   if (curPlayer.id !== member.id) {
-    await slashUtil.reply(interaction, messages.game["not_your_turn"]);
+    await slashUtil.reply(interaction, messages.game["not_your_turn"], true);
     return;
   }
 
@@ -48,12 +48,17 @@ command.handler = async ({ gameManager, interaction, member, channel }) => {
   
   for (const [dx, dy] of moveDirections) {
     const result = player.marker.move(dx, dy);
-    if (result.moveSuccess) {
+    if (result.moveSuccess || result.attack) {
       player.actionDid.move = true;
       player.actionCountLeft--;
     }
     if (result.attack) break;
   }
+  if (!player.actionDid.move) {
+    await slashUtil.reply(interaction, messages.game["invaild_move"], true);
+    return;
+  }
+  
   const result = await game.turnEnd();
   await slashUtil.reply(interaction, messages.game["turn_end"](result.moneyGot), true);
 

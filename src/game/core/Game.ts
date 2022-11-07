@@ -84,6 +84,11 @@ export default class Game {
   }
 
   getTurnPlayer() {
+    const alivePlayerCount = this.getAlivePlayerCount();
+    if (this.playerTurunCount >= alivePlayerCount) {
+      this.playerTurunCount = alivePlayerCount - 1;
+    }
+
     let playerAcc = 0;
     for (let i = 0; i < this.players.length; i++) {
       const player = this.players[i];

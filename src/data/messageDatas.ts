@@ -33,11 +33,11 @@ export const messages = {
   },
   command: {
     "buy_command_param_desc": "Name of the item to buy",
-    "buy_success": (player: Player, itemBought: Item) => {
-      return `You successfully bought **${itemBought.name}** for **${itemBought.cost}** ${messages.game["money"]}\nNow, you have **${player.money}** ${messages.game["money"]}.`;
+    "buy_success": (player: Player, itemBought: Item, count: number) => {
+      return `You successfully bought **${itemBought.name}**${count > 1 ? ` **x${count}**` : ""} for **${itemBought.cost*count}** ${messages.game["money"]}\nNow, you have **${player.money}** ${messages.game["money"]}.`;
     },
-    "buy_fail": (player: Player, item: Item) => {
-      return `You cannot afford **${item.name}**. (${player.money}/**${item.cost}**)`
+    "buy_fail": (player: Player, item: Item, count: number) => {
+      return `You cannot afford **${item.name}**${count > 1 ? ` **x${count}**` : ""}. (${player.money}/**${item.cost * count}** ${messages.game["money"]})`
     },
     "use_command_param_desc": "Index of the item to use. (use /status to see index)",
     "use_success": (item: Item, curActionCount: number, maxActionCount: number) => `Successfully used **${item.name}**! (${curActionCount}/${maxActionCount})`,
