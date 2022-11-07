@@ -13,7 +13,7 @@ export default class TickManager {
   constructor(options: TickManagerOptions) {
     this.type = options.type;
     this.length = options.length ?? 1;
-    this.timeLeft = length;
+    this.timeLeft = this.length;
   }
 
   tick(type: TickTypes) {
