@@ -22,7 +22,7 @@ export default class WorkingItem<T extends ItemActivateEventNames = any> {
     this.on = item.on;
     this.data = item;
     this.chargeTick = new ChargeManager(item.chargeOptions ?? {
-      type: "all",
+      type: "allTurn",
       length: 0
     });
   }

@@ -1,4 +1,4 @@
-export type TickTypes = "move" | "player" | "all";
+export type TickTypes = "move" | "playerTurn" | "allTurn";
 
 export interface TickManagerOptions {
   type: TickTypes;
