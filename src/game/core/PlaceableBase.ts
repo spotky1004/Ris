@@ -6,6 +6,7 @@ import type {
   ItemActivateEventData,
   ItemActivateEventReturn
 } from "./Item.js";
+import TagsManager from "../util/TagsManager.js";
 import type Game from "./Game.js";
 
 export interface PlaceableBaseOptions {
@@ -30,7 +31,7 @@ export default class PlaceableBase {
   owner: PlaceableBase | undefined;
   looking: [x: -1 | 0 | 1, y: -1 | 0 | 1];
   shape: [x: number, y: number][];
-  tags: string[];
+  tags: TagsManager;
   items: WorkingItem[];
 
   constructor(options: PlaceableBaseOptions) {
@@ -44,7 +45,7 @@ export default class PlaceableBase {
     this.owner = options.owner ?? undefined;
     this.looking = options.looking ? [options.looking[0], options.looking[1]] : [0, 1];
     this.shape = options.shape ?? [];
-    this.tags = [];
+    this.tags = new TagsManager();
     this.items = [];
 
     this.spawn();

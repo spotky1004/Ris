@@ -1,4 +1,5 @@
 import { PlaceableBase, PlaceableBaseOptions, RenderStringOptions } from "../essentials.js";
+import tags from "../../tags.js";
 
 interface DisplayStatusOptions {
   type: "hp" | "def" | "maxHp";
@@ -31,7 +32,7 @@ export default class Wall extends PlaceableBase {
     this.bgColor = options.bgColor;
     this.nameColor = options.nameColor;
     this.displayStatus = options.displayStatus;
-    this.tags.push("solid");
+    this.tags.add(tags.Solid);
   }
 
   render() {

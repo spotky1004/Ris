@@ -64,14 +64,15 @@ export default class Board {
           }
         } else if (toSearch === "tag") {
           if (typeof value === "string") {
-            return all.filter(v => v.tags.includes(value));
+            return all.filter(v => v.tags.has(value));
           } else if (value instanceof RegExp) {
-            return all.filter(v => v.tags.every(t => value.test(t)));
+            return all.filter(v => v.tags.entries().every(t => value.test(t)));
           } else {
             return all.filter(v => {
-              const lenMatch = v.tags.length === value.length;
+              const tagEntries = v.tags.entries();
+              const lenMatch = tagEntries.length === value.length;
               if (!lenMatch) return lenMatch;
-              const tagMatch = v.tags.every(t => value.includes(t));
+              const tagMatch = tagEntries.every(t => value.includes(t));
               return tagMatch;
             });
           }
@@ -86,13 +87,7 @@ export default class Board {
             return all.filter(v => value.includes(v.type));
           }
         } else if (toSearch === "tag") {
-          if (typeof value === "string") {
-            return all.filter(v => v.tags.includes(value));
-          } else if (value instanceof RegExp) {
-            return all.filter(v => v.tags.some(t => value.test(t)));
-          } else {
-            return all.filter(v => v.tags.some(t => value.includes(t)));
-          }
+          return all.filter(v => v.tags.has(value));
         }
       }
     }
@@ -124,6 +119,6 @@ export default class Board {
   isTagInTile(x: number, y: number, tag: string) {
     const tile = this.getTile(x, y);
     if (!tile) return false;
-    return tile.some(p => p.tags.includes(tag));
+    return tile.some(p => p.tags.has(tag));
   }
 }

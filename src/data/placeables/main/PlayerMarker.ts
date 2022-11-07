@@ -1,4 +1,5 @@
 import { PlayableMarker, PlayableMarkerOptions } from "../essentials.js";
+import tags from "../../tags.js";
 
 export interface PlayerOptions extends PlayableMarkerOptions {
   memberId: string;
@@ -23,7 +24,7 @@ export default class PlayerMarker extends PlayableMarker {
     this.memberId = options.memberId;
     this.memberName = options.memberName;
     this.items = [];
-    this.tags.push("solid");
+    this.tags.add(tags.Solid);
 
     this.zIndex = 5;
   }
@@ -75,7 +76,7 @@ export default class PlayerMarker extends PlayableMarker {
       returnValue.attack = true;
       return returnValue;
     }
-    if (this.game.board.isTagInTile(tx, ty, "solid")) {
+    if (this.game.board.isTagInTile(tx, ty, tags.Solid)) {
       return returnValue;
     }
     this.x += x;
