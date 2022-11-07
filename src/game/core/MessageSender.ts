@@ -35,11 +35,7 @@ export default class MessageSender {
   
   async turnAlert() {
     const nextTurnPlayer = this.game.getTurnPlayer();
-    if (nextTurnPlayer) {
-      await this.send(messages.game["turn_alert"](nextTurnPlayer));
-    } else {
-      await this.errUnexpected();
-    }
+    await this.send(messages.game["turn_alert"](nextTurnPlayer));
   }
 
   async death(placeable: PlaceableBase) {

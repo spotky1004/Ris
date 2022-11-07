@@ -23,10 +23,6 @@ command.handler = async ({ gameManager, channel, interaction, member }) => {
   }
 
   const curPlayer = game.getTurnPlayer();
-  if (!curPlayer) {
-    await slashUtil.reply(interaction, messages.err["err_unexpected"]());
-    return;
-  }
   if (curPlayer.id !== member.id) {
     await slashUtil.reply(interaction, messages.game["not_your_turn"]());
     return;

@@ -45,10 +45,6 @@ export default class Game {
   async turnEnd() {
     // current turn player
     const curTurnPlayer = this.getTurnPlayer();
-    if (!curTurnPlayer) {
-      await this.messageSender.errUnexpected();
-      return;
-    }
     const actionDid = curTurnPlayer.actionDid;
     if (
       !actionDid.combine ||
@@ -75,10 +71,6 @@ export default class Game {
 
     // next turn player
     const nextTurnPlayer = this.getTurnPlayer();
-    if (!nextTurnPlayer) {
-      await this.messageSender.errUnexpected();
-      return;
-    }
     this.emitPlayerTurnTick();
     let actionCountLeftToSet = this.config.actionCount;
     /** item event placeholder */
@@ -95,7 +87,7 @@ export default class Game {
       }
       if (!player.defeated) playerAcc++;
     }
-    return null;
+    throw new Error("Can't get turn player.\nIt might the game is ended.");
   }
 
   addPlayerTurn() {
@@ -117,7 +109,6 @@ export default class Game {
   emitMoveTick(player?: Player) {
     if (!player) {
       const turnPlayer = this.getTurnPlayer();
-      if (!turnPlayer) return;
       player = turnPlayer;
     }
     this.emitTick(player, "move");
@@ -126,7 +117,6 @@ export default class Game {
   emitPlayerTurnTick(player?: Player) {
     if (!player) {
       const turnPlayer = this.getTurnPlayer();
-      if (!turnPlayer) return;
       player = turnPlayer;
     }
     this.emitTick(player, "playerTurn");
