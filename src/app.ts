@@ -3,6 +3,7 @@ import deployCommand from "./util/deployCommand.js";
 import commands from "./bundles/commands.js";
 import GuildManager from "./game/core/GameManager.js";
 import { token } from "./env.js";
+import initItemManager from "./util/initItemManager.js";
 
 const commandJSON = [...commands.values()].map(c => c.slashCommand.toJSON());
 const rest = new Discord.REST({ version: '10' }).setToken(token);
@@ -17,6 +18,7 @@ const client = new Discord.Client({
 });
 
 const gameManager = new GuildManager(client);
+initItemManager(gameManager);
 
 client.on("ready", async () => {
   const guildIds = [...client.guilds.cache.entries()].map(v => v[0]);

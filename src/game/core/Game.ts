@@ -2,12 +2,14 @@ import Board, { BoardOptions } from "./Board.js";
 import MessageSender from "./MessageSender.js";
 import Player from "./Player.js";
 import type Discord from "discord.js";
+import type GameManager from "./GameManager.js";
 
 interface GameConfig {
   startMoney: number;
   actionCount: number;
 }
 interface GameOptions {
+  gameManager: GameManager;
   board: BoardOptions;
   config: GameConfig;
   players: Player[];
@@ -15,6 +17,7 @@ interface GameOptions {
 }
 
 export default class Game {
+  readonly gameManager: GameManager;
   messageSender: MessageSender;
   board: Board;
   config: GameConfig;
@@ -23,6 +26,7 @@ export default class Game {
   playerTurunCount: number;
 
   constructor(options: GameOptions) {
+    this.gameManager = options.gameManager;
     this.messageSender = new MessageSender(this, options.discordChannel);
     this.board = new Board(this, options.board);
     this.config = options.config;

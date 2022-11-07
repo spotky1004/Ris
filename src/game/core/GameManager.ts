@@ -1,14 +1,17 @@
 import Game from "./Game.js";
 import Player from "./Player.js";
+import ItemManager from "./ItemManager.js";
 import type Discord from "discord.js";
 
 export default class GuildManager {
   discordClient: Discord.Client<boolean> | undefined;
   private readonly games: Map<string, Game>;
+  readonly itemManager: ItemManager;
 
   constructor(discordClient?: Discord.Client<boolean>) {
     this.discordClient = discordClient;
     this.games = new Map();
+    this.itemManager = new ItemManager();
   }
 
   createGame(players: Player[], discordChannel?: Discord.TextBasedChannel) {
@@ -18,6 +21,7 @@ export default class GuildManager {
     }
     
     this.games.set(channelId, new Game({
+      gameManager: this,
       config: {
         startMoney: 4,
         actionCount: 5

@@ -3,6 +3,7 @@ import path from "path";
 import GameManager from "./game/core/GameManager.js";
 import Player from "./game/core/Player.js";
 import placeable from "./bundles/placeable.js";
+import initItemManager from "./util/initItemManager.js";
 import type Game from "./game/core/Game.js";
 
 const outDir = path.join("out");
@@ -25,6 +26,7 @@ function error(msg: string) {
 
 function run() {
   const gameManager = new GameManager();
+  initItemManager(gameManager);
   const playerDatas = [
     new Player({
       id: "1",
