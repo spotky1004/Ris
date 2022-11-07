@@ -11,8 +11,12 @@ export const messages = {
   game: {
     "atk": "ATK",
     "def": "DEF",
-    "attack": (from: PlaceableBase, to: PlaceableBase, dmg: number) => {
-      return `**${from.displayName}** attacked **${to.displayName}** with **${dmg}** $DMG`;
+    "attack": (from: string | PlaceableBase, to: PlaceableBase, dmg: number) => {
+      const fromName = typeof from === "string" ? from : from.displayName;
+      return `**${fromName}** attacked **${to.displayName}** with **${dmg}** $DMG`;
+    },
+    "rule_attack": (to: PlaceableBase, dmg: number) => {
+      return `**${to.displayName}** got ${dmg} $RULE_DMG`;
     },
     "death": (placeable: PlaceableBase) => {
       return `**${placeable.displayName}** eliminated!`;
@@ -36,7 +40,7 @@ export const messages = {
       return `You cannot afford **${item.name}**. (${player.money}/**${item.cost}**)`
     },
     "use_command_param_desc": "Index of the item to use. (use /status to see index)",
-    "use_success": (item: Item) => `Successfully used **${item.name}**!`,
+    "use_success": (item: Item, curActionCount: number, maxActionCount: number) => `Successfully used **${item.name}**! (${curActionCount}/${maxActionCount})`,
     "use_fail": "Invaild use",
   },
   etc: {

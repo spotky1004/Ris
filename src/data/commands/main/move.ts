@@ -37,12 +37,12 @@ command.handler = async ({ gameManager, interaction, member, channel }) => {
     if (isDirectionCharacter(char)) {
       moveDirections.push(directions[char]);
     } else {
-      await slashUtil.reply(interaction, messages.game["invaild_move"]);
+      await slashUtil.reply(interaction, messages.game["invaild_move"], true);
       return;
     }
   }
   if (moveDirections.length > actionCountLeft) {
-    await slashUtil.reply(interaction, messages.game["action_count_exceeded"](actionCountLeft, game.config.actionCount));
+    await slashUtil.reply(interaction, messages.game["action_count_exceeded"](actionCountLeft, game.config.actionCount), true);
     return;
   }
   
@@ -50,6 +50,7 @@ command.handler = async ({ gameManager, interaction, member, channel }) => {
     const result = player.marker.move(dx, dy);
     if (result.moveSuccess) {
       player.actionDid.move = true;
+      player.actionCountLeft--;
     }
     if (result.attack) break;
   }

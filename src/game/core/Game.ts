@@ -51,6 +51,7 @@ export default class Game {
       !actionDid.move
     ) {
       curTurnPlayer.marker.status.attack(1.5, "rule");
+      this.messageSender.ruleDamage(curTurnPlayer.marker, 1.5);
     }
     actionDid.combine = false;
     actionDid.move = false;
@@ -91,7 +92,7 @@ export default class Game {
       }
       if (!player.defeated) playerAcc++;
     }
-    throw new Error("Can't get turn player.\nIt might the game is ended.");
+    throw new Error("Can't get turn player.\nIt might be the game is ended.");
   }
 
   addPlayerTurn() {

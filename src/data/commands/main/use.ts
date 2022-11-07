@@ -9,6 +9,11 @@ command.slashCommand
       .setDescription("No description.")
       .setRequired(true)
   )
+  .addStringOption(option =>
+    option
+      .setName("param")
+      .setDescription("No description.")
+  )
 
 command.handler = async ({ gameManager, channel, interaction, member }) => {
   const game = gameManager.getGame(channel.id);
@@ -28,14 +33,17 @@ command.handler = async ({ gameManager, channel, interaction, member }) => {
   }
 
   const idxToUse = slashUtil.getOption(interaction, "nr", "number", true);
-  const result = await curPlayer.marker.useItem(idxToUse);
-  if (!result) {
-    await slashUtil.reply(interaction, messages.command["use_fail"]);
+  const itemParam = slashUtil.getOption(interaction, "param", "string") ?? "";
+  const useResult = await curPlayer.marker.useItem(idxToUse, itemParam);
+  if (!useResult || useResult[1].errorMsg) {
+    const errMsg = useResult && useResult[1] ? "Wrong param: " + useResult[1].errorMsg : null;
+    await slashUtil.reply(interaction, errMsg ?? messages.command["use_fail"], true);
     return;
   }
+  const [item] = useResult;
 
-  await slashUtil.reply(interaction, messages.command["use_success"](result.data));
   curPlayer.actionCountLeft--;
+  await slashUtil.reply(interaction, messages.command["use_success"](item.data, curPlayer.actionCountLeft, game.config.actionCount), true);
 }
 
 export default command;

@@ -69,7 +69,7 @@ export const slashUtil = {
     let value: SlashUtilGetOptionsTypeEnum[T] | (U extends true ? never : undefined) | null;
     if (type === "number" || type === "string" || type === "boolean") {
       // @ts-ignore
-      value = interaction.options.get(name).value;
+      value = interaction.options.get(name)?.value;
       if (required && value === null) {
         throw new Error(`While get slash command option: ${name}.\nIt was required, but got null.`);
       }

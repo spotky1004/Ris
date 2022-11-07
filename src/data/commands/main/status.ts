@@ -29,7 +29,7 @@ command.handler = async ({ gameManager, channel, interaction, member }) => {
   for (let i = 0; i < items.length; i++) {
     const workingItem = items[i];
     const item = workingItem.data;
-    const itemValue = `[${item.cost}, ${messages.item["tier_order"][item.tier]}]`;
+    const itemValue = `[${item.cost}, ${messages.item["tier_order"][item.tier - 1]}]`;
     const chargeLen = item.chargeOptions?.length ?? 0;
     content += `\`#${i.toString().padStart(2, " ")}\` - **${item.name}** **${itemValue}** ${chargeLen > 0 ? `(CD: **${workingItem.chargeTick.timeLeft}**/${chargeLen})`: ""}`;
   }

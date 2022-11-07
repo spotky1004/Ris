@@ -14,6 +14,9 @@ type ItemActivateEventTypes<T> = {
 
 export interface ItemActivateEventData extends ItemActivateEventTypes<{}> {
   "always": ItemActivateEventData[Exclude<ItemActivateEventNames, "always">];
+  "used": {
+    param: string;
+  },
   "none": {};
   "move": {
     prevPos: [x: number, y: number];
@@ -59,11 +62,13 @@ export interface ItemActivateEventData extends ItemActivateEventTypes<{}> {
 
 interface ItemActivateEventReturnBase {
   ignoreDestroyOnEmit?: boolean;
+  errorMsg?: string;
 }
 export interface ItemActivateEventReturn extends ItemActivateEventTypes<ItemActivateEventReturnBase>  {
   "always": ItemActivateEventReturn[Exclude<ItemActivateEventNames, "always">];
   "otherPlayerMove": {
     ignoreDestroyOnEmit?: boolean;
+    errorMsg?: string;
     cancelMove: boolean;
   };
 }

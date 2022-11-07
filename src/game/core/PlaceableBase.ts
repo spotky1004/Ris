@@ -125,20 +125,26 @@ export default class PlaceableBase {
     return returnVals;
   }
 
-  async useItem(idx: number) {
+  async useItem(idx: number, param: string = ""): Promise<[WorkingItem<"used">, ItemActivateEventReturn["used"]] | null> {
     const item = this.items[idx];
     if (!item || item.on !== "used") return null;
-    const result = await item.emit("used", {});
+    const result = await item.emit("used", { param }) ?? {};
     if (!result) {
       this.removeItem(item);
     }
-    return item;
+    return [item, result];
   }
 
-  attackedBy(by: PlaceableBase, atk?: number, type?: AttackType) {
-    atk = atk ?? by.status.getAtk();
-    const dmgGot = this.status.attack(atk, type ?? "normal");
-    this.game.messageSender.attack(by, this, dmgGot);
+  attackedBy(by: string | PlaceableBase, atk?: number, type?: AttackType) {
+    if (typeof by === "string") {
+      atk = atk ?? 0;
+      const dmgGot = this.status.attack(atk, type ?? "normal");
+      this.game.messageSender.attack(by, this, dmgGot);
+    } else {
+      atk = atk ?? by.status.getAtk();
+      const dmgGot = this.status.attack(atk, type ?? "normal");
+      this.game.messageSender.attack(by, this, dmgGot);
+    }
   }
 
   death() {

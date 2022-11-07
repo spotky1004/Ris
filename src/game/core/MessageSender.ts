@@ -29,7 +29,7 @@ export default class MessageSender {
     return false;
   }
 
-  async attack(from: PlaceableBase, to: PlaceableBase, dmg: number) {
+  async attack(from: string | PlaceableBase, to: PlaceableBase, dmg: number) {
     return await this.send(messages.game["attack"](from, to, dmg));
   }
   
@@ -44,6 +44,10 @@ export default class MessageSender {
 
   async errUnexpected() {
     await this.send(messages.err["err_unexpected"]);
+  }
+
+  async ruleDamage(placeable: PlaceableBase, damage: number) {
+    await this.send(messages.game["rule_attack"](placeable, damage));
   }
 
   async gameScreen() {
