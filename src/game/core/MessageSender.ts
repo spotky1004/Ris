@@ -42,6 +42,10 @@ export default class MessageSender {
     }
   }
 
+  async death(placeable: PlaceableBase) {
+    await this.send(messages.game["death"](placeable));
+  }
+
   async errUnexpected() {
     await this.send(messages.err["err_unexpected"]());
   }

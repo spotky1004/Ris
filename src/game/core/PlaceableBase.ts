@@ -54,12 +54,12 @@ export default class PlaceableBase {
     return this.game.board.spawnPlaceable(this._x, this._y, this);
   }
 
-  remove() {
+  despawn() {
     return this.game.board.removePlaceable(this._x, this._y, this);
   }
 
   private respawn(x: number, y: number) {
-    this.remove();
+    this.despawn();
     this._x = x;
     this._y = y;
     this.spawn();
@@ -139,6 +139,11 @@ export default class PlaceableBase {
     atk = atk ?? by.status.getAtk();
     const dmgGot = this.status.attack(atk, type ?? "normal");
     this.game.messageSender.attack(by, this, dmgGot);
+  }
+
+  death() {
+    this.despawn();
+    this.game.messageSender.death(this);
   }
 
   get displayName() {

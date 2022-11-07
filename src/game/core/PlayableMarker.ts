@@ -31,4 +31,10 @@ export default class PlayableMarker extends PlaceableBase {
   look(x: number, y: number) {
     this.looking = [Math.sign(x) as -1 | 0 | 1, Math.sign(y) as -1 | 0 | 1];
   }
+
+  death() {
+    this.despawn();
+    this.game.messageSender.death(this);
+    this.playerData.defeated = true;
+  }
 }

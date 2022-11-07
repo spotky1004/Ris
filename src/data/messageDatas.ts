@@ -11,6 +11,9 @@ export const messages = {
     "attack": (from: PlaceableBase, to: PlaceableBase, dmg: number) => {
       return `**${from.displayName}** attacked **${to.displayName}** with **${dmg}** $DMG`;
     },
+    "death": (placeable: PlaceableBase) => {
+      return `**${placeable.displayName}** eliminated!`;
+    },
     "not_your_turn": () => "Not your turn!",
     "action_count_exceeded": (cur: number, max: number) => `Action count exceeded! (${cur}/${max})`,
     "invaild_move": () => "invaild move",
@@ -21,10 +24,6 @@ export const messages = {
     "money": "money", // must be lowercase (or other language)
     "buy_command_param_desc": "name of the item to buy"
   },
-  item: {
-    "wall" : "Wall",
-    "wall_order": ["A", "B", "C", "D", "E", "F", "G", "H"]
-  },
   etc: {
     "done": () => "Done!"
   },
@@ -33,5 +32,9 @@ export const messages = {
     "err_game_not_started": () => "The game isn't started.",
     "err_game_running": () => "The game is aleady running!",
     "err_member_not_found": () => "Didn't found member...",
-  }
+  },
+  item: {
+    "wall" : "Wall",
+    "wall_order": ["A", "B", "C", "D", "E", "F", "G", "H"]
+  },
 };

@@ -79,6 +79,10 @@ export default class StatusManager {
     atk = Math.max(0, Math.round(atk * 100)/100);
     this.hp = Math.round((this.hp - atk) * 100) / 100;
 
+    if (this.hp <= 0) {
+      this.parent.death();
+    }
+
     return atk;
   }
 }
