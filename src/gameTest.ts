@@ -72,6 +72,7 @@ function run() {
 
   players[0].addItem(item.basic.Brick);
   players[0].useItem(0);
+  players[0].move(1, 0);
 
   game.messageSender.send("Hello, World!");
   game.messageSender.send("t: " + new Date().getTime());
