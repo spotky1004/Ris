@@ -7,7 +7,7 @@ command.slashCommand
   .addStringOption(option =>
     option
       .setName(messages.game["item"])
-      .setDescription(messages.game["buy_command_param_desc"])
+      .setDescription(messages.command["buy_command_param_desc"])
       .addChoices(...buyableItems.map(item => ({
         name: `${item.name} (${item.cost} cost)`,
         value: item.name
@@ -37,10 +37,10 @@ command.handler = async ({ gameManager, channel, interaction, member }) => {
   }
   const result = player.marker.buyItem(itemToBuy);
   if (!result) {
-    await slashUtil.reply(interaction, messages.game["buy_fail"](player, itemToBuy), true);
+    await slashUtil.reply(interaction, messages.command["buy_fail"](player, itemToBuy), true);
     return;
   }
-  await slashUtil.reply(interaction, messages.game["buy_success"](player, itemToBuy), true);
+  await slashUtil.reply(interaction, messages.command["buy_success"](player, itemToBuy), true);
 };
 
 export default command;

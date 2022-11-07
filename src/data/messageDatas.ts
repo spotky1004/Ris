@@ -25,6 +25,8 @@ export const messages = {
     },
     "item": "item", // must be lowercase (or other language)
     "money": "Money",
+  },
+  command: {
     "buy_command_param_desc": "name of the item to buy",
     "buy_success": (player: Player, itemBought: Item) => {
       return `You successfully bought **${itemBought.name}** for **${itemBought.cost}** ${messages.game["money"]}\nNow, you have **${player.money}** ${messages.game["money"]}.`;
