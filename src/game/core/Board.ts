@@ -29,14 +29,13 @@ export default class Board {
   }
 
   getTile(x: number, y: number) {
-    let tile = (this.grid[y] ?? [])[x];
-    if (!tile) return null;
+    let tile = [...((this.grid[y] ?? [])[x] ?? [])];
     const allPlaceables = this.getAllPlaceables();
     for (const placeable of allPlaceables) {
-      const { x, y } = placeable;
+      const { x: px, y :py } = placeable;
       for (const [sx, sy] of placeable.shape) {
-        const tx = x + sx;
-        const ty = y + sy;
+        const tx = px + sx;
+        const ty = py + sy;
         if (x === tx && y === ty) {
           tile.push(placeable);
         }
@@ -95,14 +94,14 @@ export default class Board {
   }
 
   spawnPlaceable(x: number, y: number, item: PlaceableBase) {
-    const tile = this.getTile(x, y);
+    const tile = (this.grid[y] ?? [])[x];
     if (!tile || tile.includes(item)) return false;
     tile.push(item);
     return true;
   }
 
   removePlaceable(x: number, y: number, item: PlaceableBase) {
-    const tile = this.getTile(x, y);
+    const tile = (this.grid[y] ?? [])[x];
     if (!tile || !tile.includes(item)) return false;
     const idx = tile.findIndex(v => v === item);
     tile.splice(idx, 1);
