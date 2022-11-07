@@ -28,10 +28,19 @@ command.handler = async ({ gameManager, channel, interaction, member }) => {
     return;
   }
 
-  // @ts-ignore
   const player = curPlayer;
-  const toBuy = (interaction.options.get(messages.game["item"], true).value ?? "") as string;
-  console.log(toBuy);
+  const itemName = slashUtil.getOption(interaction, messages.game["item"], "string", true);
+  const itemToBuy = buyableItems.find(item => item.name === itemName);
+  if (!itemToBuy) {
+    await slashUtil.reply(interaction, messages.err["err_unexpected"]());
+    return;
+  }
+  const result = player.marker.buyItem(itemToBuy);
+  if (!result) {
+    await slashUtil.reply(interaction, messages.game["buy_fail"](player, itemToBuy));
+    return;
+  }
+  await slashUtil.reply(interaction, messages.game["buy_success"](player, itemToBuy));
 };
 
 export default command;

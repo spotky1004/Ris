@@ -1,3 +1,4 @@
+import type Item from "../game/core/Item.js";
 import type PlaceableBase from "../game/core/PlaceableBase.js";
 import type Player from "../game/core/Player.js";
 
@@ -22,7 +23,13 @@ export const messages = {
     },
     "item": "item", // must be lowercase (or other language)
     "money": "money", // must be lowercase (or other language)
-    "buy_command_param_desc": "name of the item to buy"
+    "buy_command_param_desc": "name of the item to buy",
+    "buy_success": (player: Player, itemBought: Item) => {
+      return `You successfully bought **${itemBought.name}** for **${itemBought.cost}** ${messages.game["money"]}\nNow, you have **${player.money}** ${messages.game["money"]}.`;
+    },
+    "buy_fail": (player: Player, item: Item) => {
+      return `You cannot afford **${item.name}**. (${player.money}/**${item.cost}**)`
+    }
   },
   etc: {
     "done": () => "Done!"
