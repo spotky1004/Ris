@@ -1,6 +1,7 @@
 import { Item } from "../essentials.js";
 import placeable from "../../../bundles/placeable.js";
 import { messages } from "../../messageDatas.js";
+import tags from "../../tags.js";
 
 const item = new Item({
   name: "Brick",
@@ -13,12 +14,12 @@ const item = new Item({
     const [dx, dy] = owner.looking;
 
     const [tx, ty] = [px + dx, py + dy];
-    const shape: [x: number, y: number][] = Math.abs(dx) > Math.abs(dy) ? [[-1, 0], [1, 0]] : [[0, -1], [0, 1]];
+    const shape: [x: number, y: number][] = Math.abs(dx) < Math.abs(dy) ? [[-1, 0], [1, 0]] : [[0, -1], [0, 1]];
 
     const placePositions = [[tx, ty], ...shape.map(([sx, sy]) => [tx + sx, ty + sy])] as [x: number, y: number][];
     if (placePositions.some(([x, y]) => {
       return (
-        board.isTagInTile(x, y, "solid") ||
+        board.isTagInTile(x, y, tags.Solid) ||
         board.isOutOfBound(x, y)
       );
     })) {
