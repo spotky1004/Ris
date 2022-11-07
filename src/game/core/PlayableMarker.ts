@@ -62,8 +62,7 @@ export default class PlayableMarker extends PlaceableBase {
     const mergeResult = this.game.gameManager.itemManager.tryMerge(...workingItems.map(i => i.data));
     if (mergeResult === null) return false;
     for (const workingItem of workingItems) {
-      const idxToSplice = workingItems.findIndex(i => i === workingItem);
-      workingItems.splice(idxToSplice, 1);
+      this.removeItem(workingItem);
     }
     this.addItem(mergeResult);
     return true;
