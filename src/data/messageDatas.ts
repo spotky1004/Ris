@@ -27,13 +27,16 @@ export const messages = {
     "money": "Money",
   },
   command: {
-    "buy_command_param_desc": "name of the item to buy",
+    "buy_command_param_desc": "Name of the item to buy",
     "buy_success": (player: Player, itemBought: Item) => {
       return `You successfully bought **${itemBought.name}** for **${itemBought.cost}** ${messages.game["money"]}\nNow, you have **${player.money}** ${messages.game["money"]}.`;
     },
     "buy_fail": (player: Player, item: Item) => {
       return `You cannot afford **${item.name}**. (${player.money}/**${item.cost}**)`
-    }
+    },
+    "use_command_param_desc": "Index of the item to use. (use /status to see index)",
+    "use_success": (item: Item) => `Successfully used **${item.name}**!`,
+    "use_fail": "Invaild use",
   },
   etc: {
     "done": "Done!"
