@@ -126,9 +126,8 @@ export default class PlaceableBase {
   }
 
   async useItem(idx: number) {
-    const useableItems = this.getItems("used");
-    const item = useableItems[idx];
-    if (!item) return null;
+    const item = this.items[idx];
+    if (!item || item.on !== "used") return null;
     const result = await item.emit("used", {});
     if (!result) {
       this.removeItem(item);
