@@ -1,5 +1,5 @@
 import type PlaceableBase from "../game/core/PlaceableBase.js";
-import type PlayerData from "../game/core/PlayerData.js";
+import type Player from "../game/core/Player.js";
 
 type ReplacePattern = [pattern: RegExp | string, replaceValue: string];
 export const replacePatterns: ReplacePattern[] = [
@@ -14,7 +14,7 @@ export const messages = {
     "not_your_turn": () => "Not your turn!",
     "action_count_exceeded": (cur: number, max: number) => `Action count exceeded! (${cur}/${max})`,
     "invaild_move": () => "invaild move",
-    "turn_alert": (curPlayer: PlayerData) => {
+    "turn_alert": (curPlayer: Player) => {
       return `It's ${curPlayer.pingString} turn!`;
     },
     "item": "item", // must be lowercase (or other language)

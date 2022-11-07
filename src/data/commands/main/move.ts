@@ -34,12 +34,7 @@ command.handler = async ({ gameManager, interaction, member, channel }) => {
   }
 
   const player = curPlayer;
-  if (!player.marker) {
-    await slashUtil.reply(interaction, messages.err["err_unexpected"]());
-    return;
-  }
-
-  const actionCountLeft = player.marker.actionCountLeft;
+  const actionCountLeft = player.actionCountLeft;
   const input = (interaction.options.get("directions", true).value ?? "") as string;
   const moveDirections: [x: number, y: number][] = [];
   for (const char of Array.from(input.toUpperCase())) {
@@ -55,9 +50,11 @@ command.handler = async ({ gameManager, interaction, member, channel }) => {
     return;
   }
   
-  player.marker.actionDid[1] = true;
   for (const [dx, dy] of moveDirections) {
     const result = player.marker.move(dx, dy);
+    if (result.moveSuccess) {
+      player.actionDid.move = true;
+    }
     if (result.attack) break;
   }
   await slashUtil.reply(interaction, {

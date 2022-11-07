@@ -1,5 +1,5 @@
 import Game from "./Game.js";
-import PlayerData from "./PlayerData.js";
+import Player from "./Player.js";
 import type Discord from "discord.js";
 
 export default class GuildManager {
@@ -11,7 +11,7 @@ export default class GuildManager {
     this.games = new Map();
   }
 
-  createGame(players: PlayerData[], discordChannel?: Discord.TextBasedChannel) {
+  createGame(players: Player[], discordChannel?: Discord.TextBasedChannel) {
     const channelId = discordChannel ? discordChannel.id : "game";
     if (this.games.has(channelId)) {
       return false;

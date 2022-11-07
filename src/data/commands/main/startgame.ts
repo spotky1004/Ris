@@ -1,5 +1,5 @@
 import { createCommand, slashUtil } from "../essentials.js";
-import PlayerData from "../../../game/core/PlayerData.js";
+import Player from "../../../game/core/Player.js";
 import placeable from "../../../bundles/placeable.js";
 import { messages } from "../../messageDatas.js";
 
@@ -39,14 +39,14 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
     interaction.options.getMember("player3"),
     interaction.options.getMember("player4")
   ];
-  const playerDataPlaces: (PlayerData | null)[] = [];
+  const playerDataPlaces: (Player | null)[] = [];
   for (let i = 0; i < playerPlaces.length; i++) {
     const player = playerPlaces[i];
     if (player === null) {
       playerDataPlaces.push(null);
     } else if ("user" in player) {
       const guildMember = await guild.members.fetch(player.id);
-      const playerData = new PlayerData({
+      const playerData = new Player({
         id: guildMember.id,
         displayName: guildMember.displayName
       });
@@ -56,7 +56,7 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
       playerDataPlaces.push(null);
     }
   }
-  const playerDatas = playerDataPlaces.filter(v => v) as PlayerData[];
+  const playerDatas = playerDataPlaces.filter(v => v) as Player[];
 
   const result = gameManager.createGame(playerDatas, channel);
   if (!result) {
@@ -75,8 +75,8 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
       if (!playerData) continue;
       const x = i % 2 ? 5 : 1;
       const y = i < 2 ? 1 : 5;
-      const player = new placeable.main.Player({
-        game,
+      const player = new placeable.main.PlayerMarker({
+        game, playerData,
         x, y,
         status: {
           maxHp: 10,
@@ -86,7 +86,7 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
         memberId: playerData.id,
         memberName: playerData.displayName
       });
-      playerData.addMarker(player);
+      playerData.connectMarker(player);
     }
   } catch {
     await slashUtil.reply(interaction, messages.err["err_unexpected"]());

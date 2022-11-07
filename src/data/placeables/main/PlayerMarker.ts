@@ -1,6 +1,6 @@
-import { PlaceableBase, PlaceableBaseOptions } from "../essentials.js";
+import { PlayableMarker, PlayableMarkerOptions } from "../essentials.js";
 
-export interface PlayerOptions extends PlaceableBaseOptions {
+export interface PlayerOptions extends PlayableMarkerOptions {
   memberId: string;
   memberName: string;
 }
@@ -11,11 +11,8 @@ const arrows = [
   ["↙", "↓", "↘"]
 ];
 
-export default class Player extends PlaceableBase {
+export default class PlayerMarker extends PlayableMarker {
   type: "Player";
-  money: number;
-  actionCountLeft: number;
-  actionDid: [combine: boolean, move: boolean];
   readonly memberId: string;
   readonly memberName: string;
 
@@ -23,9 +20,6 @@ export default class Player extends PlaceableBase {
     super(options);
 
     this.type = "Player";
-    this.money = this.game.config.startMoney;
-    this.actionCountLeft = this.game.config.actionCount;
-    this.actionDid = [false, false];
     this.memberId = options.memberId;
     this.memberName = options.memberName;
     this.items = [];

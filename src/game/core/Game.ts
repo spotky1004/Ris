@@ -1,6 +1,6 @@
 import Board, { BoardOptions } from "./Board.js";
 import MessageSender from "./MessageSender.js";
-import PlayerData from "./PlayerData.js";
+import Player from "./Player.js";
 import type Discord from "discord.js";
 
 interface GameConfig {
@@ -10,7 +10,7 @@ interface GameConfig {
 interface GameOptions {
   board: BoardOptions;
   config: GameConfig;
-  players: PlayerData[];
+  players: Player[];
   discordChannel?: Discord.TextBasedChannel;
 }
 
@@ -18,7 +18,7 @@ export default class Game {
   messageSender: MessageSender;
   board: Board;
   config: GameConfig;
-  players: PlayerData[];
+  players: Player[];
   allTurnCount: number;
   playerTurunCount: number;
 
@@ -29,6 +29,8 @@ export default class Game {
     this.players = options.players;
     this.allTurnCount = 0;
     this.playerTurunCount = 0;
+
+    options.players.forEach(player => player.connectGame(this));
   }
 
   getAlivePlayerCount() {
@@ -38,17 +40,25 @@ export default class Game {
   async turnEnd() {
     // current turn player
     const curTurnPlayer = this.getTurnPlayer();
-    const curTurnPlayerMarker = curTurnPlayer?.marker;
-    if (!curTurnPlayer || !curTurnPlayerMarker) {
+    if (!curTurnPlayer) {
       await this.messageSender.errUnexpected();
       return;
     }
-    const actionCountLeft = curTurnPlayerMarker.actionCountLeft;
+    const actionDid = curTurnPlayer.actionDid;
+    if (
+      !actionDid.combine ||
+      !actionDid.move
+    ) {
+      curTurnPlayer.marker.status.attack(1.5, "rule");
+    }
+    actionDid.combine = false;
+    actionDid.move = false;
+    const actionCountLeft = curTurnPlayer.actionCountLeft;
     let moneyGot = Math.min(5, Math.max(3, actionCountLeft));
     if (actionCountLeft === 0) moneyGot--;
     /** item event placeholder */
     moneyGot = Math.max(0, moneyGot);
-    curTurnPlayerMarker.money += moneyGot;
+    curTurnPlayer.money += moneyGot;
 
     // system
     this.addPlayerTurn();
@@ -60,14 +70,13 @@ export default class Game {
 
     // next turn player
     const nextTurnPlayer = this.getTurnPlayer();
-    const nextPlayerMarker = nextTurnPlayer?.marker;
-    if (!nextTurnPlayer || !nextPlayerMarker) {
+    if (!nextTurnPlayer) {
       await this.messageSender.errUnexpected();
       return;
     }
     let actionCountLeftToSet = this.config.actionCount;
     /** item event placeholder */
-    nextPlayerMarker.actionCountLeft = actionCountLeftToSet;
+    nextTurnPlayer.actionCountLeft = actionCountLeftToSet;
     await this.messageSender.turnAlert();
   }
 

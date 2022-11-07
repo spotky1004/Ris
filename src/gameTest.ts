@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import GameManager from "./game/core/GameManager.js";
-import PlayerData from "./game/core/PlayerData.js";
+import Player from "./game/core/Player.js";
 import placeable from "./bundles/placeable.js";
 import type Game from "./game/core/Game.js";
 
@@ -26,11 +26,11 @@ function error(msg: string) {
 function run() {
   const gameManager = new GameManager();
   const playerDatas = [
-    new PlayerData({
+    new Player({
       id: "1",
-      displayName: "Player 1"
+      displayName: "Player 1",
     }),
-    new PlayerData({
+    new Player({
       id: "2",
       displayName: "Player 2"
     })
@@ -42,8 +42,9 @@ function run() {
   }
   
   const players = [
-    new placeable.main.Player({
+    new placeable.main.PlayerMarker({
       game,
+      playerData: playerDatas[0],
       memberId: playerDatas[0].id,
       memberName: playerDatas[0].displayName,
       name: playerDatas[0].displayName,
@@ -53,15 +54,15 @@ function run() {
         baseAtk: 2.5
       },
     }),
-    new placeable.main.Player({
+    new placeable.main.PlayerMarker({
       game,
+      playerData: playerDatas[1],
       memberId: playerDatas[1].id,
       memberName: playerDatas[1].displayName,
       name: playerDatas[1].displayName,
       x: 5, y: 1,
       status: {
         hp: 3000,
-
       },
     })
   ];

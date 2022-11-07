@@ -1,5 +1,5 @@
 import { Item } from "../essentials.js";
-import Player from "../../placeables/main/Player.js";
+import PlayerMarker from "../../placeables/main/PlayerMarker.js";
 
 const item = new Item({
   name: "Attack Debugger",
@@ -9,8 +9,8 @@ const item = new Item({
   onEmit: async ({ game, data, event, owner }) => {
     if (event === "attacked") {
       if (
-        data.from instanceof Player &&
-        owner instanceof Player
+        data.from instanceof PlayerMarker &&
+        owner instanceof PlayerMarker
       ) {
         await game.messageSender.send(`${data.from.memberName} attacked ${owner.memberName} for ${data.damage} damage!`);
       }
