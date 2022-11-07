@@ -76,6 +76,10 @@ export default class Game {
     /** item event placeholder */
     nextTurnPlayer.actionCountLeft = actionCountLeftToSet;
     await this.messageSender.turnAlert();
+
+    return {
+      moneyGot
+    };
   }
 
   getTurnPlayer() {

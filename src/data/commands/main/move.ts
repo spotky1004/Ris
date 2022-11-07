@@ -53,13 +53,10 @@ command.handler = async ({ gameManager, interaction, member, channel }) => {
     }
     if (result.attack) break;
   }
-  await slashUtil.reply(interaction, {
-    content: messages.etc["done"],
-    ephemeral: true
-  });
+  const result = await game.turnEnd();
+  await slashUtil.reply(interaction, messages.game["turn_end"](result.moneyGot), true);
 
   await game.messageSender.gameScreen();
-  await game.turnEnd();
 }
 
 export default command;

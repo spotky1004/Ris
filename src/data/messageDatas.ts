@@ -25,6 +25,7 @@ export const messages = {
     },
     "item": "item", // must be lowercase (or other language)
     "money": "Money",
+    "turn_end": (moneyGot: number) => `Turn end. (${messages.game["money"]} +**${moneyGot}**)`,
   },
   command: {
     "buy_command_param_desc": "Name of the item to buy",
