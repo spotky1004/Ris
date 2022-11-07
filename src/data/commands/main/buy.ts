@@ -37,10 +37,10 @@ command.handler = async ({ gameManager, channel, interaction, member }) => {
   }
   const result = player.marker.buyItem(itemToBuy);
   if (!result) {
-    await slashUtil.reply(interaction, messages.game["buy_fail"](player, itemToBuy));
+    await slashUtil.reply(interaction, messages.game["buy_fail"](player, itemToBuy), true);
     return;
   }
-  await slashUtil.reply(interaction, messages.game["buy_success"](player, itemToBuy));
+  await slashUtil.reply(interaction, messages.game["buy_success"](player, itemToBuy), true);
 };
 
 export default command;
