@@ -31,7 +31,7 @@ command.handler = async ({ gameManager, interaction, member, channel }) => {
 
   const player = curPlayer;
   const actionCountLeft = player.actionCountLeft;
-  const input = (interaction.options.get("directions", true).value ?? "") as string;
+  const input = slashUtil.getOption(interaction, "directions", "string", true);
   const moveDirections: [x: number, y: number][] = [];
   for (const char of Array.from(input.toUpperCase())) {
     if (isDirectionCharacter(char)) {

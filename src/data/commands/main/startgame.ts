@@ -32,7 +32,6 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
     await slashUtil.reply(interaction, messages.err["err_member_not_found"]());
     return;
   }
-
   const playerPlaces = [
     interaction.options.getMember("player1"),
     interaction.options.getMember("player2"),
