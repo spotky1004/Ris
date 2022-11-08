@@ -50,6 +50,10 @@ export default class MessageSender {
     await this.send(messages.game["rule_attack"](placeable, damage));
   }
 
+  async winner(winners: PlaceableBase[]) {
+    await this.send(messages.game["winner"](winners));
+  }
+
   async gameScreen(highlight?: [x: number, y: number, width: number, height: number]) {
     if (!this.channel) return;
     const canvas = this.game.board.canvas;

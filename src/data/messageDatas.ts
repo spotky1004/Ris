@@ -1,3 +1,4 @@
+import type Game from "../game/core/Game.js";
 import type Item from "../game/core/Item.js";
 import type PlaceableBase from "../game/core/PlaceableBase.js";
 import type Player from "../game/core/Player.js";
@@ -30,8 +31,10 @@ export const messages = {
     "item": "item", // must be lowercase (or other language)
     "money": "Money",
     "turn_end": (moneyGot: number) => `Turn end. (${messages.game["money"]} +**${moneyGot}**)`,
+    "winner": (winners: PlaceableBase[]) => `${winners.map(p => `**${p.displayName}**`).join(", ")} won!`
   },
   command: {
+    "startgame": (game: Game) => `Game started!\n${game.players.map(p => p.displayName).join(" -> ")}`,
     "buy_command_param_desc": "Name of the item to buy",
     "buy_success": (player: Player, itemBought: Item, count: number) => {
       return `You successfully bought **${itemBought.name}**${count > 1 ? ` **x${count}**` : ""} for **${itemBought.cost*count}** ${messages.game["money"]}\nNow, you have **${player.money}** ${messages.game["money"]}.`;
@@ -42,9 +45,6 @@ export const messages = {
     "use_command_param_desc": "Index of the item to use. (use /status to see index)",
     "use_success": (item: Item, curActionCount: number, maxActionCount: number) => `Successfully used **${item.name}**! (${curActionCount}/${maxActionCount})`,
     "use_fail": "Invaild use",
-  },
-  etc: {
-    "done": "Done!"
   },
   err: {
     "err_unexpected": "Unexpected error occured...",

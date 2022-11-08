@@ -21,6 +21,7 @@ export default class GuildManager {
     }
     
     this.games.set(channelId, new Game({
+      id: channelId,
       gameManager: this,
       config: {
         startMoney: 4,

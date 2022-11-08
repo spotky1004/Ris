@@ -10,6 +10,7 @@ interface GameConfig {
   actionCount: number;
 }
 interface GameOptions {
+  id: string;
   gameManager: GameManager;
   board: BoardOptions;
   config: GameConfig;
@@ -19,6 +20,7 @@ interface GameOptions {
 
 export default class Game {
   readonly gameManager: GameManager;
+  readonly id: string;
   messageSender: MessageSender;
   board: Board;
   config: GameConfig;
@@ -28,6 +30,7 @@ export default class Game {
 
   constructor(options: GameOptions) {
     this.gameManager = options.gameManager;
+    this.id = options.id;
     this.messageSender = new MessageSender(this, options.discordChannel);
     this.board = new Board(this, options.board);
     this.config = options.config;
@@ -108,6 +111,12 @@ export default class Game {
       this.emitAllTurnTick();
     }
     return this.playerTurunCount;
+  }
+
+  gameEnd() {
+    const winners = this.board.getAllPlaceables();
+    this.messageSender.winner(winners);
+    this.gameManager.destroyGame(this.id)
   }
 
   private emitTick(player: Player, type: TickTypes) {

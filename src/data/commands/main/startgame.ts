@@ -94,7 +94,7 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
 
   await game.messageSender.turnAlert();
 
-  await slashUtil.reply(interaction, messages.etc["done"]);
+  await slashUtil.reply(interaction, messages.command["startgame"](game));
   await game.messageSender.gameScreen();
 }
 
