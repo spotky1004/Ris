@@ -15,7 +15,7 @@ const item = new Item({
   onEmit: async ({ game, data }) => {
     const param = paramParser(
       data.param,
-      [paramPatterns.boardPosition, paramPatterns.integer]
+      [paramPatterns.boardPosition, paramPatterns.zeroOne]
     );
     if (!param) return {
       errorMsg: messages.item["invaild_param"],
