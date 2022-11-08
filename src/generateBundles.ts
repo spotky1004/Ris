@@ -28,6 +28,7 @@ function createBundle(bundleName: string) {
   const dataSectionFolders = fs.readdirSync(dataPath).filter(f => !f.endsWith(".ts"));
   const sectionDatas: [path: string, name: string][] = [];
   for (const section of dataSectionFolders) {
+    if (section === "util") break;
     const dataSectionPath = path.join(dataPath, section);
     
     let content = "";

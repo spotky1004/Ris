@@ -1,7 +1,8 @@
 import { Item } from "../essentials.js";
+import { paramParser, paramPatterns } from "../util/paramParser.js";
+import { messages } from "../../messageDatas.js";
 import type PlaceableBase from "../../../game/core/PlaceableBase.js";
 
-const rayParamPattern = /\d+,(V|H)/;
 const item = new Item({
   name: "Ray",
   on: "used",
@@ -12,19 +13,22 @@ const item = new Item({
   cost: 5,
 
   onEmit: async ({ game, data }) => {
-    const param = data.param;
-    if (!rayParamPattern.test(param)) return {
-      errorMsg: "x,V or y,H",
+    const param = paramParser(
+      data.param,
+      [paramPatterns.boardPosition, paramPatterns.integer]
+    );
+    if (!param) return {
+      errorMsg: messages.item["invaild_param"],
       ignoreDestroyOnEmit: true
     };
-    const params = param.split(",");
-    const rPos = Number(params[0]) - 1;
-    const direction = params[1] as "V" | "H";
+    const directionCode = param[1];
+    const rPos = param[0][Number(!directionCode)];
+    const direction = directionCode ? "V" : "H";
 
     const board = game.board;
     const { width, height } = board;
     if (board.isOutOfBound(direction === "V" ? rPos: 0, direction === "H" ? rPos : 0)) return {
-      errorMsg: `Cannot use ray on that position!`,
+      errorMsg: messages.item["wrong_position"]("Ray"),
       ignoreDestroyOnEmit: true
     };
 

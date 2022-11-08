@@ -11,9 +11,29 @@ command.slashCommand
   )
   .addStringOption(option =>
     option
-      .setName("param")
+      .setName("param1")
       .setDescription("No description.")
   )
+  .addStringOption(option =>
+    option
+      .setName("param2")
+      .setDescription("No description.")
+  )
+  .addStringOption(option =>
+    option
+      .setName("param3")
+      .setDescription("No description.")
+  )
+  .addStringOption(option =>
+    option
+      .setName("param4")
+      .setDescription("No description.")
+  )
+  .addStringOption(option =>
+    option
+      .setName("param5")
+      .setDescription("No description.")
+  );
 
 command.handler = async ({ gameManager, channel, interaction, member }) => {
   const game = gameManager.getGame(channel.id);
@@ -33,8 +53,14 @@ command.handler = async ({ gameManager, channel, interaction, member }) => {
   }
 
   const idxToUse = slashUtil.getOption(interaction, "nr", "number", true);
-  const itemParam = slashUtil.getOption(interaction, "param", "string") ?? "";
-  const useResult = await curPlayer.marker.useItem(idxToUse, itemParam);
+  const itemParams = [
+    slashUtil.getOption(interaction, "param1", "string") ?? "",
+    slashUtil.getOption(interaction, "param2", "string") ?? "",
+    slashUtil.getOption(interaction, "param3", "string") ?? "",
+    slashUtil.getOption(interaction, "param4", "string") ?? "",
+    slashUtil.getOption(interaction, "param5", "string") ?? "",
+  ];
+  const useResult = await curPlayer.marker.useItem(idxToUse, itemParams);
   if (!useResult || useResult[1].errorMsg) {
     const errMsg = useResult && useResult[1] ? "Wrong param: " + useResult[1].errorMsg : null;
     await slashUtil.reply(interaction, errMsg ?? messages.command["use_fail"], true);

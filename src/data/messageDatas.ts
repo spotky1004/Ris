@@ -55,6 +55,8 @@ export const messages = {
   },
   item: {
     "tier_order": ["I", "II", "III", "IV", "V", "VI", "VII"],
+    "invaild_param": "Invaild params, see item description with /description.",
+    "wrong_position": (name: string) => `Cannot use **${name}** on that position!`,
     "wall" : "Wall",
     "wall_order": ["A", "B", "C", "D", "E", "F", "G", "H"],
   },

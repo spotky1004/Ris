@@ -125,7 +125,7 @@ export default class PlaceableBase {
     return returnVals;
   }
 
-  async useItem(idx: number, param: string = ""): Promise<[WorkingItem<"used">, ItemActivateEventReturn["used"]] | null> {
+  async useItem(idx: number, param: string[] = []): Promise<[WorkingItem<"used">, ItemActivateEventReturn["used"]] | null> {
     const item = this.items[idx];
     if (!item || item.on !== "used") return null;
     const result = await item.emit("used", { param }) ?? {};

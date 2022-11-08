@@ -15,7 +15,7 @@ type ItemActivateEventTypes<T> = {
 export interface ItemActivateEventData extends ItemActivateEventTypes<{}> {
   "always": ItemActivateEventData[Exclude<ItemActivateEventNames, "always">];
   "used": {
-    param: string;
+    param: string[];
   },
   "none": {};
   "move": {
