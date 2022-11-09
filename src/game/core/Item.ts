@@ -1,3 +1,4 @@
+import { messages } from "../../data/messageDatas.js";
 import type Game from "./Game.js";
 import type { TickManagerOptions } from "../util/TickManager.js";
 import type PlaceableBase from "./PlaceableBase.js";
@@ -88,6 +89,8 @@ type ItemStatusChangeCallback = (cur: number, game: Game) => number;
 
 interface ItemOptions<T extends ItemActivateEventNames> {
   name: string;
+  lore?: string;
+  effectDescription?: string;
   /** default: true */
   unlockedDefault?: boolean;
   /** default: false */
@@ -108,6 +111,8 @@ interface ItemOptions<T extends ItemActivateEventNames> {
 
 export default class Item<T extends ItemActivateEventNames = any> {
   readonly name: string;
+  readonly lore: string | undefined;
+  readonly effectDescription: string;
   readonly unlockedDefault: boolean;
   readonly recipe: Item[] | null;
   readonly shopable: boolean;
@@ -122,6 +127,8 @@ export default class Item<T extends ItemActivateEventNames = any> {
 
   constructor(options: ItemOptions<T>) {
     this.name = options.name;
+    this.lore = options.lore;
+    this.effectDescription = options.effectDescription ?? "...";
     this.unlockedDefault = options.unlockedDefault ?? true;
     this.recipe = options.recipe ?? [];
     this.shopable = options.shopable ?? false;
@@ -144,5 +151,46 @@ export default class Item<T extends ItemActivateEventNames = any> {
 
   getValueString() {
     return `[${this.cost}, ${this.tier}]`;
+  }
+
+  getMinifiedInfo(markup: boolean=true) {
+    if (markup) {
+      const content = `**${this.name}** **${this.getValueString()}**`;
+      return content;
+    } else {
+      const content = `${this.name} ${this.getValueString()}`;
+      return content;
+    }
+  }
+
+  getInfo(markup: boolean=true) {
+    const W = 50;
+    let content = ``;
+    if (markup) {
+      content += `+**${"-".repeat(W - 2)}**+\n`;
+      content += `   < **${this.name}** > **${this.getValueString()}**\n`;
+      if (this.lore) {
+        content += `\`/ ${messages.game["lore"]} \\\\\`\n`;
+        content += `\`\`\`\n`;
+        content += `- ${this.lore.replace(/\n/, "\n  ")}\n`;
+        content += `\`\`\`\n`;
+      }
+      content += `\`/ ${messages.game["description"]} \\\\\`\n`;
+      content += `\`\`\`\n`;
+      content += `- ${this.effectDescription.replace(/\n/, "\n  ")}\n`;
+      content += `\`\`\`\n`;
+      content += `+**${"-".repeat(W - 2)}**+`;
+    } else {
+      content += `+${"-".repeat(W - 2)}+\n`;
+      content += `   < ${this.name} > ${this.getValueString()}\n\n`;
+      if (this.lore) {
+        content += `// ${messages.game["lore"]}\n`;
+        content += `- ${this.lore.replace(/\n/, "\n  ")}\n\n`;
+      }
+      content += `// ${messages.game["description"]}\n`;
+      content += `- ${this.effectDescription.replace(/\n/, "\n  ")}\n`;
+      content += `+${"-".repeat(W - 2)}+`;
+    }
+    return content.trim();
   }
 }

@@ -31,7 +31,9 @@ export const messages = {
     "item": "item", // must be lowercase (or other language)
     "money": "Money",
     "turn_end": (moneyGot: number) => `Turn end. (${messages.game["money"]} +**${moneyGot}**)`,
-    "winner": (winners: PlaceableBase[]) => `${winners.map(p => `**${p.displayName}**`).join(", ")} won!`
+    "winner": (winners: PlaceableBase[]) => `${winners.map(p => `**${p.displayName}**`).join(", ")} won!`,
+    "lore": "Lore",
+    "description": "Description",
   },
   command: {
     "startgame": (game: Game) => `Game started!\n${game.players.map(p => p.displayName).join(" -> ")}`,
@@ -45,6 +47,7 @@ export const messages = {
     "use_command_param_desc": "Index of the item to use. (use /status to see index)",
     "use_success": (item: Item, curActionCount: number, maxActionCount: number) => `Successfully used **${item.name}**! (${curActionCount}/${maxActionCount})`,
     "use_fail": "Invaild use",
+    "description_fail": "That item doesn't not exits.",
   },
   err: {
     "err_unexpected": "Unexpected error occured...",

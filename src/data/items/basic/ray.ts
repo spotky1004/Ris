@@ -7,6 +7,7 @@ const item = new Item({
   shopable: true,
 
   name: "Ray",
+  effectDescription: "Ray",
   on: "used",
   timing: "after",
   destroyOnEmit: true,

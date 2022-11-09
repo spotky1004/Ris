@@ -7,6 +7,7 @@ const item = new Item({
   shopable: true,
 
   name: "Brick",
+  effectDescription: `Spawn 1x3 or 3x1 size Wall based on looking direction.\nWall blocks all players.`,
   on: "used",
   timing: "after",
   destroyOnEmit: true,

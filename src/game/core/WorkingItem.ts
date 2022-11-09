@@ -45,4 +45,12 @@ export default class WorkingItem<T extends ItemActivateEventNames = any> {
     }
     return;
   }
+
+  getMinifiedInfo() {
+    const item = this.data;
+    const idx = this.owner.items.findIndex(i => i === this);
+    const chargeLen = item.chargeOptions?.length ?? 0;
+    const content = `\`#${idx.toString().padStart(2, " ")}\` - ${item.getMinifiedInfo()} ${chargeLen > 0 ? `(CD: **${this.chargeTick.timeLeft}**/${chargeLen})`: ""}`
+    return content;
+  }
 }

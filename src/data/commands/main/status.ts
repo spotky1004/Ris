@@ -24,10 +24,8 @@ command.handler = async ({ gameManager, channel, interaction, member }) => {
     content += `>>> `;
   }
   for (let i = 0; i < items.length; i++) {
-    const workingItem = items[i];
-    const item = workingItem.data;
-    const chargeLen = item.chargeOptions?.length ?? 0;
-    content += `\`#${i.toString().padStart(2, " ")}\` - **${item.name}** **${item.getValueString()}** ${chargeLen > 0 ? `(CD: **${workingItem.chargeTick.timeLeft}**/${chargeLen})`: ""}\n`;
+    const item = items[i];
+    content += item.getMinifiedInfo();
   }
 
   await slashUtil.reply(interaction, {
