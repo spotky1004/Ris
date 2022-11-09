@@ -35,6 +35,7 @@ export interface RenderItems {
     y: number;
     w?: number;
     h?: number;
+    shape?: [x: number, y: number][];
   };
 }
 export type RenderItemsTypes = keyof RenderItems;
@@ -218,8 +219,17 @@ export default class BoardCanvas {
         });
       } else if (type === "block") {
         const field = this.getFieldLayer(options.layer ?? 0);
+        let { x, y, w, h } = options;
+        w ??= 1;
+        h ??= 1;
         field.fillStyle = options.color;
-        field.fillRect(options.x, options.y, options.w ?? 1, options.h ?? 1);
+        if (options.shape) {
+          for (const [sx, sy] of options.shape) {
+            field.fillRect(x + sx, y + sy, w, h);
+          }
+        } else {
+          field.fillRect(x, y, w, h);
+        }
       }
     }
   }
