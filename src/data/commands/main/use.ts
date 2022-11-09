@@ -42,7 +42,7 @@ command.handler = async ({ gameManager, channel, interaction, member }) => {
   if (!player) return;
 
   if (player.actionCountLeft < 1) {
-    await slashUtil.reply(interaction, messages.game["action_count_exceeded"](player.actionCountLeft, game.config.actionCount));
+    await slashUtil.reply(interaction, messages.game["action_count_exceeded"](player.actionCountLeft, game.config.actionCount), true);
     return;
   }
 
