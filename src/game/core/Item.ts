@@ -150,7 +150,7 @@ export default class Item<T extends ItemActivateEventNames = any> {
   }
 
   getValueString() {
-    return `[${this.cost}, ${this.tier}]`;
+    return `[${this.cost}, ${messages.item["tier_order"][this.tier - 1]}]`;
   }
 
   getMinifiedInfo(markup: boolean=true) {
@@ -167,19 +167,19 @@ export default class Item<T extends ItemActivateEventNames = any> {
     const W = 50;
     let content = ``;
     if (markup) {
-      content += `+**${"-".repeat(W - 2)}**+\n`;
-      content += `   < **${this.name}** > **${this.getValueString()}**\n`;
+      content += `+${"-".repeat(W - 2)}+\n`;
+      content += `   < **${this.name}** > **${this.getValueString()}**\n\n`;
       if (this.lore) {
-        content += `\`/ ${messages.game["lore"]} \\\\\`\n`;
+        content += `• ${messages.game["lore"]}\n`;
         content += `\`\`\`\n`;
         content += `- ${this.lore.replace(/\n/, "\n  ")}\n`;
         content += `\`\`\`\n`;
       }
-      content += `\`/ ${messages.game["description"]} \\\\\`\n`;
+      content += `• ${messages.game["description"]}\n`;
       content += `\`\`\`\n`;
       content += `- ${this.effectDescription.replace(/\n/, "\n  ")}\n`;
       content += `\`\`\`\n`;
-      content += `+**${"-".repeat(W - 2)}**+`;
+      content += `+${"-".repeat(W - 2)}+`;
     } else {
       content += `+${"-".repeat(W - 2)}+\n`;
       content += `   < ${this.name} > ${this.getValueString()}\n\n`;

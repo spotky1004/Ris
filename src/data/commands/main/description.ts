@@ -26,7 +26,7 @@ command.handler = async ({ gameManager, channel, interaction, member }) => {
     return;
   }
   const itemInfo = item.data.getInfo();
-  await slashUtil.reply(interaction, itemInfo, true);
+  await slashUtil.reply(interaction, itemInfo);
 }
 
 export default command;
