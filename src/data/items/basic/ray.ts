@@ -4,6 +4,8 @@ import { messages } from "../../messageDatas.js";
 import type PlaceableBase from "../../../game/core/PlaceableBase.js";
 
 const item = new Item({
+  shopable: true,
+
   name: "Ray",
   on: "used",
   timing: "after",

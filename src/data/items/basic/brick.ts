@@ -4,9 +4,15 @@ import { messages } from "../../messageDatas.js";
 import tags from "../../tags.js";
 
 const item = new Item({
+  shopable: true,
+
   name: "Brick",
   on: "used",
   timing: "after",
+  destroyOnEmit: true,
+  tier: 1,
+  recipe: [],
+  cost: 3,
 
   onEmit: async ({ game, owner }) => {
     const board = game.board;
@@ -50,11 +56,7 @@ const item = new Item({
       }
     });
     return;
-  },
-  destroyOnEmit: true,
-  tier: 1,
-  recipe: [],
-  cost: 3
+  }
 });
 
 export default item;

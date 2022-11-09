@@ -1,10 +1,6 @@
-import item from "../bundles/item.js";
-import type Item from "../game/core/Item.js";
+import itemArr from "../bundles/itemArr.js";
 
 // Maximum item count: 20
-const buyableItems: Item[] = [
-  item.basic.Brick,
-  item.basic.Ray
-];
+const buyableItems = itemArr.filter(i => i.shopable);
 
 export default buyableItems;
