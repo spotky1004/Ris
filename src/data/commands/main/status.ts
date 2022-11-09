@@ -25,7 +25,7 @@ command.handler = async ({ gameManager, channel, interaction, member }) => {
   }
   for (let i = 0; i < items.length; i++) {
     const item = items[i];
-    content += item.getMinifiedInfo();
+    content += item.getMinifiedInfo() + "\n";
   }
 
   await slashUtil.reply(interaction, {
