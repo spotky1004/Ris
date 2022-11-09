@@ -141,4 +141,8 @@ export default class Item<T extends ItemActivateEventNames = any> {
     this.tier = tier;
     this.cost = cost;
   }
+
+  getValueString() {
+    return `[${this.cost}, ${this.tier}]`;
+  }
 }
