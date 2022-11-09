@@ -32,22 +32,9 @@ export default class PlayerMarker extends PlayableMarker {
   render() {
     const canvas = this.game.board.canvas;
 
-    // Draww block
+    // Draww placeable
     canvas.addPlaceableRenderItem("basicPlaceable", 5, {
       bgColor: "#e6eabc",
-      x: this.x, y: this.y,
-      shape: this.shape,
-      name: {
-        text: "",
-        color: "#000"
-      },
-      numbers: []
-    });
-
-    // Draw text
-    canvas.addPlaceableRenderItem("basicPlaceable", 5, {
-      bgColor: "#0000",
-      layer: 2,
       x: this.x, y: this.y,
       shape: this.shape,
       name: {

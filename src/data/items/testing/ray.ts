@@ -51,14 +51,10 @@ const item = new Item({
     const canvas = board.canvas;
     const attacked: PlaceableBase[] = [];
     for (const [ax, ay] of attackPoses) {
-      canvas.addRenderItem("basicPlaceable", 15, {
-        bgColor: "#f0d343",
-        x: ax, y: ay,
-        name: {
-          text: "",
-          color: ""
-        },
-        numbers: []
+      canvas.addRenderItem("block", 15, {
+        layer: 1,
+        color: "#f0d343",
+        x: ax, y: ay
       });
       const tile = board.getTile(ax, ay);
       for (const toAttack of tile) {

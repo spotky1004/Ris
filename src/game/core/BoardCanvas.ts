@@ -8,6 +8,14 @@ export interface RenderStringOptions {
   color: string;
 }
 export interface RenderItems {
+  "basicPlaceable": {
+    bgColor: string;
+    x: number;
+    y: number;
+    shape?: [x: number, y: number][];
+    name: RenderStringOptions;
+    numbers: RenderStringOptions[];
+  };
   "text": {
     layer?: 0 | 1 | 2;
     text: string;
@@ -20,15 +28,14 @@ export interface RenderItems {
     maxSize?: number;
     maxWidth?: number;
   };
-  "basicPlaceable": {
+  "block": {
     layer?: 0 | 1 | 2;
-    bgColor: string;
+    color: string;
     x: number;
     y: number;
-    shape?: [x: number, y: number][];
-    name: RenderStringOptions;
-    numbers: RenderStringOptions[];
-  }
+    w?: number;
+    h?: number;
+  };
 }
 export type RenderItemsTypes = keyof RenderItems;
 type RenderItemsWithType = {
@@ -152,21 +159,23 @@ export default class BoardCanvas {
     for (const [, options] of toRender) {
       const type = options.type;
       if (type === "basicPlaceable") {
-        const field = this.getFieldLayer(options.layer ?? 1);
+        const fieldMid = this.getFieldLayer(1);
+        const fieldTop = this.getFieldLayer(2);
+
         const w = 1;
         const h = 1;
         const x = options.x * w;
         const y = options.y * h;
         
-        field.fillStyle = options.bgColor;
-        field.fillRect(x, y, w, h);
+        fieldMid.fillStyle = options.bgColor;
+        fieldMid.fillRect(x, y, w, h);
         if (options.shape) {
           for (const [sx, sy] of options.shape) {
-            field.fillRect(x + sx, y + sy, w, h);
+            fieldMid.fillRect(x + sx, y + sy, w, h);
           }
         }
   
-        field.fillText({
+        fieldTop.fillText({
           text: options.name.text,
           color: options.name.color,
           x: x + w/2, y: (options.numbers.length === 0 ? y + h/2 : y + h*0.35),
@@ -179,7 +188,7 @@ export default class BoardCanvas {
           baseline: "middle", textAlign: "center"
         });
         for (let i = 0; i < options.numbers.length; i++) {
-          field.fillText({
+          fieldTop.fillText({
             text: options.numbers[i].text,
             color: options.numbers[i].color,
             x: x + (i + 1)*w/(options.numbers.length + 1), y: y + h*0.65,
@@ -207,6 +216,10 @@ export default class BoardCanvas {
           maxSize: options.maxSize ?? 0.5,
           maxWidth: options.maxWidth ?? 1
         });
+      } else if (type === "block") {
+        const field = this.getFieldLayer(options.layer ?? 0);
+        field.fillStyle = options.color;
+        field.fillRect(options.x, options.y, options.w ?? 1, options.h ?? 1);
       }
     }
   }
