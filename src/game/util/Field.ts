@@ -1,4 +1,16 @@
 import CanvasModule from "canvas";
+import fs from "fs";
+import path from "path";
+import getPath from "../../util/getPath.js";
+
+const { __dirname } = getPath(import.meta.url);
+const fontDirPath = path.join(__dirname, "../../../resource/font");
+for (const file of fs.readdirSync(fontDirPath)) {
+  const filePath = path.join(fontDirPath, file);
+  const familyName = (file.match(/^(.+)\.[^.]+$/) ?? [])[1];
+  if (!familyName) continue;
+  CanvasModule.registerFont(filePath, { family: familyName });
+}
 
 type Canvas = CanvasModule.Canvas;
 

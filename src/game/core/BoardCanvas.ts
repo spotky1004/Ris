@@ -35,7 +35,7 @@ type RenderItemsWithType = {
   [K in RenderItemsTypes]: RenderItems[K] & { type: K };
 }
 
-const fontFamilys = ["Arial"];
+const fontFamilys = ["NanumGothicCoding-Regular"];
 export default class BoardCanvas {
   // @ts-ignore
   private game: Game;

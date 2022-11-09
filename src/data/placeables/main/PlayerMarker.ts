@@ -67,6 +67,7 @@ export default class PlayerMarker extends PlayableMarker {
     canvas.addPlaceableRenderItem("text", -1, {
       layer: 0,
       text: (arrows[dy + 1] ?? [])[dx + 1] ?? "",
+      bold: true,
       x: this.x + dx + 0.5, y: this.y + dy + 0.5,
       maxWidth: 1/8,
     });

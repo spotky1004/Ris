@@ -31,11 +31,11 @@ function run() {
   const playerDatas = [
     new Player({
       id: "1",
-      displayName: "Player 1",
+      displayName: "한글닉네임",
     }),
     new Player({
       id: "2",
-      displayName: "Player 2"
+      displayName: "Player 222"
     })
   ];
   const result = gameManager.createGame(playerDatas);
