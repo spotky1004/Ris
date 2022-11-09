@@ -125,16 +125,6 @@ export default class PlaceableBase {
     return returnVals;
   }
 
-  async useItem(idx: number, param: string[] = []): Promise<[WorkingItem<"used">, ItemActivateEventReturn["used"]] | null> {
-    const item = this.items[idx];
-    if (!item || item.on !== "used") return null;
-    const result = await item.emit("used", { param }) ?? {};
-    if (!result.ignoreDestroyOnEmit) {
-      this.removeItem(item);
-    }
-    return [item, result];
-  }
-
   attackedBy(by: string | PlaceableBase, atk?: number, type?: AttackType) {
     if (typeof by === "string") {
       atk = atk ?? 0;

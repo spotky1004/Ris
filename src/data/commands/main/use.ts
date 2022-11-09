@@ -55,14 +55,16 @@ command.handler = async ({ gameManager, channel, interaction, member }) => {
     slashUtil.getOption(interaction, "param5", "string") ?? "",
   ];
   const useResult = await player.marker.useItem(idxToUse, itemParams);
-  if (!useResult || useResult[1].errorMsg) {
-    const errMsg = useResult && useResult[1] ? "Wrong param: " + useResult[1].errorMsg : null;
-    await slashUtil.reply(interaction, errMsg ?? messages.command["use_fail"], true);
+  if (!useResult) {
+    await slashUtil.reply(interaction, messages.command["use_fail"], true);
     return;
   }
-  const [item] = useResult;
-
-  player.actionCountLeft--;
+  const [item, result] = useResult;
+  if (result.errorMsg) {
+    await slashUtil.reply(interaction, "Wrong param: " + useResult[1].errorMsg, true);
+    return;
+  }
+  
   await slashUtil.reply(interaction, messages.command["use_success"](item.data, player.actionCountLeft, game.config.actionCount), true);
 }
 

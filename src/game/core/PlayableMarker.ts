@@ -1,6 +1,6 @@
 import PlaceableBase, { PlaceableBaseOptions } from "./PlaceableBase.js";
 import type Player from "./Player.js";
-import type Item from "./Item.js";
+import type { default as Item, ItemActivateEventReturn } from "./Item.js";
 import type WorkingItem from "./WorkingItem.js";
 
 export interface PlayerMoveReturn {
@@ -24,6 +24,7 @@ export default class PlayableMarker extends PlaceableBase {
     this.x += x;
     this.y += y;
     this.player.actionDid.move = true;
+    this.player.actionCountLeft--;
     this.game.emitMoveTick(this.player);
     return {
       moveSuccess: true,
@@ -44,6 +45,20 @@ export default class PlayableMarker extends PlaceableBase {
       this.addItem(item);
     }
     return true;
+  }
+
+  async useItem(idx: number, param: string[] = []): Promise<[WorkingItem<"used">, ItemActivateEventReturn["used"]] | null> {
+    const item = this.items[idx];
+    if (!item || item.on !== "used") return null;
+    const result = await item.emit("used", { param }) ?? {};
+    if (result.errorMsg) {
+      return [item, result];
+    }
+    this.player.actionCountLeft--;
+    if (!result.ignoreDestroyOnEmit) {
+      this.removeItem(item);
+    }
+    return [item, result];
   }
 
   mergeItems(...items: Item[]) {

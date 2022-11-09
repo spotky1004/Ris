@@ -39,15 +39,13 @@ command.handler = async ({ gameManager, interaction, member, channel }) => {
     return;
   }
   
+  let moved = false;
   for (const [dx, dy] of moveDirections) {
     const result = player.marker.move(dx, dy);
-    if (result.moveSuccess || result.attack) {
-      player.actionDid.move = true;
-      player.actionCountLeft--;
-    }
+    moved = result.moveSuccess || moved;
     if (result.attack) break;
   }
-  if (!player.actionDid.move) {
+  if (!moved) {
     await slashUtil.reply(interaction, messages.game["invaild_move"], true);
     return;
   }
