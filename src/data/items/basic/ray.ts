@@ -1,5 +1,5 @@
 import { Item } from "../essentials.js";
-import { paramParser, paramPatterns } from "../util/paramParser.js";
+import { paramParser, paramPatterns, paramPatternDescriptions } from "../util/paramParser.js";
 import { messages } from "../../messageDatas.js";
 import type PlaceableBase from "../../../game/core/PlaceableBase.js";
 
@@ -8,6 +8,10 @@ const item = new Item({
 
   name: "Ray",
   effectDescription: "Ray",
+  paramDescription: [
+    `Position to use Ray.\n${paramPatternDescriptions.boardPosition}`,
+    `0 = Horizontal, 1 = Vertical\n${paramPatternDescriptions.zeroOne}`
+  ],
   on: "used",
   timing: "after",
   destroyOnEmit: true,

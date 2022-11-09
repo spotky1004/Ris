@@ -46,6 +46,13 @@ export const paramPatterns: { [K in ParamPatternNames]: ParamPattern<ParamPatter
     }
   ]
 };
+export const paramPatternDescriptions: { [K in ParamPatternNames]: string } = {
+  "number": "number: {-5, 0, 1.2, 1234, ...}",
+  "integer": "intger: {0, 1, 2, 10, 50, ...}",
+  "zeroOne": "zeroOne: {0, 1}",
+  "string": "string: {*anything*}",
+  "boardPosition": "boardPosition: {1A, 6C, 7F, ...}"
+};
 
 export function paramParser<A, B=undefined, C=undefined, D=undefined, E=undefined>(
   param: string[],

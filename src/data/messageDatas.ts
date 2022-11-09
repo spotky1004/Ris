@@ -31,9 +31,7 @@ export const messages = {
     "item": "item", // must be lowercase (or other language)
     "money": "Money",
     "turn_end": (moneyGot: number) => `Turn end. (${messages.game["money"]} +**${moneyGot}**)`,
-    "winner": (winners: PlaceableBase[]) => `${winners.map(p => `**${p.displayName}**`).join(", ")} won!`,
-    "lore": "Lore",
-    "description": "Description",
+    "winner": (winners: PlaceableBase[]) => `${winners.map(p => `**${p.displayName}**`).join(", ")} won!`
   },
   command: {
     "startgame": (game: Game) => `Game started!\n${game.players.map(p => p.displayName).join(" -> ")}`,
@@ -57,6 +55,10 @@ export const messages = {
     "err_not_playing": "You are not player!",
   },
   item: {
+    "tier_order": ["I", "II", "III", "IV", "V", "VI", "VII"],
+    "lore": "Lore",
+    "description": "Description",
+    "param": "Param",
     "spawn": (owner: PlaceableBase, spawned: PlaceableBase, alertStat?: boolean) => {
       let message = `**${owner.displayName}** spawned **${spawned.displayName}**.`;
       if (alertStat) {
@@ -65,12 +67,11 @@ export const messages = {
       }
       return message;
     },
-    "tier_order": ["I", "II", "III", "IV", "V", "VI", "VII"],
     "invaild_param": "Invaild params, see item description with /description.",
     "wrong_position": (name: string) => `Cannot use **${name}** on that position!`,
     "wall" : "Wall",
     "wall_order": ["A", "B", "C", "D", "E", "F", "G", "H"],
-  },
+  }
 };
 
 let section: keyof typeof messages;
