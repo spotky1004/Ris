@@ -57,6 +57,14 @@ export const messages = {
     "err_not_playing": "You are not player!",
   },
   item: {
+    "spawn": (owner: PlaceableBase, spawned: PlaceableBase, alertStat?: boolean) => {
+      let message = `**${owner.displayName}** spawned **${spawned.displayName}**.`;
+      if (alertStat) {
+        const status = spawned.status;
+        message += `\n**${spawned.displayName}** has ${status.getMaxHp()} $HP, ${status.getAtk()} $DMG.`
+      }
+      return message;
+    },
     "tier_order": ["I", "II", "III", "IV", "V", "VI", "VII"],
     "invaild_param": "Invaild params, see item description with /description.",
     "wrong_position": (name: string) => `Cannot use **${name}** on that position!`,

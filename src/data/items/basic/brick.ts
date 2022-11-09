@@ -37,7 +37,7 @@ const item = new Item({
 
     const wallName = messages.item["wall"];
     const wallOrder = messages.item["wall_order"];
-    new placeable.main.Wall({
+    const wall = new placeable.main.Wall({
       game,
       x: tx, y: ty,
       owner,
@@ -56,6 +56,9 @@ const item = new Item({
         baseDef: 2
       }
     });
+    
+    await game.messageSender.spawn(owner, wall, true);
+    await game.messageSender.gameScreen();
     return;
   }
 });

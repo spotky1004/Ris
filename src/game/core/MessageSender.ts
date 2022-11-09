@@ -50,6 +50,10 @@ export default class MessageSender {
     await this.send(messages.game["rule_attack"](placeable, damage));
   }
 
+  async spawn(owner: PlaceableBase, spawned: PlaceableBase, alertStat?: boolean) {
+    await this.send(messages.item["spawn"](owner, spawned, alertStat));
+  }
+
   async winner(winners: PlaceableBase[]) {
     await this.send(messages.game["winner"](winners));
   }
