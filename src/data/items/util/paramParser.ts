@@ -39,7 +39,7 @@ export const paramPatterns: { [K in ParamPatternNames]: ParamPattern<ParamPatter
         if (parseInt(param[i], 36) >= 10) {
           let x = param.slice(0, i);
           let y = param.slice(i);
-          return [Number(x), parseInt(y, 36)];
+          return [Number(x) - 1, parseInt(y, 36) - 10];
         }
       }
       return [-1, -1];
