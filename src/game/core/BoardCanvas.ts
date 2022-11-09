@@ -35,6 +35,7 @@ type RenderItemsWithType = {
   [K in RenderItemsTypes]: RenderItems[K] & { type: K };
 }
 
+const fontFamilys = ["Arial"];
 export default class BoardCanvas {
   // @ts-ignore
   private game: Game;
@@ -90,12 +91,39 @@ export default class BoardCanvas {
     this.fieldLayers[0].fillRect(0, 0, width, height);
     this.fieldLayers[0].fillStyle = "#f2f2f2";
 
+    const floorLayer = this.fieldLayers[0];
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
         if ((x+y)%2 === 0) {
-          this.fieldLayers[0].fillRect(x, y, 1, 1);
+          floorLayer.fillRect(x, y, 1, 1);
         }
       }
+    }
+    for (let x = 0; x < width; x++) {
+      floorLayer.fillText({
+        text: (x+1).toString(),
+        color: (x%2) === 0 ? "#777" : "#aaa",
+        x: x + 1/2, y: 1/8,
+        maxSize: 1/4,
+        maxWidth: 1,
+        font: {
+          fontFamilys
+        },
+        baseline: "top", textAlign: "center"
+      });
+    }
+    for (let y = 0; y < height; y++) {
+      floorLayer.fillText({
+        text: (y+10).toString(36).toUpperCase(),
+        color: (y%2) === 0 ? "#777" : "#aaa",
+        x: 1/8, y: y + 1/2,
+        maxSize: 1/4,
+        maxWidth: 1,
+        font: {
+          fontFamilys
+        },
+        baseline: "middle", textAlign: "left"
+      });
     }
   }
 
@@ -145,7 +173,7 @@ export default class BoardCanvas {
           maxSize: Math.min(w, h) / 4,
           maxWidth: w * 0.8,
           font: {
-            fontFamilys: ["arial"],
+            fontFamilys,
             bold: true
           },
           baseline: "middle", textAlign: "center"
@@ -158,7 +186,7 @@ export default class BoardCanvas {
             maxSize: Math.min(w, h) / 4,
             maxWidth: w * 0.95/options.numbers.length,
             font: {
-              fontFamilys: ["arial"],
+              fontFamilys,
               bold: true
             },
             baseline: "middle", textAlign: "center"
@@ -171,7 +199,7 @@ export default class BoardCanvas {
           color: options.color ?? "#000",
           x: options.x, y: options.y,
           font: {
-            fontFamilys: ["arial"],
+            fontFamilys,
             bold: options.bold ?? false
           },
           textAlign: options.align ?? "center",
