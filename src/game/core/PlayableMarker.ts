@@ -61,30 +61,21 @@ export default class PlayableMarker extends PlaceableBase {
     return [item, result];
   }
 
-  mergeItems(...items: Item[]) {
-    const itemToFind = items.map(item => item.name);
-    let workingItems: WorkingItem[] = [];
-    loop: while (itemToFind.length > 0) {
-      for (const workingItem of this.items) {
-        if (workingItems.includes(workingItem)) {
-          continue;
-        }
-        if (itemToFind.includes(workingItem.data.name)) {
-          workingItems.push(workingItem);
-          const idxToSplice = itemToFind.findIndex(name => name === workingItem.data.name);
-          itemToFind.splice(idxToSplice, 1);
-          continue loop;
-        }
-      }
-      return false;
-    }
-    const mergeResult = this.game.gameManager.itemManager.tryMerge(...workingItems.map(i => i.data));
-    if (mergeResult === null) return false;
-    for (const workingItem of workingItems) {
-      this.removeItem(workingItem);
+  mergeItem(idxes: number[]) {
+    const isIdxDupe = idxes.length !== new Set(idxes).size;
+    if (isIdxDupe) return false;
+
+    const toMerge = idxes.map(idx => this.items[idx]);
+    const isIdxInvaild = toMerge.length !== toMerge.filter(v => typeof v !== "undefined").length;
+    if (isIdxInvaild) return false;
+
+    const mergeResult = this.game.gameManager.itemManager.tryMerge(...toMerge.map(i => i.data));
+    if (mergeResult === null) return null;
+    for (const item of toMerge) {
+      this.removeItem(item);
     }
     this.addItem(mergeResult);
-    return true;
+    return mergeResult;
   }
 
   death() {
