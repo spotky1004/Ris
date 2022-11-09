@@ -3,7 +3,7 @@ import { messages } from "../../messageDatas.js";
 
 const command = createCommand("use");
 command.slashCommand
-  .addNumberOption(option =>
+  .addIntegerOption(option =>
     option
       .setName("nr")
       .setDescription("No description.")
