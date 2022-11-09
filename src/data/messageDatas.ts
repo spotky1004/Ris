@@ -64,3 +64,9 @@ export const messages = {
     "wall_order": ["A", "B", "C", "D", "E", "F", "G", "H"],
   },
 };
+
+let section: keyof typeof messages;
+for (section in messages) {
+  Object.freeze(messages[section]);
+}
+Object.freeze(messages);
