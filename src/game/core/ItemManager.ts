@@ -20,7 +20,7 @@ export default class ItemManager {
 
   addItem(item: Item) {
     this._items.push(item);
-    if (item.recipe && item.recipe.length >= 1) {
+    if (item._recipe && item._recipe.length >= 1) {
       const hashed = ItemManager.calcMergeHash(...item.recipe);
       this.recipeHash.set(hashed, item);
     }

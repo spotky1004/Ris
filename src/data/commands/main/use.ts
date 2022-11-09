@@ -65,7 +65,11 @@ command.handler = async ({ gameManager, channel, interaction, member }) => {
     return;
   }
   
-  await slashUtil.reply(interaction, messages.command["use_success"](item.data, player.actionCountLeft, game.config.actionCount), true);
+  let relpyMsg = messages.command["use_success"](item.data, player.actionCountLeft, game.config.actionCount);
+  if (result.replyMsg) {
+    relpyMsg = result.replyMsg + "\n" + "-".repeat(50) + "\n" + relpyMsg;
+  }
+  await slashUtil.reply(interaction, relpyMsg, true);
 }
 
 export default command;

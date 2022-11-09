@@ -99,7 +99,7 @@ interface ItemOptions<T extends ItemActivateEventNames> {
   /** default: false */
   shopable?: boolean;
   cost?: number;
-  recipe?: Item[];
+  recipe?: Item[] | (() => Item[]);
   tier?: number;
   on: T;
   timing: "before" | "after";
@@ -118,7 +118,7 @@ export default class Item<T extends ItemActivateEventNames = any> {
   readonly effectDescription: string;
   readonly paramDescription: string[];
   readonly unlockedDefault: boolean;
-  readonly recipe: Item[] | null;
+  readonly _recipe: Item[] | (() => Item[]);
   readonly shopable: boolean;
   cost: number;
   readonly tier: number;
@@ -135,7 +135,7 @@ export default class Item<T extends ItemActivateEventNames = any> {
     this.effectDescription = options.effectDescription ?? "...";
     this.paramDescription = options.paramDescription ?? [];
     this.unlockedDefault = options.unlockedDefault ?? true;
-    this.recipe = options.recipe ?? [];
+    this._recipe = options.recipe ?? [];
     this.shopable = options.shopable ?? false;
     this.on = options.on;
     this.timing = options.timing;
@@ -146,12 +146,20 @@ export default class Item<T extends ItemActivateEventNames = any> {
 
     let tier = options.tier ?? 1;
     let cost: number = options.cost ?? 0;
-    if (this.recipe.length > 0) {
+    if (this._recipe.length > 0) {
       tier = Math.max(...this.recipe.map(item => item.tier)) + 1;
       cost = this.recipe.reduce((a, b) => a + b.cost, 0);
     }
     this.tier = tier;
     this.cost = cost;
+  }
+
+  get recipe() {
+    if (Array.isArray(this._recipe)) {
+      return this._recipe;
+    } else {
+      return this._recipe();
+    }
   }
 
   getValueString() {
