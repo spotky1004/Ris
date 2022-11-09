@@ -50,13 +50,13 @@ export default class Game {
     const curTurnPlayer = this.getTurnPlayer();
     const actionDid = curTurnPlayer.actionDid;
     if (
-      !actionDid.combine ||
+      !actionDid.merge ||
       !actionDid.move
     ) {
       curTurnPlayer.marker.status.attack(1.5, "rule");
       this.messageSender.ruleDamage(curTurnPlayer.marker, 1.5);
     }
-    actionDid.combine = false;
+    actionDid.merge = false;
     actionDid.move = false;
     const actionCountLeft = curTurnPlayer.actionCountLeft;
     let moneyGot = Math.min(5, Math.max(3, actionCountLeft));

@@ -8,8 +8,8 @@ export interface PlayerOptions {
   actionCountLeft?: number;
 }
 interface ActionDid {
-  combine: boolean;
   move: boolean;
+  merge: boolean;
 }
 
 export default class Player {
@@ -27,7 +27,7 @@ export default class Player {
     this.money = options.money ?? -1;
     this.actionCountLeft = options.actionCountLeft ?? -1;
     this.actionDid = {
-      combine: false,
+      merge: false,
       move: false
     };
     this.defeated = false;

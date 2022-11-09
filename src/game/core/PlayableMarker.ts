@@ -70,6 +70,8 @@ export default class PlayableMarker extends PlaceableBase {
     if (isIdxInvaild) return false;
 
     const mergeResult = this.game.gameManager.itemManager.tryMerge(...toMerge.map(i => i.data));
+    this.player.actionDid.merge = true;
+    this.player.actionCountLeft--;
     if (mergeResult === null) return null;
     for (const item of toMerge) {
       this.removeItem(item);
