@@ -46,6 +46,12 @@ export const messages = {
     "use_success": (item: Item, curActionCount: number, maxActionCount: number) => `Successfully used **${item.name}**! (${curActionCount}/${maxActionCount})`,
     "use_fail": "Invaild use",
     "description_fail": "That item doesn't not exits.",
+    "merge_invaild": "That merge is invaild.",
+    "merge_fail": (curActionCount: number, maxActionCount: number) => `That recipe doesn't exit. (${curActionCount}/${maxActionCount})`,
+    "merge_success": (item: Item, curActionCount: number, maxActionCount: number) => {
+      const itemInfo = item.getInfo();
+      return `Successfully merged **${item.name}**! (${curActionCount}/${maxActionCount})\n\n${itemInfo}`;
+    }
   },
   err: {
     "err_unexpected": "Unexpected error occured...",
