@@ -1,7 +1,5 @@
-import * as basic from "./item/basic.js";
-import * as etc from "./item/etc.js";
+import * as testing from "./item/testing.js";
 
 export default {
-  basic,
-  etc,
+  testing,
 };

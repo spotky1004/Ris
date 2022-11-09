@@ -63,12 +63,14 @@ export interface ItemActivateEventData extends ItemActivateEventTypes<{}> {
 
 interface ItemActivateEventReturnBase {
   ignoreDestroyOnEmit?: boolean;
+  replyMsg?: string;
   errorMsg?: string;
 }
 export interface ItemActivateEventReturn extends ItemActivateEventTypes<ItemActivateEventReturnBase>  {
   "always": ItemActivateEventReturn[Exclude<ItemActivateEventNames, "always">];
   "otherPlayerMove": {
     ignoreDestroyOnEmit?: boolean;
+    replyMsg?: string;
     errorMsg?: string;
     cancelMove: boolean;
   };
