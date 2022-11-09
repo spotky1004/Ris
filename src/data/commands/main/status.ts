@@ -4,17 +4,14 @@ import { messages } from "../../messageDatas.js";
 const command = createCommand("status");
 
 command.handler = async ({ gameManager, channel, interaction, member }) => {
-  const game = gameManager.getGame(channel.id);
-  if (!game) {
-    await slashUtil.reply(interaction, messages.err["err_game_not_started"]);
-    return;
-  }
-
+  const game = await slashUtil.getGame(interaction, gameManager, channel);
+  if (!game) return;
   const player = game.players.find(p => p.id === member.id);
   if (!player) {
     await slashUtil.reply(interaction, messages.err["err_not_playing"]);
     return;
   }
+  
   const marker = player.marker;
   let content = "";
   content += `${messages.game["atk"]} - **${marker.status.getAtk()}** ⚔️\n`;

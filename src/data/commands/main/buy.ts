@@ -21,19 +21,11 @@ command.slashCommand
   );
 
 command.handler = async ({ gameManager, channel, interaction, member }) => {
-  const game = gameManager.getGame(channel.id);
-  if (!game) {
-    await slashUtil.reply(interaction, messages.err["err_game_not_started"]);
-    return;
-  }
-
-  const curPlayer = game.getTurnPlayer();
-  if (curPlayer.id !== member.id) {
-    await slashUtil.reply(interaction, messages.game["not_your_turn"], true);
-    return;
-  }
-
-  const player = curPlayer;
+  const game = await slashUtil.getGame(interaction, gameManager, channel);
+  if (!game) return;
+  const player = await slashUtil.getCurPlayer(interaction, game, member);
+  if (!player) return;
+  
   const itemName = slashUtil.getOption(interaction, messages.game["item"], "string", true);
   const buyCount = slashUtil.getOption(interaction, "count", "number") ?? 1;
   const itemToBuy = buyableItems.find(item => item.name === itemName);

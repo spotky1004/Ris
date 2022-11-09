@@ -18,18 +18,11 @@ function isDirectionCharacter(char: string): char is "L" | "R" | "U" | "D" {
   return ["L", "R", "U", "D"].includes(char);
 }
 command.handler = async ({ gameManager, interaction, member, channel }) => {
-  const game = gameManager.getGame(channel.id);
-  if (!game) {
-    await slashUtil.reply(interaction, messages.err["err_game_not_started"]);
-    return;
-  }
-  const curPlayer = game.getTurnPlayer();
-  if (curPlayer.id !== member.id) {
-    await slashUtil.reply(interaction, messages.game["not_your_turn"], true);
-    return;
-  }
+  const game = await slashUtil.getGame(interaction, gameManager, channel);
+  if (!game) return;
+  const player = await slashUtil.getCurPlayer(interaction, game, member);
+  if (!player) return;
 
-  const player = curPlayer;
   const actionCountLeft = player.actionCountLeft;
   const input = slashUtil.getOption(interaction, "directions", "string", true);
   const moveDirections: [x: number, y: number][] = [];

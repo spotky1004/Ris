@@ -1,5 +1,7 @@
 import Discord from "discord.js";
+import { messages } from "../messageDatas.js";
 import type GameManager from "../../game/core/GameManager.js";
+import type Game from "../../game/core/Game.js";
 
 interface CommandHandlerArgs {
   interaction: Discord.CommandInteraction;
@@ -40,6 +42,27 @@ interface SlashUtilGetOptionsTypeEnum {
 }
 
 export const slashUtil = {
+  getGame: async function(interaction: Discord.CommandInteraction, gameManager: GameManager, channel: Discord.TextBasedChannel) {
+    const game = gameManager.getGame(channel.id);
+    if (!game) {
+      await slashUtil.reply(interaction, messages.err["err_game_not_started"]);
+      return false;
+    }
+    return game;
+  },
+  getCurPlayer: async function(interaction: Discord.CommandInteraction, game: Game, member: Discord.GuildMember) {
+    const curTurnPlayer = game.getTurnPlayer();
+    const memberPlayer = game.players.find(p => p.id === member.id);
+    if (!memberPlayer) {
+      await slashUtil.reply(interaction, messages.err["err_not_playing"]);
+      return false;
+    }
+    if (curTurnPlayer.id !== memberPlayer.id) {
+      await slashUtil.reply(interaction, messages.game["not_your_turn"], true);
+      return false;
+    }
+    return curTurnPlayer;
+  },
   reply: async function(
     interaction: Discord.CommandInteraction,
     options: string | Discord.InteractionReplyOptions,
