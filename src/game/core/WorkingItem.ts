@@ -39,7 +39,7 @@ export default class WorkingItem<T extends GameEventNames = any> {
       this.chargeTick.timeLeft <= 0
     ) {
       // @ts-ignore why??
-      const result = item.onEmit({ game, owner, event, data });
+      const result = item.onEmit({ game, target: owner, event, data });
       // @ts-ignore
       return result ?? {};
     }

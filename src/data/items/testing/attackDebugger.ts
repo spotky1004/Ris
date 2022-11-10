@@ -6,13 +6,13 @@ const item = new Item({
   on: "always",
   timing: "after",
 
-  onEmit: async ({ game, data, event, owner }) => {
+  onEmit: async ({ game, data, event, target }) => {
     if (event === "attacked") {
       if (
         data.from instanceof PlayerMarker &&
-        owner instanceof PlayerMarker
+        target instanceof PlayerMarker
       ) {
-        await game.messageSender.send(`${data.from.memberName} attacked ${owner.memberName} for ${data.damage} damage!`);
+        await game.messageSender.send(`${data.from.memberName} attacked ${target.memberName} for ${data.damage} damage!`);
       }
     }
 
@@ -20,7 +20,7 @@ const item = new Item({
       toSearch: "type",
       value: "Player"
     });
-    await game.messageSender.send(players.includes(owner) ? "The owner is on the board" : "The owner isn't on the board..?");
+    await game.messageSender.send(players.includes(target) ? "The owner is on the board" : "The owner isn't on the board..?");
 
     const walls = game.board.getAllPlaceables({
       toSearch: "type",

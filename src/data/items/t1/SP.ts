@@ -12,7 +12,7 @@ export default new Item({
   effectDescription: "**[ Respec ]** Give random **'Tier I'** that sum of cost is **5** when used.",
   on: "used",
   timing: "before",
-  onEmit: async ({ owner }) => {
+  onEmit: async ({ target }) => {
     const avaiables = [item.t1.HP, item.t1.MP, item.t1.Def];
     const selected = [];
     let costLeft = 5;
@@ -26,7 +26,7 @@ export default new Item({
     let message = `You got:`;
     for (const item of selected) {
       message += ` **${item.name}**`;
-      owner.addItem(item);
+      target.addItem(item);
     }
 
     return {

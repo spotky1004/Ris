@@ -13,10 +13,10 @@ const item = new Item({
   recipe: [],
   cost: 3,
 
-  onEmit: async ({ game, owner }) => {
+  onEmit: async ({ game, target }) => {
     const board = game.board;
-    const { x: px, y: py } = owner;
-    const [dx, dy] = owner.looking;
+    const { x: px, y: py } = target;
+    const [dx, dy] = target.looking;
 
     const [tx, ty] = [px + dx, py + dy];
     const shape: [x: number, y: number][] = Math.abs(dx) < Math.abs(dy) ? [[-1, 0], [1, 0]] : [[0, -1], [0, 1]];
@@ -38,7 +38,7 @@ const item = new Item({
     const wall = new placeable.main.Wall({
       game,
       x: tx, y: ty,
-      owner,
+      owner: target,
       bgColor: "#f57e42",
       wallName, name: wallName + " " + wallOrder[0],
       nameColor: "#fff",
@@ -55,7 +55,7 @@ const item = new Item({
       }
     });
     
-    await game.messageSender.spawn(owner, wall, true);
+    await game.messageSender.spawn(target, wall, true);
     await game.messageSender.gameScreen();
     return;
   }

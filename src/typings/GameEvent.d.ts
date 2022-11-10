@@ -75,7 +75,7 @@ export interface GameEventReturn extends GameEventTypes<GameEventReturnBase>  {
 
 interface GameEventCallbackArgStruct<T extends GameEventNames> {
   game: Game;
-  owner: PlaceableBase;
+  target: PlaceableBase;
   event: T;
   data: GameEventData[T];
 }
