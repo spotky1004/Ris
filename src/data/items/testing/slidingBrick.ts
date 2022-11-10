@@ -19,7 +19,6 @@ const sliding = new StatusEffect({
     for (const [sx, sy] of target.getShape()) {
       const [tx, ty] = [sx + dx, sy + dy];
       if (board.isOutOfBound(tx, ty)) {
-        console.log(tx, ty);
         await target.attackedBy("Sliding", {
           normal: 1
         });
