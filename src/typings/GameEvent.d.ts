@@ -58,20 +58,26 @@ export interface GameEventData extends GameEventTypes<{}> {
   };
 }
 
-interface GameEventReturnBase {
+export interface GameEventReturn extends GameEventTypes<{}> {
+  "always": GameEventReturn[Exclude<GameEventNames, "always">];
+  "otherPlayerMove": {
+    cancelMove?: boolean;
+  };
+}
+
+// for Item
+interface ItemGameEventReturnBase {
   ignoreDestroyOnEmit?: boolean;
   replyMsg?: string;
   errorMsg?: string;
 }
-export interface GameEventReturn extends GameEventTypes<GameEventReturnBase>  {
-  "always": GameEventReturn[Exclude<GameEventNames, "always">];
-  "otherPlayerMove": {
-    ignoreDestroyOnEmit?: boolean;
-    replyMsg?: string;
-    errorMsg?: string;
-    cancelMove: boolean;
-  };
+export type ItemGameEventReturn = { [K in GameEventNames] : GameEventReturn[K] & ItemGameEventReturnBase };
+
+// for StatusEffect
+interface StatusEffectGameEventReturnBase {
+  remove?: boolean;
 }
+export type StatusEffectGameEventReturn = { [K in GameEventNames] : GameEventReturn[K] & StatusEffectGameEventReturnBase };
 
 interface GameEventCallbackArgStruct<T extends GameEventNames> {
   game: Game;

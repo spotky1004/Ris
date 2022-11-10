@@ -6,7 +6,7 @@ import type Item from "./Item.js";
 import type {
   GameEventNames,
   GameEventData,
-  GameEventReturn
+  ItemGameEventReturn
 } from "@typings/GameEvent";
 
 export default class WorkingItem<T extends GameEventNames = any> {
@@ -31,7 +31,7 @@ export default class WorkingItem<T extends GameEventNames = any> {
     this.tick(type);
   }
 
-  async emit<E extends GameEventNames>(event: E, data: GameEventData[E]): Promise<GameEventReturn[E] | void> {
+  async emit<E extends GameEventNames>(event: E, data: GameEventData[E]): Promise<ItemGameEventReturn[E] | void> {
     const { game, owner, on, data: item } = this;
     if (
       // @ts-ignore 'E' and 'T' have no overlap...

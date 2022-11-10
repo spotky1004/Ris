@@ -2,7 +2,7 @@ import PlaceableBase, { PlaceableBaseOptions } from "./PlaceableBase.js";
 import type Player from "./Player.js";
 import type Item from "./Item.js";
 import type WorkingItem from "./WorkingItem.js";
-import type { GameEventReturn } from "@typings/GameEvent";
+import type { ItemGameEventReturn } from "@typings/GameEvent";
 
 export interface PlayerMoveReturn {
   moveSuccess: boolean;
@@ -48,7 +48,7 @@ export default class PlayableMarker extends PlaceableBase {
     return true;
   }
 
-  async useItem(idx: number, param: string[] = []): Promise<[WorkingItem<"used">, GameEventReturn["used"]] | null> {
+  async useItem(idx: number, param: string[] = []): Promise<[WorkingItem<"used">, ItemGameEventReturn["used"]] | null> {
     const item = this.items[idx];
     if (!item || item.on !== "used") return null;
     const result = await item.emit("used", { param }) ?? {};
