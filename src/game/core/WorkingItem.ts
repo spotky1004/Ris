@@ -27,7 +27,7 @@ export default class WorkingItem<T extends GameEventNames = any> {
   }
 
   tick(type: TickTypes) {
-    this.tick(type);
+    this.chargeTick.tick(type);
   }
 
   async emit<E extends GameEventNames>(event: E, timing: "before" | "after", data: GameEventData[E]): Promise<ItemGameEventReturn[E] | void> {

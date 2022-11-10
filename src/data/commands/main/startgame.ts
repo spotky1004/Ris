@@ -27,6 +27,7 @@ command.slashCommand
       .setName("player4")
       .setDescription("Player 4")
   );
+import item from "../../../bundles/item.js";
 command.handler = async ({ gameManager, guild, channel, interaction }) => {
   if (!interaction.member) {
     await slashUtil.reply(interaction, messages.err["err_member_not_found"]);
@@ -86,6 +87,7 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
         memberId: playerData.id,
         memberName: playerData.displayName
       });
+      player.addItem(item.testing.SlidingBrick);
       playerData.connectMarker(player);
     }
   } catch {

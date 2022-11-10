@@ -26,7 +26,7 @@ export default class PlayableMarker extends PlaceableBase {
     this.y += y;
     this.player.actionDid.move = true;
     this.player.actionCountLeft--;
-    this.game.emitMoveTick(this.player);
+    this.game.emitMoveTick(this);
     return {
       moveSuccess: true,
       attack: false

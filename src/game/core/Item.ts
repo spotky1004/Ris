@@ -114,7 +114,7 @@ export default class Item<T extends GameEventNames = any> {
         }
       }
       content = content.trim();
-      content += `+${"-".repeat(W - 2)}+`;
+      content += `\n+${"-".repeat(W - 2)}+`;
     } else {
       content += `+${"-".repeat(W - 2)}+\n`;
       content += `   < ${this.name} > ${this.getValueString()}\n\n`;

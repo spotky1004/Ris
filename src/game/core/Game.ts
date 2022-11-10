@@ -2,6 +2,7 @@ import Board, { BoardOptions } from "./Board.js";
 import MessageSender from "./MessageSender.js";
 import Player from "./Player.js";
 import type Discord from "discord.js";
+import type PlaceableBase from "./PlaceableBase.js";
 import type GameManager from "./GameManager.js";
 import type { TickTypes } from "../util/TickManager.js";
 import type {
@@ -151,12 +152,12 @@ export default class Game {
   }
 
   async emitEvent<T extends GameEventNames>(type: T, timing: "before" | "after", data: GameEventData[T], player?: Player): Promise<[ItemGameEventReturn[T][], StatusEffectGameEventReturn[T][]]> {
-    let alivePlayers = this.players.filter(p => !p.defeated);
-    if (player) alivePlayers = alivePlayers.filter(p => p === player);
+    let placeables = this.board.getAllPlaceables();
+    if (player) placeables = placeables.filter(p => p === player.marker);
     
     const returnVals: [ItemGameEventReturn[T][], StatusEffectGameEventReturn[T][]] = [[], []];
-    for (const player of alivePlayers) {
-      const [itemReturnVals, effectReturnVals] = await player.marker.emitEvent(type, timing, data);
+    for (const placeable of placeables) {
+      const [itemReturnVals, effectReturnVals] = await placeable.emitEvent(type, timing, data);
       returnVals[0].push(...itemReturnVals);
       returnVals[1].push(...effectReturnVals);
     }
@@ -173,35 +174,39 @@ export default class Game {
     return returnVals;
   }
 
-  private emitTick(player: Player, type: TickTypes) {
-    player.marker.items.forEach(item => {
-      item.chargeTick.tick(type);
+  private emitTick(placaeable: PlaceableBase, type: TickTypes) {
+    placaeable.items.forEach(item => {
+      item.tick(type);
+    });
+    placaeable.status.effects.forEach(effect => {
+      effect.tick(type);
     });
   }
   
-  emitMoveTick(player?: Player) {
-    if (!player) {
+  emitMoveTick(placaeable?: PlaceableBase) {
+    if (!placaeable) {
       const turnPlayer = this.getTurnPlayer();
-      player = turnPlayer;
+      placaeable = turnPlayer.marker;
     }
-    this.emitTick(player, "move");
+    this.emitTick(placaeable, "move");
   }
 
-  emitPlayerTurnTick(player?: Player) {
-    if (!player) {
+  emitPlayerTurnTick(placaeable?: PlaceableBase) {
+    if (!placaeable) {
       const turnPlayer = this.getTurnPlayer();
-      player = turnPlayer;
+      placaeable = turnPlayer.marker;
     }
-    this.emitTick(player, "playerTurn");
+    this.emitTick(placaeable, "playerTurn");
   }
 
-  emitAllTurnTick(player?: Player) {
-    if (!player) {
-      for (const player of this.players) {
-        this.emitTick(player, "allTurn");
+  emitAllTurnTick(placaeable?: PlaceableBase) {
+    if (!placaeable) {
+      const placeables = this.board.getAllPlaceables();
+      for (const placaeable of placeables) {
+        this.emitTick(placaeable, "allTurn");
       }
     } else {
-      this.emitTick(player, "allTurn");
+      this.emitTick(placaeable, "allTurn");
     }
   }
 }

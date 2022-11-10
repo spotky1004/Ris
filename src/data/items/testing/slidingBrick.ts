@@ -13,12 +13,13 @@ const sliding = new StatusEffect({
   timing: "before",
   onEffect: async ({ game, target }) => {
     const board = game.board;
+    console.log(target.looking);
     const [dx, dy] = target.looking;
-    const shape = target.getShape();
     const toAttack: PlaceableBase[] = [];
-    for (const [sx, sy] of shape) {
+    for (const [sx, sy] of target.getShape()) {
       const [tx, ty] = [sx + dx, sy + dy];
       if (board.isOutOfBound(tx, ty)) {
+        console.log(tx, ty);
         await target.attackedBy("Sliding", {
           normal: 1
         });
@@ -80,14 +81,14 @@ export default new Item({
       };
     }
 
-    const wallName = messages.item["wall"];
     const wallOrder = messages.item["wall_order"];
     const wall = new placeable.main.Wall({
       game,
       x: tx, y: ty,
       owner: target,
-      bgColor: "#f57e42",
-      wallName, name: wallName + " " + wallOrder[0],
+      looking: [...target.looking],
+      bgColor: "#31a0e0",
+      wallName: "Slide", name: "Slide" + " " + wallOrder[0],
       nameColor: "#fff",
       displayStatus: [
         {

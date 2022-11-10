@@ -86,7 +86,8 @@ export default class PlaceableBase {
   }
 
   getShape() {
-    const shape = [...this.shape];
+    const { x, y } = this;
+    const shape = [...this.shape].map(([sx, sy]) => [sx + x, sy + y]);
     shape.push([this._x, this._y]);
     return shape;
   }

@@ -75,6 +75,8 @@ export default class PlayerMarker extends PlayableMarker {
     let attacked = this.look(x, y);
     if (attacked) {
       returnValue.attack = true;
+      this.player.actionDid.move = true;
+      this.player.actionCountLeft--;
       return returnValue;
     }
     if (this.game.board.isTagInTile(tx, ty, tags.Solid)) {
@@ -82,8 +84,10 @@ export default class PlayerMarker extends PlayableMarker {
     }
     this.x += x;
     this.y += y;
+    this.player.actionDid.move = true;
+    this.player.actionCountLeft--;
     attacked = this.look(x, y);
-    this.game.emitPlayerTurnTick(this.player);
+    this.game.emitPlayerTurnTick(this);
     returnValue.moveSuccess = true;
     returnValue.attack = attacked;
     return returnValue;
