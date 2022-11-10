@@ -1,10 +1,10 @@
 # Make all events work
 ## Left
 "always",
-"move", "otherPlayerMove", "kill", "myTurnStart", "myTurnEnd",
-"playerTurnStart", "playerTurnEnd", "allTurnStart", "allTurnEnd",
+"move", "placeableMove", "kill",
 "gameEnd", "death", "attack", "attacked"
 ## Done
-"used", "none"
+"used", "none",
+"playerTurnStart", "playerTurnEnd", "allTurnStart", "allTurnEnd",
 
 # Make StatusEffect work

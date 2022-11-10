@@ -60,7 +60,9 @@ const item = new Item({
       for (const toAttack of tile) {
         if (attacked.includes(toAttack)) continue;
         attacked.push(toAttack);
-        toAttack.attackedBy("Ray", 1, "normal");
+        toAttack.attackedBy("Ray", {
+          normal: 1
+        });
       }
     }
 

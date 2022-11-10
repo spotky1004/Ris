@@ -2,6 +2,8 @@ import type Game from "../game/core/Game.js";
 import type Item from "../game/core/Item.js";
 import type PlaceableBase from "../game/core/PlaceableBase.js";
 import type Player from "../game/core/Player.js";
+import type StatusEffect from "../game/core/StatusEffect.js";
+import type { Damage } from "game/core/StatusManager.js";
 
 type ReplacePattern = [pattern: RegExp | string, replaceValue: string];
 export const replacePatterns: ReplacePattern[] = [
@@ -15,6 +17,19 @@ export const messages = {
     "attack": (from: string | PlaceableBase, to: PlaceableBase, dmg: number) => {
       const fromName = typeof from === "string" ? from : from.displayName;
       return `**${fromName}** attacked **${to.displayName}** with **${dmg}** $DMG`;
+    },
+    "damage": (dmg: Damage) => {
+      let damageString = "";
+      if (dmg.normal) {
+        damageString += `**${dmg.normal}** $DMG `;
+      }
+      if (dmg.true) {
+        damageString += `**${dmg.true}** $TRUE_DMG `;
+      }
+      if (dmg.rule) {
+        damageString += `**${dmg.rule}** $RULE_DMG `;
+      }
+      return damageString;
     },
     "rule_attack": (to: PlaceableBase, dmg: number) => {
       return `**${to.displayName}** got ${dmg} $RULE_DMG`;
@@ -31,7 +46,10 @@ export const messages = {
     "item": "item", // must be lowercase (or other language)
     "money": "Money",
     "turn_end": (moneyGot: number) => `Turn end. (${messages.game["money"]} +**${moneyGot}**)`,
-    "winner": (winners: PlaceableBase[]) => `${winners.map(p => `**${p.displayName}**`).join(", ")} won!`
+    "winner": (winners: PlaceableBase[]) => `${winners.map(p => `**${p.displayName}**`).join(", ")} won!`,
+    "status_effect_alert": (effect: StatusEffect, target: PlaceableBase) => {
+      return `**${target.displayName}** got **${effect.displayName}** effect!`;
+    }
   },
   command: {
     "startgame": (game: Game) => `Game started!\n${game.players.map(p => p.displayName).join(" -> ")}`,
@@ -69,7 +87,7 @@ export const messages = {
       let message = `**${owner.displayName}** spawned **${spawned.displayName}**.`;
       if (alertStat) {
         const status = spawned.status;
-        message += `\n**${spawned.displayName}** has ${status.getMaxHp()} $HP, ${status.getAtk()} $DMG.`
+        message += `\n**${spawned.displayName}** has ${status.getMaxHp()} $HP, ${messages.game["damage"](status.getDamage())}.`
       }
       return message;
     },

@@ -1,4 +1,4 @@
-import StatusManager, { StatusManagerOptions, AttackType } from "./StatusManager.js";
+import StatusManager, { StatusManagerOptions, Damage } from "./StatusManager.js";
 import WorkingItem from "./WorkingItem.js";
 import TagsManager from "../util/TagsManager.js";
 import type Item from "./Item.js";
@@ -6,7 +6,8 @@ import type Game from "./Game.js";
 import type {
   GameEventNames,
   GameEventData,
-  GameEventReturn
+  ItemGameEventReturn,
+  StatusEffectGameEventReturn
 } from "@typings/GameEvent";
 
 export interface PlaceableBaseOptions {
@@ -84,6 +85,12 @@ export default class PlaceableBase {
     return this._y;
   }
 
+  getShape() {
+    const shape = [...this.shape];
+    shape.push([this._x, this._y]);
+    return shape;
+  }
+
   render() {
 
   }
@@ -98,22 +105,26 @@ export default class PlaceableBase {
     return this.items.splice(idx, 1)[0];
   }
 
-  getItems<T extends undefined | GameEventNames>(type?: T) {
+  getItems<T extends undefined | GameEventNames>(type?: T, timing?: "before" | "after") {
     type Type = T extends undefined ? GameEventNames : T;
     const items: WorkingItem<Type>[] = [];
     for (const item of this.items) {
-      if (typeof type === "undefined" || item.on === type || item.on === "always") {
+      if (
+        (item.on === type && item.data.timing === timing) ||
+        typeof type === "undefined" ||
+        item.on === "always"
+      ) {
         items.push(item);
       }
     }
     return items;
   }
 
-  async emitItems<T extends GameEventNames>(type: T, data: GameEventData[T]): Promise<GameEventReturn[T][]> {
-    const itemsToEmit = this.getItems(type);
-    const returnVals: GameEventReturn[T][] = [];
+  async emitItems<T extends GameEventNames>(type: T, timing: "before" | "after", data: GameEventData[T]): Promise<ItemGameEventReturn[T][]> {
+    const itemsToEmit = this.getItems(type, timing);
+    const returnVals: ItemGameEventReturn[T][] = [];
     for (const item of itemsToEmit) {
-      const returnVal = await item.emit(type, data);
+      const returnVal = await item.emit(type, timing, data);
       if (returnVal) returnVals.push(returnVal);
       if (
         item.data.destroyOnEmit &&
@@ -122,18 +133,27 @@ export default class PlaceableBase {
         this.removeItem(item);
       }
     }
-    return returnVals;
+    return returnVals.sort((a, b) => (a.perioty ?? 1) - (b.perioty ?? 1));
   }
 
-  attackedBy(by: string | PlaceableBase, atk?: number, type?: AttackType) {
+  async emitEvent<T extends GameEventNames>(type: T, timing: "before" | "after", data: GameEventData[T]): Promise<[ItemGameEventReturn[T][], StatusEffectGameEventReturn[T][]]> {
+    const itemReturnVals = await this.emitItems(type, timing, data);
+    const statusEffectReturnVals = await this.status.emitStatusEffects(type, timing, data);
+
+    return [itemReturnVals, statusEffectReturnVals];
+  }
+
+  async attackedBy(by: string | PlaceableBase, damage?: Damage) {
     if (typeof by === "string") {
-      atk = atk ?? 0;
-      const dmgGot = this.status.attack(atk, type ?? "normal");
-      this.game.messageSender.attack(by, this, dmgGot);
+      damage = damage ?? ({
+        normal: 0
+      });
+      const dmgGot = this.status.attack(damage);
+      await this.game.messageSender.attack(by, this, dmgGot);
     } else {
-      atk = atk ?? by.status.getAtk();
-      const dmgGot = this.status.attack(atk, type ?? "normal");
-      this.game.messageSender.attack(by, this, dmgGot);
+      damage = damage ?? by.status.getDamage();
+      const dmgGot = this.status.attack(damage);
+      await this.game.messageSender.attack(by, this, dmgGot);
     }
   }
 

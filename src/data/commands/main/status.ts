@@ -14,7 +14,7 @@ command.handler = async ({ gameManager, channel, interaction, member }) => {
   
   const marker = player.marker;
   let content = "";
-  content += `${messages.game["atk"]} - **${marker.status.getAtk()}** ⚔️\n`;
+  content += `${messages.game["atk"]} - ${messages.game["damage"](marker.status.getDamage())}\n`;
   content += `${messages.game["def"]} - **${marker.status.getDef()}** 🛡️\n`;
   content += `\n`;
   content += `${messages.game["money"]} - **${player.money}**\n`;

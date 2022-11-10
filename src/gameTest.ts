@@ -54,7 +54,9 @@ function run() {
       x: 1, y: 1,
       status: {
         hp: 3000,
-        baseAtk: 2.5
+        baseDamage: {
+          normal: 2.5
+        }
       },
     }),
     new placeable.main.PlayerMarker({

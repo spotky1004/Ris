@@ -30,7 +30,7 @@ export default new Item({
     }
 
     return {
-      replyMsg: message
+      message: message
     }
   }
 });

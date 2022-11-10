@@ -1,34 +1,40 @@
 import { TickManagerOptions } from "../util/TickManager.js";
-import type Game from "./Game.js";
-import type PlaceableBase from "./PlaceableBase.js";
+import type {
+  GameEventNames,
+  StatusEffectGameEventCallback,
+  StatusChanges
+} from "@typings/GameEvent";
 
-interface StatusEffectArgs {
-  game: Game;
-  effect: StatusEffect;
-  target: PlaceableBase;
-}
-type StatusEffectCallback = (args: StatusEffectArgs) => void;
-
-export interface StatusEffectOptions {
+export interface StatusEffectOptions<T extends GameEventNames> {
   id: string;
-  name: string;
+  displayName: string;
+  alertOnAdded?: boolean;
+  on: T;
+  timing: "before" | "after";
   interval: TickManagerOptions;
-  effect: StatusEffectCallback;
+  onEffect: StatusEffectGameEventCallback<T>;
   remove: TickManagerOptions;
+  statusChanges?: StatusChanges;
 }
 
-export default class StatusEffect {
+export default class StatusEffect<T extends GameEventNames = any> {
   readonly id: string;
-  readonly name: string;
+  readonly displayName: string;
+  readonly alertOnAdded: boolean;
+  readonly on: T;
+  readonly timing: "before" | "after";
   readonly interval: TickManagerOptions;
-  readonly effect: StatusEffectCallback;
+  readonly onEffect: StatusEffectGameEventCallback<T>;
   readonly remove: TickManagerOptions;
 
-  constructor(options: StatusEffectOptions) {
+  constructor(options: StatusEffectOptions<T>) {
     this.id = options.id;
-    this.name = options.name;
+    this.displayName = options.displayName;
+    this.alertOnAdded = options.alertOnAdded ?? false;
+    this.on = options.on;
+    this.timing = options.timing;
     this.interval = options.interval;
-    this.effect = options.effect;
+    this.onEffect = options.onEffect;
     this.remove = options.remove;
   }
 }

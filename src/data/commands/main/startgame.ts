@@ -79,8 +79,9 @@ command.handler = async ({ gameManager, guild, channel, interaction }) => {
         x, y,
         status: {
           maxHp: 10,
-          baseAtk: 2.5,
-          baseDef: 0
+          baseDamage: {
+            normal: 2.5
+          },
         },
         memberId: playerData.id,
         memberName: playerData.displayName

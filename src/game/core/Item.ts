@@ -3,7 +3,7 @@ import type { TickManagerOptions } from "../util/TickManager.js";
 import type { StatusNames } from "./StatusManager.js";
 import type {
   GameEventNames,
-  GameEventCallback,
+  ItemGameEventCallback,
   StatusChanges,
   StatusChangeData
 } from "@typings/GameEvent";
@@ -25,7 +25,7 @@ interface ItemOptions<T extends GameEventNames> {
   chargeOptions?: TickManagerOptions;
   /** default: false */
   destroyOnEmit?: boolean;
-  onEmit: GameEventCallback<T>;
+  onEmit: ItemGameEventCallback<T>;
   statusChanges?: StatusChanges;
 }
 
@@ -43,7 +43,7 @@ export default class Item<T extends GameEventNames = any> {
   readonly timing: "before" | "after";
   readonly chargeOptions: null | TickManagerOptions;
   readonly destroyOnEmit: boolean;
-  readonly onEmit: GameEventCallback<T>;
+  readonly onEmit: ItemGameEventCallback<T>;
   readonly statusChanges: Map<StatusNames, StatusChangeData>;
 
   constructor(options: ItemOptions<T>) {

@@ -51,15 +51,18 @@ export default class PlayableMarker extends PlaceableBase {
   async useItem(idx: number, param: string[] = []): Promise<[WorkingItem<"used">, ItemGameEventReturn["used"]] | null> {
     const item = this.items[idx];
     if (!item || item.on !== "used") return null;
-    const result = await item.emit("used", { param }) ?? {};
-    if (result.errorMsg) {
-      return [item, result];
+    const returnVal =
+      await item.emit("used", "before", { param }) ??
+      await item.emit("used", "after", { param }) ??
+      {};
+    if (returnVal.errorMsg) {
+      return [item, returnVal];
     }
     this.player.actionCountLeft--;
-    if (!result.ignoreDestroyOnEmit) {
+    if (!returnVal.ignoreDestroyOnEmit) {
       this.removeItem(item);
     }
-    return [item, result];
+    return [item, returnVal];
   }
 
   mergeItem(idxes: number[]) {

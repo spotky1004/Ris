@@ -4,6 +4,12 @@ import Player from "./Player.js";
 import type Discord from "discord.js";
 import type GameManager from "./GameManager.js";
 import type { TickTypes } from "../util/TickManager.js";
+import type {
+  GameEventNames,
+  GameEventData,
+  ItemGameEventReturn,
+  StatusEffectGameEventReturn
+} from "@typings/GameEvent";
 
 interface GameConfig {
   startMoney: number;
@@ -48,22 +54,29 @@ export default class Game {
   async turnEnd() {
     // current turn player
     const curTurnPlayer = this.getTurnPlayer();
+    this.emitEvent("playerTurnEnd", "before", {
+      target: curTurnPlayer
+    });
     const actionDid = curTurnPlayer.actionDid;
     if (
       !actionDid.merge ||
       !actionDid.move
     ) {
-      curTurnPlayer.marker.status.attack(1.5, "rule");
-      this.messageSender.ruleDamage(curTurnPlayer.marker, 1.5);
+      await curTurnPlayer.marker.attackedBy("Rule Damage", {
+        rule: 1.5
+      })
     }
     actionDid.merge = false;
     actionDid.move = false;
     const actionCountLeft = curTurnPlayer.actionCountLeft;
     let moneyGot = Math.min(5, Math.max(3, actionCountLeft));
     if (actionCountLeft === 0) moneyGot--;
-    /** item event placeholder */
+    /** event placeholder */
     moneyGot = Math.max(0, moneyGot);
     curTurnPlayer.money += moneyGot;
+    this.emitEvent("playerTurnEnd", "after", {
+      target: curTurnPlayer
+    });
 
     // system
     this.addPlayerTurn();
@@ -75,11 +88,17 @@ export default class Game {
 
     // next turn player
     const nextTurnPlayer = this.getTurnPlayer();
+    this.emitEvent("playerTurnEnd", "before", {
+      target: nextTurnPlayer
+    });
     this.emitPlayerTurnTick();
     let actionCountLeftToSet = this.config.actionCount;
-    /** item event placeholder */
+    /** event placeholder */
     nextTurnPlayer.actionCountLeft = actionCountLeftToSet;
     await this.messageSender.turnAlert();
+    this.emitEvent("playerTurnEnd", "after", {
+      target: nextTurnPlayer
+    });
 
     return {
       moneyGot
@@ -106,9 +125,21 @@ export default class Game {
   addPlayerTurn() {
     this.playerTurunCount++;
     if (this.playerTurunCount === this.getAlivePlayerCount()) {
+      this.emitEvent("allTurnEnd", "before", {
+        target: this.getTurnPlayer()
+      });
       this.playerTurunCount = 0;
       this.allTurnCount++;
       this.emitAllTurnTick();
+      this.emitEvent("allTurnEnd", "after", {
+        target: this.getTurnPlayer()
+      });
+      this.emitEvent("allTurnStart", "before", {
+        target: this.getTurnPlayer()
+      });
+      this.emitEvent("allTurnStart", "after", {
+        target: this.getTurnPlayer()
+      });
     }
     return this.playerTurunCount;
   }
@@ -117,6 +148,29 @@ export default class Game {
     const winners = this.board.getAllPlaceables();
     this.messageSender.winner(winners);
     this.gameManager.destroyGame(this.id)
+  }
+
+  async emitEvent<T extends GameEventNames>(type: T, timing: "before" | "after", data: GameEventData[T], player?: Player): Promise<[ItemGameEventReturn[T][], StatusEffectGameEventReturn[T][]]> {
+    let alivePlayers = this.players.filter(p => !p.defeated);
+    if (player) alivePlayers = alivePlayers.filter(p => p === player);
+    
+    const returnVals: [ItemGameEventReturn[T][], StatusEffectGameEventReturn[T][]] = [[], []];
+    for (const player of alivePlayers) {
+      const [itemReturnVals, effectReturnVals] = await player.marker.emitEvent(type, timing, data);
+      returnVals[0].push(...itemReturnVals);
+      returnVals[1].push(...effectReturnVals);
+    }
+
+    const merged = [...returnVals[0], ...returnVals[1]];
+    merged.sort((a, b) => (a.perioty ?? 1) - (b.perioty ?? 1));
+    for (const returnVal of merged) {
+      const { message } = returnVal;
+      if (message) {
+        this.messageSender.send(message);
+      }
+    }
+
+    return returnVals;
   }
 
   private emitTick(player: Player, type: TickTypes) {

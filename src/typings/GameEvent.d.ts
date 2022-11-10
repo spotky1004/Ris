@@ -1,10 +1,11 @@
 import type Game from "../game/core/Game.js";
 import type PlaceableBase from "../game/core/PlaceableBase.js";
+import type Player from "../game/core/Player.js";
 import type { StatusNames } from "../game/core/StatusManager.js";
 
 export type GameEventNames =
   "used" | "always" | "none" |
-  "move" | "otherPlayerMove" | "kill" | "myTurnStart" | "myTurnEnd" |
+  "move" | "placeableMove" | "kill" |
   "playerTurnStart" | "playerTurnEnd" | "allTurnStart" | "allTurnEnd" |
   "gameEnd" | "death" | "attack" | "attacked";
 type GameEventTypes<T> = {
@@ -21,8 +22,8 @@ export interface GameEventData extends GameEventTypes<{}> {
     prevPos: [x: number, y: number];
     curPos: [x: number, y: number];
   };
-  "otherPlayerMove": {
-    player: PlaceableBase;
+  "placeableMove": {
+    placeable: PlaceableBase;
     prevPos: [x: number, y: number];
     curPos: [x: number, y: number];
   };
@@ -30,21 +31,21 @@ export interface GameEventData extends GameEventTypes<{}> {
     damage: number;
     killed: PlaceableBase;
   };
-  "myTurnStart": {};
-  "myTurnEnd": {};
   "playerTurnStart": {
-    target: PlaceableBase;
+    target: Player;
   };
   "playerTurnEnd": {
-    target: PlaceableBase;
+    target: Player;
   };
   "allTurnStart": {
-    target: PlaceableBase;
+    target: Player;
   };
   "allTurnEnd": {
-    target: PlaceableBase;
+    target: Player;
   };
-  "gameEnd": {};
+  "gameEnd": {
+    winner: Player;
+  };
   "death": {
     damage: number;
     killedBy: PlaceableBase;
@@ -61,22 +62,29 @@ export interface GameEventData extends GameEventTypes<{}> {
 
 export interface GameEventReturn extends GameEventTypes<{}> {
   "always": GameEventReturn[Exclude<GameEventNames, "always">];
-  "otherPlayerMove": {
+  "placeableMove": {
     cancelMove?: boolean;
+  };
+  "used": {
+    errorMsg?: string;
   };
 }
 
 // for Item
 interface ItemGameEventReturnBase {
+  perioty?: number;
   ignoreDestroyOnEmit?: boolean;
-  replyMsg?: string;
-  errorMsg?: string;
+  preventTickRestart?: boolean;
+  message?: string;
 }
 export type ItemGameEventReturn = { [K in GameEventNames] : GameEventReturn[K] & ItemGameEventReturnBase };
 
 // for StatusEffect
 interface StatusEffectGameEventReturnBase {
-  remove?: boolean;
+  perioty?: number;
+  preventTickRestart?: boolean;
+  message?: string;
+  removeEffect?: boolean;
 }
 export type StatusEffectGameEventReturn = { [K in GameEventNames] : GameEventReturn[K] & StatusEffectGameEventReturnBase };
 
@@ -84,6 +92,7 @@ interface GameEventCallbackArgStruct<T extends GameEventNames> {
   game: Game;
   target: PlaceableBase;
   event: T;
+  timing: "before" | "after";
   data: GameEventData[T];
 }
 export type GameEventCallbackArg<T extends GameEventNames> = T extends "always" ?
@@ -91,6 +100,10 @@ export type GameEventCallbackArg<T extends GameEventNames> = T extends "always" 
   GameEventCallbackArgStruct<T>;
 export type GameEventCallback<T extends GameEventNames> =
   ((arg: GameEventCallbackArg<T>) => Promise<GameEventReturn[T] | void>);
+export type ItemGameEventCallback<T extends GameEventNames> =
+  ((arg: GameEventCallbackArg<T>) => Promise<ItemGameEventReturn[T] | void>);
+export type StatusEffectGameEventCallback<T extends GameEventNames> =
+  ((arg: GameEventCallbackArg<T>) => Promise<StatusEffectGameEventReturn[T] | void>);
 
 type StatusChangeCallback = (cur: number, game: Game) => number;
 export interface StatusChangeData {

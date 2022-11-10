@@ -1,7 +1,6 @@
-import ChargeManager from "../util/ChargeManager.js";
+import TickManager, { TickTypes } from "../util/TickManager.js";
 import type Game from "./Game.js";
 import type PlaceableBase from "./PlaceableBase.js";
-import type { TickTypes } from "../util/TickManager.js";
 import type Item from "./Item.js";
 import type {
   GameEventNames,
@@ -14,14 +13,14 @@ export default class WorkingItem<T extends GameEventNames = any> {
   readonly owner: PlaceableBase;
   readonly on: T;
   readonly data: Item<T>;
-  readonly chargeTick: ChargeManager;
+  readonly chargeTick: TickManager;
   
   constructor(game: Game, owner: PlaceableBase, item: Item<T>) {
     this.game = game;
     this.owner = owner;
     this.on = item.on;
     this.data = item;
-    this.chargeTick = new ChargeManager(item.chargeOptions ?? {
+    this.chargeTick = new TickManager(item.chargeOptions ?? {
       type: "allTurn",
       length: 0
     });
@@ -31,19 +30,25 @@ export default class WorkingItem<T extends GameEventNames = any> {
     this.tick(type);
   }
 
-  async emit<E extends GameEventNames>(event: E, data: GameEventData[E]): Promise<ItemGameEventReturn[E] | void> {
+  async emit<E extends GameEventNames>(event: E, timing: "before" | "after", data: GameEventData[E]): Promise<ItemGameEventReturn[E] | void> {
     const { game, owner, on, data: item } = this;
     if (
       // @ts-ignore 'E' and 'T' have no overlap...
       event === on &&
-      this.chargeTick.timeLeft <= 0
+      item.timing === timing
     ) {
       // @ts-ignore why??
       const result = await item.onEmit({ game, target: owner, event, data });
-      // @ts-ignore
+      if (!result?.preventTickRestart) {
+        this.chargeTick.restart();
+      }
       return result ?? {};
     }
     return;
+  }
+
+  isReadyToEmit() {
+    return this.chargeTick.isReady();
   }
 
   getMinifiedInfo() {

@@ -2,6 +2,7 @@ import { messages, replacePatterns } from "../../data/messageDatas.js";
 import Discord from "discord.js";
 import type Game from "./Game.js";
 import type PlaceableBase from "./PlaceableBase.js";
+import type { Damage } from "./StatusManager.js";
 
 export default class MessageSender {
   // @ts-ignore
@@ -29,8 +30,9 @@ export default class MessageSender {
     return false;
   }
 
-  async attack(from: string | PlaceableBase, to: PlaceableBase, dmg: number) {
-    return await this.send(messages.game["attack"](from, to, dmg));
+  async attack(from: string | PlaceableBase, to: PlaceableBase, dmg: Damage) {
+    const damageString = messages.game["damage"](dmg);
+    return await this.send(`**${typeof from === "string" ? from : from.displayName}** -> ${to.displayName} ${damageString}`);
   }
   
   async turnAlert() {
@@ -44,10 +46,6 @@ export default class MessageSender {
 
   async errUnexpected() {
     await this.send(messages.err["err_unexpected"]);
-  }
-
-  async ruleDamage(placeable: PlaceableBase, damage: number) {
-    await this.send(messages.game["rule_attack"](placeable, damage));
   }
 
   async spawn(owner: PlaceableBase, spawned: PlaceableBase, alertStat?: boolean) {

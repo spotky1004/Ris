@@ -20,10 +20,12 @@ export default class TickManager {
     if (type !== this.type) return false;
     
     this.timeLeft--;
-    if (this.timeLeft <= 0) {
-      return true;
-    }
+    if (this.timeLeft <= 0) return true;
     return false;
+  }
+
+  isReady() {
+    return this.timeLeft <= 0;
   }
 
   restart() {
