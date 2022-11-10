@@ -1,5 +1,5 @@
 import WorkingStatusEffect from "./WorkingStatusEffect.js";
-import { messages } from "data/messageDatas.js";
+import { messages } from "../../data/messageDatas.js";
 import type Game from "../core/Game.js";
 import type PlaceableBase from "./PlaceableBase.js";
 import type StatusEffect from "./StatusEffect.js";
