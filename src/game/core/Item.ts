@@ -4,6 +4,7 @@ import type { StatusNames } from "./StatusManager.js";
 import type {
   GameEventNames,
   GameEventCallback,
+  StatusChanges,
   StatusChangeData
 } from "@typings/GameEvent";
 
@@ -25,9 +26,7 @@ interface ItemOptions<T extends GameEventNames> {
   /** default: false */
   destroyOnEmit?: boolean;
   onEmit: GameEventCallback<T>;
-  statusChanges?: {
-    [K in StatusNames]?: StatusChangeData;
-  };
+  statusChanges?: StatusChanges;
 }
 
 export default class Item<T extends GameEventNames = any> {

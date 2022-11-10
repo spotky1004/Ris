@@ -1,5 +1,6 @@
 import type Game from "../game/core/Game.js";
 import type PlaceableBase from "../game/core/PlaceableBase.js";
+import type { StatusNames } from "../game/core/StatusManager.js";
 
 export type GameEventNames =
   "used" | "always" | "none" |
@@ -95,4 +96,7 @@ type StatusChangeCallback = (cur: number, game: Game) => number;
 export interface StatusChangeData {
   priority: number;
   callback: StatusChangeCallback;
+}
+export type StatusChanges = {
+  [K in StatusNames]?: StatusChangeData;
 }
