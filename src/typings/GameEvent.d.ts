@@ -85,4 +85,8 @@ export type GameEventCallbackArg<T extends GameEventNames> = T extends "always" 
 export type GameEventCallback<T extends GameEventNames> =
   ((arg: GameEventCallbackArg<T>) => Promise<GameEventReturn[T] | void>);
 
-export type StatusChangeCallback = (cur: number, game: Game) => number;
+type StatusChangeCallback = (cur: number, game: Game) => number;
+export interface StatusChangeData {
+  priority: number;
+  callback: StatusChangeCallback;
+}

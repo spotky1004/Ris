@@ -4,7 +4,7 @@ import type { StatusNames } from "./StatusManager.js";
 import type {
   GameEventNames,
   GameEventCallback,
-  StatusChangeCallback
+  StatusChangeData
 } from "@typings/GameEvent";
 
 interface ItemOptions<T extends GameEventNames> {
@@ -26,7 +26,7 @@ interface ItemOptions<T extends GameEventNames> {
   destroyOnEmit?: boolean;
   onEmit: GameEventCallback<T>;
   statusChanges?: {
-    [K in StatusNames]?: StatusChangeCallback;
+    [K in StatusNames]?: StatusChangeData;
   };
 }
 
@@ -45,7 +45,7 @@ export default class Item<T extends GameEventNames = any> {
   readonly chargeOptions: null | TickManagerOptions;
   readonly destroyOnEmit: boolean;
   readonly onEmit: GameEventCallback<T>;
-  readonly statusChanges: Map<StatusNames, StatusChangeCallback>;
+  readonly statusChanges: Map<StatusNames, StatusChangeData>;
 
   constructor(options: ItemOptions<T>) {
     this.name = options.name;
@@ -60,7 +60,7 @@ export default class Item<T extends GameEventNames = any> {
     this.chargeOptions = options.chargeOptions ?? null;
     this.destroyOnEmit = options.destroyOnEmit ?? false;
     this.onEmit = options.onEmit;
-    this.statusChanges = new Map(Object.entries(options.statusChanges ?? {})) as Map<StatusNames, StatusChangeCallback>;
+    this.statusChanges = new Map(Object.entries(options.statusChanges ?? {})) as Map<StatusNames, StatusChangeData>;
 
     let tier = options.tier ?? 1;
     let cost: number = options.cost ?? 0;

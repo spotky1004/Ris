@@ -2,6 +2,7 @@ import WorkingStatusEffect from "./WorkingStatusEffect.js";
 import type Game from "../core/Game.js";
 import type PlaceableBase from "./PlaceableBase.js";
 import type StatusEffect from "./StatusEffect.js";
+import type { StatusChangeData } from "@typings/GameEvent";
 
 export type AttackType = "normal" | "true" | "rule";
 export type StatusNames = "maxHp" | "def" | "tureDef" | "atk";
@@ -43,11 +44,18 @@ export default class StatusManager {
   }
 
   getItemStat(base: number, name: StatusNames) {
+    const statChangeDatas: StatusChangeData[] = [];
     for (const item of this.parent.items) {
-      const statChangeFn = item.data.statusChanges.get(name);
-      if (!statChangeFn) continue;
-      base = statChangeFn(base, this.game);
+      const statChangeData = item.data.statusChanges.get(name);
+      if (!statChangeData) continue;
+      statChangeDatas.push(statChangeData);
     }
+    
+    statChangeDatas.sort((a, b) => a.priority - b.priority);
+    for (const { callback } of statChangeDatas) {
+      base = callback(base, this.game);
+    }
+    
     return base;
   }
 
