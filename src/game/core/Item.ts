@@ -1,95 +1,13 @@
 import { messages } from "../../data/messageDatas.js";
-import type Game from "./Game.js";
 import type { TickManagerOptions } from "../util/TickManager.js";
-import type PlaceableBase from "./PlaceableBase.js";
 import type { StatusNames } from "./StatusManager.js";
+import type {
+  GameEventNames,
+  GameEventCallback,
+  StatusChangeCallback
+} from "@typings/GameEvent";
 
-export type ItemActivateEventNames =
-  "used" | "always" | "none" |
-  "move" | "otherPlayerMove" | "kill" | "myTurnStart" | "myTurnEnd" |
-  "playerTurnStart" | "playerTurnEnd" | "allTurnStart" | "allTurnEnd" |
-  "gameEnd" | "death" | "attack" | "attacked";
-type ItemActivateEventTypes<T> = {
-  [K in ItemActivateEventNames]: T;
-};
-
-export interface ItemActivateEventData extends ItemActivateEventTypes<{}> {
-  "always": ItemActivateEventData[Exclude<ItemActivateEventNames, "always">];
-  "used": {
-    param: string[];
-  },
-  "none": {};
-  "move": {
-    prevPos: [x: number, y: number];
-    curPos: [x: number, y: number];
-  };
-  "otherPlayerMove": {
-    player: PlaceableBase;
-    prevPos: [x: number, y: number];
-    curPos: [x: number, y: number];
-  };
-  "kill": {
-    damage: number;
-    killed: PlaceableBase;
-  };
-  "myTurnStart": {};
-  "myTurnEnd": {};
-  "playerTurnStart": {
-    target: PlaceableBase;
-  };
-  "playerTurnEnd": {
-    target: PlaceableBase;
-  };
-  "allTurnStart": {
-    target: PlaceableBase;
-  };
-  "allTurnEnd": {
-    target: PlaceableBase;
-  };
-  "gameEnd": {};
-  "death": {
-    damage: number;
-    killedBy: PlaceableBase;
-  };
-  "attack": {
-    damage: number;
-    target: PlaceableBase;
-  };
-  "attacked": {
-    damage: number;
-    from: PlaceableBase;
-  };
-}
-
-interface ItemActivateEventReturnBase {
-  ignoreDestroyOnEmit?: boolean;
-  replyMsg?: string;
-  errorMsg?: string;
-}
-export interface ItemActivateEventReturn extends ItemActivateEventTypes<ItemActivateEventReturnBase>  {
-  "always": ItemActivateEventReturn[Exclude<ItemActivateEventNames, "always">];
-  "otherPlayerMove": {
-    ignoreDestroyOnEmit?: boolean;
-    replyMsg?: string;
-    errorMsg?: string;
-    cancelMove: boolean;
-  };
-}
-
-interface ItemActivateCallbackArgBuider<T extends ItemActivateEventNames> {
-  game: Game;
-  owner: PlaceableBase;
-  event: T;
-  data: ItemActivateEventData[T];
-}
-export type ItemActivateCallbackArg<T extends ItemActivateEventNames> = T extends "always" ?
-  { [K in ItemActivateEventNames] : ItemActivateCallbackArgBuider<K> }[ItemActivateEventNames] :
-  ItemActivateCallbackArgBuider<T>;
-type ItemActivateCallback<T extends ItemActivateEventNames> =
-  ((arg: ItemActivateCallbackArg<T>) => Promise<ItemActivateEventReturn[T] | void>);
-type ItemStatusChangeCallback = (cur: number, game: Game) => number;
-
-interface ItemOptions<T extends ItemActivateEventNames> {
+interface ItemOptions<T extends GameEventNames> {
   name: string;
   lore?: string;
   effectDescription?: string;
@@ -106,13 +24,13 @@ interface ItemOptions<T extends ItemActivateEventNames> {
   chargeOptions?: TickManagerOptions;
   /** default: false */
   destroyOnEmit?: boolean;
-  onEmit: ItemActivateCallback<T>;
+  onEmit: GameEventCallback<T>;
   statusChanges?: {
-    [K in StatusNames]?: ItemStatusChangeCallback;
+    [K in StatusNames]?: StatusChangeCallback;
   };
 }
 
-export default class Item<T extends ItemActivateEventNames = any> {
+export default class Item<T extends GameEventNames = any> {
   readonly name: string;
   readonly lore: string | undefined;
   readonly effectDescription: string;
@@ -126,8 +44,8 @@ export default class Item<T extends ItemActivateEventNames = any> {
   readonly timing: "before" | "after";
   readonly chargeOptions: null | TickManagerOptions;
   readonly destroyOnEmit: boolean;
-  readonly onEmit: ItemActivateCallback<T>;
-  readonly statusChanges: Map<StatusNames, ItemStatusChangeCallback>;
+  readonly onEmit: GameEventCallback<T>;
+  readonly statusChanges: Map<StatusNames, StatusChangeCallback>;
 
   constructor(options: ItemOptions<T>) {
     this.name = options.name;
@@ -142,7 +60,7 @@ export default class Item<T extends ItemActivateEventNames = any> {
     this.chargeOptions = options.chargeOptions ?? null;
     this.destroyOnEmit = options.destroyOnEmit ?? false;
     this.onEmit = options.onEmit;
-    this.statusChanges = new Map(Object.entries(options.statusChanges ?? {})) as Map<StatusNames, ItemStatusChangeCallback>;
+    this.statusChanges = new Map(Object.entries(options.statusChanges ?? {})) as Map<StatusNames, StatusChangeCallback>;
 
     let tier = options.tier ?? 1;
     let cost: number = options.cost ?? 0;

@@ -2,14 +2,14 @@ import ChargeManager from "../util/ChargeManager.js";
 import type Game from "./Game.js";
 import type PlaceableBase from "./PlaceableBase.js";
 import type { TickTypes } from "../util/TickManager.js";
+import type Item from "./Item.js";
 import type {
-  default as Item,
-  ItemActivateEventNames,
-  ItemActivateEventData,
-  ItemActivateEventReturn
-} from "./Item.js";
+  GameEventNames,
+  GameEventData,
+  GameEventReturn
+} from "@typings/GameEvent";
 
-export default class WorkingItem<T extends ItemActivateEventNames = any> {
+export default class WorkingItem<T extends GameEventNames = any> {
   private game: Game;
   readonly owner: PlaceableBase;
   readonly on: T;
@@ -31,7 +31,7 @@ export default class WorkingItem<T extends ItemActivateEventNames = any> {
     this.tick(type);
   }
 
-  async emit<E extends ItemActivateEventNames>(event: E, data: ItemActivateEventData[E]): Promise<ItemActivateEventReturn[E] | void> {
+  async emit<E extends GameEventNames>(event: E, data: GameEventData[E]): Promise<GameEventReturn[E] | void> {
     const { game, owner, on, data: item } = this;
     if (
       // @ts-ignore 'E' and 'T' have no overlap...

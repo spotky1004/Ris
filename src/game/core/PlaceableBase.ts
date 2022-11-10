@@ -1,13 +1,13 @@
 import StatusManager, { StatusManagerOptions, AttackType } from "./StatusManager.js";
 import WorkingItem from "./WorkingItem.js";
-import type {
-  default as Item,
-  ItemActivateEventNames,
-  ItemActivateEventData,
-  ItemActivateEventReturn
-} from "./Item.js";
 import TagsManager from "../util/TagsManager.js";
+import type Item from "./Item.js";
 import type Game from "./Game.js";
+import type {
+  GameEventNames,
+  GameEventData,
+  GameEventReturn
+} from "@typings/GameEvent";
 
 export interface PlaceableBaseOptions {
   game: Game;
@@ -98,8 +98,8 @@ export default class PlaceableBase {
     return this.items.splice(idx, 1)[0];
   }
 
-  getItems<T extends undefined | ItemActivateEventNames>(type?: T) {
-    type Type = T extends undefined ? ItemActivateEventNames : T;
+  getItems<T extends undefined | GameEventNames>(type?: T) {
+    type Type = T extends undefined ? GameEventNames : T;
     const items: WorkingItem<Type>[] = [];
     for (const item of this.items) {
       if (typeof type === "undefined" || item.on === type || item.on === "always") {
@@ -109,9 +109,9 @@ export default class PlaceableBase {
     return items;
   }
 
-  async emitItems<T extends ItemActivateEventNames>(type: T, data: ItemActivateEventData[T]): Promise<ItemActivateEventReturn[T][]> {
+  async emitItems<T extends GameEventNames>(type: T, data: GameEventData[T]): Promise<GameEventReturn[T][]> {
     const itemsToEmit = this.getItems(type);
-    const returnVals: ItemActivateEventReturn[T][] = [];
+    const returnVals: GameEventReturn[T][] = [];
     for (const item of itemsToEmit) {
       const returnVal = await item.emit(type, data);
       if (returnVal) returnVals.push(returnVal);
