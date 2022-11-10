@@ -13,7 +13,6 @@ const sliding = new StatusEffect({
   timing: "before",
   onEffect: async ({ game, target }) => {
     const board = game.board;
-    console.log(target.looking);
     const [dx, dy] = target.looking;
     const toAttack: PlaceableBase[] = [];
     for (const [sx, sy] of target.getShape()) {

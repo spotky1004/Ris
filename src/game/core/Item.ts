@@ -38,7 +38,7 @@ export default class Item<T extends GameEventNames = any> {
   readonly _recipe: Item[] | (() => Item[]);
   readonly shopable: boolean;
   cost: number;
-  readonly tier: number;
+  tier: number;
   readonly on: T;
   readonly timing: "before" | "after";
   readonly chargeOptions: null | TickManagerOptions;
@@ -61,9 +61,15 @@ export default class Item<T extends GameEventNames = any> {
     this.onEmit = options.onEmit;
     this.statusChanges = new Map(Object.entries(options.statusChanges ?? {})) as Map<StatusNames, StatusChangeData>;
 
-    let tier = options.tier ?? 1;
-    let cost: number = options.cost ?? 0;
-    if (this._recipe.length > 0) {
+    this.cost = options.cost ?? 0;
+    this.tier = options.tier ?? 1;
+    if (Array.isArray(this._recipe)) this.init();
+  }
+
+  init() {
+    let tier = this.tier ?? 1;
+    let cost: number = this.cost ?? 0;
+    if (this.recipe.length > 0) {
       tier = Math.max(...this.recipe.map(item => item.tier)) + 1;
       cost = this.recipe.reduce((a, b) => a + b.cost, 0);
     }

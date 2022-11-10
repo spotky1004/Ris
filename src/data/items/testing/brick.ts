@@ -2,18 +2,15 @@ import { Item } from "../essentials.js";
 import placeable from "../../../bundles/placeable.js";
 import { messages } from "../../messageDatas.js";
 import tags from "../../tags.js";
+import item from "../../../bundles/item.js";
 
-const item = new Item({
-  shopable: true,
-
+export default new Item({
   name: "Brick",
   effectDescription: `Spawn 1x3 or 3x1 size Wall based on looking direction.\nWall blocks all players.`,
   on: "used",
   timing: "after",
   destroyOnEmit: true,
-  tier: 1,
-  recipe: [],
-  cost: 3,
+  recipe: () => [item.t1.Def, item.t1.HP],
 
   onEmit: async ({ game, target }) => {
     const board = game.board;
@@ -62,5 +59,3 @@ const item = new Item({
     return;
   }
 });
-
-export default item;

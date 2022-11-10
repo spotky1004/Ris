@@ -59,12 +59,14 @@ export default class BoardCanvas {
       height: board.height * 200
     };
     this.fieldLayers = [];
+
+    const { width: w, height: h } = board;
     for (const z of [0, 1, 2]) {
       const field = new Field({
         size: this.size,
         camera: {
           x: 0, y: 0,
-          zoom: 1 / Math.min(board.width, board.height)
+          zoom: 1 / Math.min(w, h)
         }
       });
       this.fieldLayers[z] = field;
