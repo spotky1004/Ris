@@ -1,7 +1,6 @@
 import { Item } from "../essentials.js";
 
 export default new Item({
-  shopable: true,
   recipe: [],
   cost: 1,
   tier: 1,

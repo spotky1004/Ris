@@ -2,8 +2,7 @@ import { Item } from "../essentials.js";
 import item from "../../../bundles/item.js";
 
 export default new Item({
-  shopable: true,
-  recipe: () => [item.t1.HP, item.t1.MP, item.t1.Def],
+  recipe: () => [item.old.HP, item.old.MP, item.old.Def],
   cost: 5,
   tier: 1,
 
@@ -13,7 +12,7 @@ export default new Item({
   on: "used",
   timing: "before",
   onEmit: async ({ target }) => {
-    const avaiables = [item.t1.HP, item.t1.MP, item.t1.Def];
+    const avaiables = [item.old.HP, item.old.MP, item.old.Def];
     const selected = [];
     let costLeft = 5;
     while (costLeft > 0) {

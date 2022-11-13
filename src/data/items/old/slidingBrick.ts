@@ -57,7 +57,7 @@ export default new Item({
   timing: "after",
   destroyOnEmit: true,
   tier: 2,
-  recipe: () => [item.testing.Brick, item.t1.MP],
+  recipe: () => [item.old.Brick, item.old.MP],
 
   onEmit: async ({ game, target }) => {
     const board = game.board;

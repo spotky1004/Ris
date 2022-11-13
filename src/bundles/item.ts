@@ -1,7 +1,5 @@
-import * as t1 from "./item/t1.js";
-import * as testing from "./item/testing.js";
+import * as old from "./item/old.js";
 
 export default {
-  t1,
-  testing,
+  old
 };

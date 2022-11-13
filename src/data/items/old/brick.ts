@@ -10,7 +10,7 @@ export default new Item({
   on: "used",
   timing: "after",
   destroyOnEmit: true,
-  recipe: () => [item.t1.Def, item.t1.HP],
+  recipe: () => [item.old.Def, item.old.HP],
 
   onEmit: async ({ game, target }) => {
     const board = game.board;
